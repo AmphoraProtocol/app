@@ -20,7 +20,7 @@ export const BorrowRepayModal = () => {
 
   const { vaultID, borrowingPower, accountLiability } = useVaultDataContext();
 
-  const [tokenName, setTokenName] = useState('USDI');
+  const [tokenName, setTokenName] = useState('USDA');
   const [vaultBorrowPower, setVaultBorrowPower] = useState('0');
   const [borrowAmount, setBorrowAmount] = useState('');
   useEffect(() => {

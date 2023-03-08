@@ -105,7 +105,7 @@ export const WithdrawUSDCConfirmationModal = () => {
 
       <Box textAlign='center'>
         <Typography variant='body3_medium' color={formatColor(neutral.gray3)} fontStyle='italic'>
-          1 {USDC.token.ticker} = 1 USDi ($1){' '}
+          1 {USDC.token.ticker} = 1 USDA ($1){' '}
         </Typography>
       </Box>
 
