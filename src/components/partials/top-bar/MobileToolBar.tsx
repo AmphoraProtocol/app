@@ -34,7 +34,8 @@ export const MobileToolBar = () => {
       }}
     >
       <MuiLink component={Link} to='/landing' aria-level={1}>
-        <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={32} height={32} />
+        <span style={{ fontSize: 25 }}>🏺</span>
+        {/* <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={32} height={32} /> */}
       </MuiLink>
 
       <Box display='flex'>
@@ -100,15 +101,16 @@ export const MobileToolBar = () => {
           <ForwardIcon stroke={isLight ? formatColor(neutral.black) : formatColor(neutral.white)} />
         </Button>
         {/* <ClaimsButton /> */}
-        {window.location.hash !== '#/sale' && <MobileIconButton text='Token Sale' img='star' href='/#/sale' />}
+        {/* temporary */}
+        {/* {window.location.hash !== '#/sale' && <MobileIconButton text='Token Sale' img='star' href='/#/sale' />} */}
         <MobileIconButton text='App' img='rocket' href='/' />
         <MobileIconButton text='Governance' img='people' href='/#/proposal' />
         <br />
         <MobileIconButton text='Docs' img='cog' href='/#/docs' />
-        <MobileIconButton text='Whitepaper' img='document' href='/#/whitepaper' />
-        <MobileIconButton text='Feedback' img='feedback' href='https://gfxlabs.io' />
+        {/* <MobileIconButton text='Whitepaper' img='document' href='/#/whitepaper' /> */}
+        <MobileIconButton text='Feedback' img='feedback' href='#' />
         <br />
-        <MobileIconButton text='Discord' img='discord_icon_grey' href='https://discord.gg/s9Wja2tb6k' />
+        <MobileIconButton text='Discord' img='discord_icon_grey' href='#' />
         <MobileIconButton text={isLight ? `Light Mode` : 'Dark Mode'} img='sun' onClick={toggleMode} />
 
         {/* <Box my={1} maxWidth={200} width="100%">
