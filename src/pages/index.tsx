@@ -139,8 +139,8 @@ const Dashboard = () => {
             </>
           </SingleStatCard>
         </Box>
-
-        <InterestRateGraphCard />
+        {/* temporary reduce eth calls on tests */}
+        {/* <InterestRateGraphCard /> */}
         <Box display='flex' flexDirection={{ xs: 'column-reverse', lg: 'column' }}>
           <Typography mt={8} mb={2} color='text.primary' display={{ xs: 'none', lg: 'block' }}>
             Your Position
