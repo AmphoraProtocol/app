@@ -127,22 +127,18 @@ export const DesktopMenu = () => {
             backgroundColor: 'button.header',
           }}
         >
-          <StyledDropdownButton
+          {/* temporary */}
+          {/* <StyledDropdownButton
             img='rewards'
             href='https://app.uniswap.org/#/add/v2/ETH/0x2A54bA2964C8Cd459Dc568853F79813a60761B58?chain=mainnet'
             text='ETH USDi Rewards'
             target='_blank'
-          />
-          <StyledDropdownButton img='chart-bar' href='https://analytics.gfx.xyz/' text='Analytics' target='_blank' />
+          /> */}
+          {/* <StyledDropdownButton img='chart-bar' href='https://analytics.gfx.xyz/' text='Analytics' target='_blank' /> */}
           <StyledDropdownButton img='cog' text='Docs' href='#/docs' />
-          <StyledDropdownButton img='document' text='Whitepaper' href='#/whitepaper' />
-          <StyledDropdownButton img='feedback' text='Feedback' href='https://discord.gg/s9Wja2tb6k' target='_blank' />
-          <StyledDropdownButton
-            img='discord_icon_grey'
-            href='https://discord.gg/s9Wja2tb6k'
-            text='Discord'
-            target='_blank'
-          />
+          {/* <StyledDropdownButton img='document' text='Whitepaper' href='#/whitepaper' /> */}
+          <StyledDropdownButton img='feedback' text='Feedback' href='https://discord.gg/' target='_blank' />
+          <StyledDropdownButton img='discord_icon_grey' href='https://discord.gg/' text='Discord' target='_blank' />
 
           <StyledDropdownButton
             img={isLight ? 'star' : 'sun'}

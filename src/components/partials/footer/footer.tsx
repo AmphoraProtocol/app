@@ -98,10 +98,10 @@ const FooterContent = () => {
         }}
       >
         <Typography color='footer.color' variant='label_semi'>
-          Interest Protocol {new Date().getFullYear()}
+          Amphora Protocol {new Date().getFullYear()}
         </Typography>
         <Box>
-          <MuiLink component={Link} to='https://discord.gg/s9Wja2tb6k' target='_blank' paddingBottom={2}>
+          <MuiLink component={Link} to='#' target='_blank' paddingBottom={2}>
             <SVGBox
               svg_name={isLight ? 'discord_icon_black' : 'discord_icon_grey'}
               width={24}
@@ -109,7 +109,7 @@ const FooterContent = () => {
               sx={{ marginX: 3 }}
             />
           </MuiLink>
-          <MuiLink component={Link} to='https://twitter.com/InterestDeFi' target='_blank' paddingBottom={2}>
+          <MuiLink component={Link} to='#' target='_blank' paddingBottom={2}>
             <SVGBox
               svg_name={isLight ? 'twitter_bird_icon_black' : 'twitter_bird_icon_grey'}
               width={25}
@@ -117,7 +117,7 @@ const FooterContent = () => {
               sx={{ marginX: 3 }}
             />
           </MuiLink>
-          <MuiLink component={Link} to='https://medium.com/interest-protocol' target='_blank' paddingBottom={2}>
+          <MuiLink component={Link} to='#' target='_blank' paddingBottom={2}>
             <SVGBox
               svg_name={isLight ? 'medium_icon_black' : 'medium_icon_grey'}
               width={24}

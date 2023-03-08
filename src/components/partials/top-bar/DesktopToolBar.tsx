@@ -15,8 +15,10 @@ export const DesktopToolBar = () => {
 
   return (
     <Toolbar sx={{ padding: 0 }} disableGutters>
-      <Link href='#/landing' role='heading' aria-level={1}>
-        <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={50} height={50} />
+      {/* temporary */}
+      <Link href='#' /* '#/landing' */ role='heading' aria-level={1}>
+        <span style={{ fontSize: 35 }}>🏺</span>
+        {/* <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={50} height={50} /> */}
       </Link>
       {setIsApp !== undefined ? (
         <Box sx={{ gap: 3 }} display='flex' ml={3}>
@@ -28,11 +30,12 @@ export const DesktopToolBar = () => {
       )}
 
       <Box sx={{ gap: 2 }} display='flex' mr={-1} ml='auto'>
-        {window.location.hash !== '#/sale' && (
+        {/* temporary */}
+        {/* {window.location.hash !== '#/sale' && (
           <Box mx={2} maxWidth={200} width='100%'>
             <TokenSaleButton />
           </Box>
-        )}
+        )} */}
         <SelectedChainButton />
         <ConnectWalletButton />
         <DesktopMenu />

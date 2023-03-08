@@ -27,9 +27,10 @@ import { RedirectTo } from '../components/util/redirect';
 import getAPRs from '../contracts/USDI/getAPRs';
 
 const Dashboard = () => {
-  const cookies = new Cookies();
-  const firstVisitExists = cookies.get('first-visit');
-  if (!firstVisitExists) return <RedirectTo url='#/landing' />;
+  // temporary
+  // const cookies = new Cookies();
+  // const firstVisitExists = cookies.get('first-visit');
+  // if (!firstVisitExists) return <RedirectTo url='#/landing' />;
 
   const isLight = useLight();
   const { setType } = useModalContext();
