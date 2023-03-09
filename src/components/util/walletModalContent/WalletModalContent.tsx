@@ -80,13 +80,13 @@ export const WalletModalContent = () => {
 
       <Box mt={0}>
         <Typography variant='label_semi'>
-          By connecting to Interest Protocol you agree to GFX Labs'{' '}
-          <Link href='#/terms' target='_blank'>
-            Terms of Use
-          </Link>{' '}
-          and acknowledge you have read and understand the{' '}
-          <Link href='#/whitepaper' target='_blank'>
-            Interest Protocol Whitepaper.
+          By connecting a wallet, you agree to Amphora Protocols’{' '}
+          <Link href='#' target='_blank'>
+            Terms of Service{' '}
+          </Link>
+          and consent to its{' '}
+          <Link href='#' target='_blank'>
+            Privacy Policy.
           </Link>
         </Typography>
       </Box>
