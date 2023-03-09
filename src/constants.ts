@@ -17,9 +17,9 @@ export const BACKUP_PROVIDER = 'http://localhost:8545'; //'http://mainnet.rpc.gf
 export const STAGING_ANALYTICS_URL = 'https://ip-stats-api.staging.gfx.town';
 export const ANALYTICS_URL = 'https://analytics-api.gfx.xyz';
 export const CHART_INTEREST_RATE_OVERTIME = '/charts/interest_rates_overtime';
-export const LIVE_DELTAS = '/live/deltas';
+export const LIVE_DELTAS = '/live/deltas'; // remove, no apply
 export const LIVE_AVERAGE_RATES = '/live/average_rates';
-export const SALE_SUMMARY = '/sale/summary';
+export const SALE_SUMMARY = '/sale/summary'; // remove, no apply
 
 export const GOV_PROPOSAL_CREATED_EVENTS = '/gov/proposal_created_events';
 export const GOV_PROPOSAL_VOTE_CAST_EVENTS = '/gov/proposal_vote_cast_events';

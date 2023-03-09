@@ -6,6 +6,7 @@
   "homepage": ".",
   "scripts": {
     "build": "tsc && vite build",
+    "fork": "anvil -f https://eth.llamarpc.com --fork-block-number 16784744 --chain-id 1",
     "_vite": "",
     "dev": "vite",
     "preview": "vite preview",
