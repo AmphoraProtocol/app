@@ -11,7 +11,6 @@ import { WalletModalProvider } from './components/libs/wallet-modal-provider/Wal
 import { ModalContentProvider } from './components/libs/modal-content-provider/ModalContentProvider';
 import { PaletteModeContextProvider } from './components/libs/palette-mode-provider/palette-mode-provider';
 import Dashboard from './pages';
-import PurchasePage from './pages/sale';
 import LandingPage from './pages/landing';
 import NotFound404Page from './pages/404';
 import {
@@ -32,8 +31,6 @@ import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTok
 import { VaultDataProvider } from './components/libs/vault-data-provider/VaultDataProvider';
 import { StableCoinsProvider } from './components/libs/stable-coins-provider/StableCoinsProvider';
 import { AppGovernanceProvider } from './components/libs/app-governance-provider/AppGovernanceProvider';
-import { WhitepaperPage } from './pages/whitepaper';
-import { TermsPage } from './pages/terms';
 import { TestingPage } from './pages/playground';
 import { MerkleRedeemContextProvider } from './components/libs/merkle-redeem-provider/MerkleRedeemProvider';
 import { Governance } from './pages/governance';
@@ -94,28 +91,7 @@ const AppRouter = () => {
   return (
     <WalletContext>
       <Routes>
-        <Route
-          path={`/sale`}
-          element={
-            <Web3ContextProvider>
-              <RolodexContentProvider>
-                <MerkleRedeemContextProvider>
-                  <ModalContentProvider>
-                    <WalletModalProvider>
-                      <>
-                        <PurchasePage />
-                        <TransactionStatusModal />
-                      </>
-                    </WalletModalProvider>
-                  </ModalContentProvider>
-                </MerkleRedeemContextProvider>
-              </RolodexContentProvider>
-            </Web3ContextProvider>
-          }
-        />
         <Route path={`/landing`} element={<LandingPage />} />
-        <Route path={`/whitepaper`} element={<WhitepaperPage />} />
-        <Route path={`/terms`} element={<TermsPage />} />
         <Route path={`/docs`} element={<RedirectTo url='book/docs/intro/index.html' />} />
         <Route path={`/book`} element={<RedirectTo url='book/docs/intro/index.html' />} />
         <Route path={`/testing`} element={<TestingPage />} />
