@@ -32,7 +32,6 @@ import { VaultDataProvider } from './components/libs/vault-data-provider/VaultDa
 import { StableCoinsProvider } from './components/libs/stable-coins-provider/StableCoinsProvider';
 import { AppGovernanceProvider } from './components/libs/app-governance-provider/AppGovernanceProvider';
 import { TestingPage } from './pages/playground';
-import { MerkleRedeemContextProvider } from './components/libs/merkle-redeem-provider/MerkleRedeemProvider';
 import { Governance } from './pages/governance';
 import { EnableCappedTokenModal } from './components/util/modal/EnableCappedTokenModal';
 import { RedirectTo } from './components/util/redirect';
@@ -55,31 +54,29 @@ const DashboardContext = (props: { children: any }) => {
       <RolodexContentProvider>
         <StableCoinsProvider>
           <VaultDataProvider>
-            <MerkleRedeemContextProvider>
-              <ModalContentProvider>
-                <AppGovernanceProvider>
-                  <>
-                    <WalletModalProvider>
-                      <>
-                        <SwapTokenProvider>{props.children}</SwapTokenProvider>
-                        <DelegateModal />
-                        <DelegateIPTModal />
-                        <DepositWithdrawCollateralModal />
-                        <DepositCollateralConfirmationModal />
-                        <WithdrawCollateralConfirmationModal />
-                        <DepositWithdrawUSDCModal />
-                        <BorrowRepayModal />
-                        <DepositUSDCConfirmationModal />
-                        <WithdrawUSDCConfirmationModal />
-                        <EnableCappedTokenModal />
-                        <ClaimModal />
-                        <TransactionStatusModal />
-                      </>
-                    </WalletModalProvider>
-                  </>
-                </AppGovernanceProvider>
-              </ModalContentProvider>
-            </MerkleRedeemContextProvider>
+            <ModalContentProvider>
+              <AppGovernanceProvider>
+                <>
+                  <WalletModalProvider>
+                    <>
+                      <SwapTokenProvider>{props.children}</SwapTokenProvider>
+                      <DelegateModal />
+                      <DelegateIPTModal />
+                      <DepositWithdrawCollateralModal />
+                      <DepositCollateralConfirmationModal />
+                      <WithdrawCollateralConfirmationModal />
+                      <DepositWithdrawUSDCModal />
+                      <BorrowRepayModal />
+                      <DepositUSDCConfirmationModal />
+                      <WithdrawUSDCConfirmationModal />
+                      <EnableCappedTokenModal />
+                      <ClaimModal />
+                      <TransactionStatusModal />
+                    </>
+                  </WalletModalProvider>
+                </>
+              </AppGovernanceProvider>
+            </ModalContentProvider>
           </VaultDataProvider>
         </StableCoinsProvider>
       </RolodexContentProvider>

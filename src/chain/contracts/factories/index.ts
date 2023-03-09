@@ -4,7 +4,6 @@
 export * as iusdiSol from './IUSDI.sol';
 export * as external from './_external';
 export * as curve from './curve';
-export * as genesis from './genesis';
 export * as governance from './governance';
 export * as lending from './lending';
 export * as oracle from './oracle';

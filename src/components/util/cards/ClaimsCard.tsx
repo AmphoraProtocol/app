@@ -1,14 +1,14 @@
 import { Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { ClaimIcon } from '../../icons/misc/ClaimIcon';
-import { useMerkleRedeemContext } from '../../libs/merkle-redeem-provider/MerkleRedeemProvider';
+// import { useMerkleRedeemContext } from '../../libs/merkle-redeem-provider/MerkleRedeemProvider';
 import { utils } from 'ethers';
 import { CardContainer } from './CardContainer';
 import { ClaimsButton } from '../button';
 
 export const ClaimsCard = () => {
-  const { claimAmount } = useMerkleRedeemContext();
-
+  // const { claimAmount } = useMerkleRedeemContext();
+  const claimAmount = utils.parseEther('1');
   const [formattedAmount, setFormattedAmount] = useState(0);
 
   useEffect(() => {
