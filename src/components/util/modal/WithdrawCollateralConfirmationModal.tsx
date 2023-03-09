@@ -91,15 +91,15 @@ export const WithdrawCollateralConfirmationModal = () => {
           <SVGBox
             width={36}
             height={36}
-            svg_name={collateralToken.ticker}
+            svg_name={collateralToken?.ticker}
             sx={{ mr: 3 }}
-            alt={collateralToken.ticker}
+            alt={collateralToken?.ticker}
           />
 
           <Box>
             <Typography variant='body3' color='text.primary'>
               ${round(collateralToken.price * Number(collateralWithdrawAmount), 2)} (
-              {round(collateralWithdrawAmount, 4)} {collateralToken.ticker} )
+              {round(collateralWithdrawAmount, 4)} {collateralToken?.ticker} )
             </Typography>
           </Box>
         </Box>
