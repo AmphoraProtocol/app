@@ -5,7 +5,7 @@ export enum ChainIDs {
   ROPSTEN = 3,
   GOERLI = 5,
   POLYGON = 137,
-  LOCAL = 31337,
+  LOCAL = 1337,
 }
 
 const configs: Array<ChainInfo> = [

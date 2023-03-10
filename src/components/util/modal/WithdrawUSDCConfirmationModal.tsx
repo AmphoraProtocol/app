@@ -83,13 +83,13 @@ export const WithdrawUSDCConfirmationModal = () => {
             </Typography>
           </Box>
 
-          <SVGBox width={36} height={36} svg_name='USDI' alt='USDI' sx={{ ml: 3 }} />
+          <SVGBox width={36} height={36} svg_name='USDA' alt='USDA' sx={{ ml: 3 }} />
         </Box>
 
         <ForwardIcon sx={{ width: 15, height: 15 }} strokecolor={formatColor(neutral.gray3)} />
 
         <Box display='flex' alignItems='center'>
-          <SVGBox width={36} height={36} sx={{ mr: 3 }} svg_name='USDC' alt='USDC' />
+          <SVGBox width={36} height={36} sx={{ mr: 3 }} svg_name='sUSD' alt='sUSD' />
 
           <Box>
             <Typography variant='body3' color='text.secondary'>
@@ -105,7 +105,7 @@ export const WithdrawUSDCConfirmationModal = () => {
 
       <Box textAlign='center'>
         <Typography variant='body3_medium' color={formatColor(neutral.gray3)} fontStyle='italic'>
-          1 {USDC.token.ticker} = 1 USDA ($1){' '}
+          1 {USDC.token?.ticker} = 1 USDA ($1){' '}
         </Typography>
       </Box>
 

@@ -49,10 +49,10 @@ export const DepositWithdrawCollateralModal = () => {
           columnGap: 2,
         }}
       >
-        <SVGBox width={40} height={40} svg_name={collateralToken.ticker} alt={collateralToken.name} />
+        <SVGBox width={40} height={40} svg_name={collateralToken?.ticker} alt={collateralToken.name} />
         <Box>
           <Typography variant='body3' color={formatColor(neutral.gray3)}>
-            1 {collateralToken.ticker}
+            1 {collateralToken?.ticker}
           </Typography>
           <Typography variant='h7' display='block' color='text.primary' mb={1}>
             $

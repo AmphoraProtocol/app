@@ -1,6 +1,5 @@
 export const GOVERNOR_ADDRESS = '0x266d1020a84b9e8b0ed320831838152075f8c4ca';
 export const LINK_FAST_GAS_GWEI = '0x169e633a2d1e6c10dd91238ba11c4a708dfef37c';
-export const MERKLE_REDEEM_ADDRESS = '0x91a1Fb8eEaeB0E05629719938b03EE3C32348CF7';
 export const VOTING_VAULT_CONTROLLER_ADDRESS = '0xaE49ddCA05Fe891c6a5492ED52d739eC1328CBE2';
 
 export const DEFAULT_APPROVE_AMOUNT = '1000000000';
@@ -17,9 +16,9 @@ export const BACKUP_PROVIDER = 'http://localhost:8545'; //'http://mainnet.rpc.gf
 export const STAGING_ANALYTICS_URL = 'https://ip-stats-api.staging.gfx.town';
 export const ANALYTICS_URL = 'https://analytics-api.gfx.xyz';
 export const CHART_INTEREST_RATE_OVERTIME = '/charts/interest_rates_overtime';
-export const LIVE_DELTAS = '/live/deltas';
+export const LIVE_DELTAS = '/live/deltas'; // remove, no apply
 export const LIVE_AVERAGE_RATES = '/live/average_rates';
-export const SALE_SUMMARY = '/sale/summary';
+export const SALE_SUMMARY = '/sale/summary'; // remove, no apply
 
 export const GOV_PROPOSAL_CREATED_EVENTS = '/gov/proposal_created_events';
 export const GOV_PROPOSAL_VOTE_CAST_EVENTS = '/gov/proposal_vote_cast_events';

@@ -105,6 +105,7 @@ const Dashboard = () => {
           },
         }}
       >
+        {/* Global Data Section */}
         <Box
           sx={{
             display: 'flex',
@@ -139,8 +140,11 @@ const Dashboard = () => {
             </>
           </SingleStatCard>
         </Box>
-        {/* temporary reduce eth calls on tests */}
-        {/* <InterestRateGraphCard /> */}
+
+        {/* Chart Section */}
+        <InterestRateGraphCard />
+
+        {/* Your Position Section */}
         <Box display='flex' flexDirection={{ xs: 'column-reverse', lg: 'column' }}>
           <Typography mt={8} mb={2} color='text.primary' display={{ xs: 'none', lg: 'block' }}>
             Your Position
@@ -260,12 +264,16 @@ const Dashboard = () => {
         </Box>
 
         <Box>
+          {/* Vault Section */}
           <UserIPTVault />
+
+          {/* Assets Section */}
           <UserStats />
         </Box>
       </Box>
 
       <Box maxWidth='xl' margin='auto'>
+        {/* Gas Section */}
         <GweiBlockText />
       </Box>
     </Box>
