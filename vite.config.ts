@@ -1,9 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import GlobalsPolyfills from '@esbuild-plugins/node-globals-polyfill';
-
-import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
+import path from 'path';
 
 // https://vitejs.dev/config/
 
@@ -23,6 +21,9 @@ export default defineConfig({
   },
   resolve: {
     dedupe: ['buffer', 'bn.js', 'keccak', 'ethers'],
+    alias: {
+      '~': path.resolve(__dirname, './src'),
+    },
   },
   plugins: [react()],
   define: {
