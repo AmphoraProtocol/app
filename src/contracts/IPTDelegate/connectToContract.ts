@@ -1,5 +1,5 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
-import { InterestProtocolTokenDelegate__factory } from '~/chain/contracts/factories/governance/token/TokenDelegate.sol/InterestProtocolTokenDelegate__factory';
+import { InterestProtocolTokenDelegate__factory } from '~/chain/contracts/factories/InterestProtocolTokenDelegate__factory';
 import { IPT_DELEGATE_ADDRESS } from '../../constants';
 
 const connectIPTDelegateContract = (signerOrProvider: JsonRpcSigner | JsonRpcProvider) => {

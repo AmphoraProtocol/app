@@ -4,7 +4,7 @@
 import type { BaseContract, BigNumber, Signer, utils } from 'ethers';
 import type { EventFragment } from '@ethersproject/abi';
 import type { Listener, Provider } from '@ethersproject/providers';
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../../common';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
 export interface GovernorBravoEventsInterface extends utils.Interface {
   functions: {};

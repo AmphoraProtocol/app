@@ -6,7 +6,7 @@ import type { Provider, TransactionRequest } from '@ethersproject/providers';
 import type {
   InterestProtocolTokenDelegate,
   InterestProtocolTokenDelegateInterface,
-} from '../../../../governance/token/TokenDelegate.sol/InterestProtocolTokenDelegate';
+} from '../InterestProtocolTokenDelegate';
 
 const _abi = [
   {

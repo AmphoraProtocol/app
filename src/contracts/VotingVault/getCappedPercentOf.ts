@@ -1,5 +1,5 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
-import { CappedGovToken__factory } from '../../chain/contracts/factories/lending/CappedGovToken__factory';
+import { CappedGovToken__factory } from '../../chain/contracts/factories/CappedGovToken__factory';
 
 const getCappedPercentOf = async (capped_token_address: string, signerOrProvider: JsonRpcSigner | JsonRpcProvider) => {
   try {

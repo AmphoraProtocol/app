@@ -1,5 +1,5 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
-import { VotingVaultController__factory } from '../../chain/contracts/factories/lending/VotingVaultController__factory';
+import { VotingVaultController__factory } from '~/chain/contracts/factories';
 import { VOTING_VAULT_CONTROLLER_ADDRESS } from '../../constants';
 
 const mintVotingVaultID = async (id: string, signerOrProvider: JsonRpcSigner | JsonRpcProvider) => {

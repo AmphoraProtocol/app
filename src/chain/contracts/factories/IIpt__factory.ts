@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from 'ethers';
 import type { Provider } from '@ethersproject/providers';
-import type { IIpt, IIptInterface } from '../../../governance/governor/IIpt';
+import type { IIpt, IIptInterface } from '../IIpt';
 
 const _abi = [
   {

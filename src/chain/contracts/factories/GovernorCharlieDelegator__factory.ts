@@ -3,10 +3,7 @@
 /* eslint-disable */
 import { Signer, utils, Contract, ContractFactory, BigNumberish, Overrides } from 'ethers';
 import type { Provider, TransactionRequest } from '@ethersproject/providers';
-import type {
-  GovernorCharlieDelegator,
-  GovernorCharlieDelegatorInterface,
-} from '../../../../governance/governor/GovernorDelegator.sol/GovernorCharlieDelegator';
+import type { GovernorCharlieDelegator, GovernorCharlieDelegatorInterface } from '../GovernorCharlieDelegator';
 
 const _abi = [
   {

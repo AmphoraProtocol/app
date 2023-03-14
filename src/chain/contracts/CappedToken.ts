@@ -15,32 +15,46 @@ import type {
 } from 'ethers';
 import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
 import type { Listener, Provider } from '@ethersproject/providers';
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent, PromiseOrValue } from '../common';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent, PromiseOrValue } from './common';
 
-export interface CappedGovTokenInterface extends utils.Interface {
+export interface CappedTokenInterface extends utils.Interface {
   functions: {
     '_cap()': FunctionFragment;
     '_underlying()': FunctionFragment;
-    '_vaultController()': FunctionFragment;
-    '_votingVaultController()': FunctionFragment;
     'allowance(address,address)': FunctionFragment;
     'approve(address,uint256)': FunctionFragment;
     'balanceOf(address)': FunctionFragment;
+    'convertToAssets(uint256)': FunctionFragment;
+    'convertToShares(uint256)': FunctionFragment;
     'decimals()': FunctionFragment;
     'decreaseAllowance(address,uint256)': FunctionFragment;
-    'deposit(uint256,uint96)': FunctionFragment;
+    'deposit(uint256,address)': FunctionFragment;
     'getCap()': FunctionFragment;
     'increaseAllowance(address,uint256)': FunctionFragment;
-    'initialize(string,string,address,address,address)': FunctionFragment;
+    'initialize(string,string,address)': FunctionFragment;
+    'maxDeposit(address)': FunctionFragment;
+    'maxMint(address)': FunctionFragment;
+    'maxRedeem(address)': FunctionFragment;
+    'maxWithdraw(address)': FunctionFragment;
+    'mint(uint256,address)': FunctionFragment;
     'name()': FunctionFragment;
     'owner()': FunctionFragment;
+    'previewDeposit(uint256)': FunctionFragment;
+    'previewMint(uint256)': FunctionFragment;
+    'previewRedeem(uint256)': FunctionFragment;
+    'previewWithdraw(uint256)': FunctionFragment;
+    'redeem(uint256,address)': FunctionFragment;
     'renounceOwnership()': FunctionFragment;
     'setCap(uint256)': FunctionFragment;
     'symbol()': FunctionFragment;
     'totalSupply()': FunctionFragment;
+    'totalUnderlying()': FunctionFragment;
     'transfer(address,uint256)': FunctionFragment;
     'transferFrom(address,address,uint256)': FunctionFragment;
     'transferOwnership(address)': FunctionFragment;
+    'underlyingAddress()': FunctionFragment;
+    'underlyingScalar()': FunctionFragment;
+    'withdraw(uint256,address)': FunctionFragment;
   };
 
   getFunction(
@@ -49,32 +63,52 @@ export interface CappedGovTokenInterface extends utils.Interface {
       | '_cap()'
       | '_underlying'
       | '_underlying()'
-      | '_vaultController'
-      | '_vaultController()'
-      | '_votingVaultController'
-      | '_votingVaultController()'
       | 'allowance'
       | 'allowance(address,address)'
       | 'approve'
       | 'approve(address,uint256)'
       | 'balanceOf'
       | 'balanceOf(address)'
+      | 'convertToAssets'
+      | 'convertToAssets(uint256)'
+      | 'convertToShares'
+      | 'convertToShares(uint256)'
       | 'decimals'
       | 'decimals()'
       | 'decreaseAllowance'
       | 'decreaseAllowance(address,uint256)'
       | 'deposit'
-      | 'deposit(uint256,uint96)'
+      | 'deposit(uint256,address)'
       | 'getCap'
       | 'getCap()'
       | 'increaseAllowance'
       | 'increaseAllowance(address,uint256)'
       | 'initialize'
-      | 'initialize(string,string,address,address,address)'
+      | 'initialize(string,string,address)'
+      | 'maxDeposit'
+      | 'maxDeposit(address)'
+      | 'maxMint'
+      | 'maxMint(address)'
+      | 'maxRedeem'
+      | 'maxRedeem(address)'
+      | 'maxWithdraw'
+      | 'maxWithdraw(address)'
+      | 'mint'
+      | 'mint(uint256,address)'
       | 'name'
       | 'name()'
       | 'owner'
       | 'owner()'
+      | 'previewDeposit'
+      | 'previewDeposit(uint256)'
+      | 'previewMint'
+      | 'previewMint(uint256)'
+      | 'previewRedeem'
+      | 'previewRedeem(uint256)'
+      | 'previewWithdraw'
+      | 'previewWithdraw(uint256)'
+      | 'redeem'
+      | 'redeem(uint256,address)'
       | 'renounceOwnership'
       | 'renounceOwnership()'
       | 'setCap'
@@ -83,22 +117,26 @@ export interface CappedGovTokenInterface extends utils.Interface {
       | 'symbol()'
       | 'totalSupply'
       | 'totalSupply()'
+      | 'totalUnderlying'
+      | 'totalUnderlying()'
       | 'transfer'
       | 'transfer(address,uint256)'
       | 'transferFrom'
       | 'transferFrom(address,address,uint256)'
       | 'transferOwnership'
-      | 'transferOwnership(address)',
+      | 'transferOwnership(address)'
+      | 'underlyingAddress'
+      | 'underlyingAddress()'
+      | 'underlyingScalar'
+      | 'underlyingScalar()'
+      | 'withdraw'
+      | 'withdraw(uint256,address)',
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: '_cap', values?: undefined): string;
   encodeFunctionData(functionFragment: '_cap()', values?: undefined): string;
   encodeFunctionData(functionFragment: '_underlying', values?: undefined): string;
   encodeFunctionData(functionFragment: '_underlying()', values?: undefined): string;
-  encodeFunctionData(functionFragment: '_vaultController', values?: undefined): string;
-  encodeFunctionData(functionFragment: '_vaultController()', values?: undefined): string;
-  encodeFunctionData(functionFragment: '_votingVaultController', values?: undefined): string;
-  encodeFunctionData(functionFragment: '_votingVaultController()', values?: undefined): string;
   encodeFunctionData(functionFragment: 'allowance', values: [PromiseOrValue<string>, PromiseOrValue<string>]): string;
   encodeFunctionData(
     functionFragment: 'allowance(address,address)',
@@ -114,6 +152,10 @@ export interface CappedGovTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'balanceOf', values: [PromiseOrValue<string>]): string;
   encodeFunctionData(functionFragment: 'balanceOf(address)', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'convertToAssets', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'convertToAssets(uint256)', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'convertToShares', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'convertToShares(uint256)', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(functionFragment: 'decimals', values?: undefined): string;
   encodeFunctionData(functionFragment: 'decimals()', values?: undefined): string;
   encodeFunctionData(
@@ -126,11 +168,11 @@ export interface CappedGovTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: 'deposit',
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
   ): string;
   encodeFunctionData(
-    functionFragment: 'deposit(uint256,uint96)',
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+    functionFragment: 'deposit(uint256,address)',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
   ): string;
   encodeFunctionData(functionFragment: 'getCap', values?: undefined): string;
   encodeFunctionData(functionFragment: 'getCap()', values?: undefined): string;
@@ -144,28 +186,45 @@ export interface CappedGovTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: 'initialize',
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-    ],
+    values: [PromiseOrValue<string>, PromiseOrValue<string>, PromiseOrValue<string>],
   ): string;
   encodeFunctionData(
-    functionFragment: 'initialize(string,string,address,address,address)',
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-    ],
+    functionFragment: 'initialize(string,string,address)',
+    values: [PromiseOrValue<string>, PromiseOrValue<string>, PromiseOrValue<string>],
+  ): string;
+  encodeFunctionData(functionFragment: 'maxDeposit', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'maxDeposit(address)', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'maxMint', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'maxMint(address)', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'maxRedeem', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'maxRedeem(address)', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'maxWithdraw', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'maxWithdraw(address)', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'mint', values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]): string;
+  encodeFunctionData(
+    functionFragment: 'mint(uint256,address)',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
   ): string;
   encodeFunctionData(functionFragment: 'name', values?: undefined): string;
   encodeFunctionData(functionFragment: 'name()', values?: undefined): string;
   encodeFunctionData(functionFragment: 'owner', values?: undefined): string;
   encodeFunctionData(functionFragment: 'owner()', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'previewDeposit', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'previewDeposit(uint256)', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'previewMint', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'previewMint(uint256)', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'previewRedeem', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'previewRedeem(uint256)', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'previewWithdraw', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'previewWithdraw(uint256)', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(
+    functionFragment: 'redeem',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'redeem(uint256,address)',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
+  ): string;
   encodeFunctionData(functionFragment: 'renounceOwnership', values?: undefined): string;
   encodeFunctionData(functionFragment: 'renounceOwnership()', values?: undefined): string;
   encodeFunctionData(functionFragment: 'setCap', values: [PromiseOrValue<BigNumberish>]): string;
@@ -174,6 +233,8 @@ export interface CappedGovTokenInterface extends utils.Interface {
   encodeFunctionData(functionFragment: 'symbol()', values?: undefined): string;
   encodeFunctionData(functionFragment: 'totalSupply', values?: undefined): string;
   encodeFunctionData(functionFragment: 'totalSupply()', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'totalUnderlying', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'totalUnderlying()', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'transfer',
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
@@ -192,37 +253,69 @@ export interface CappedGovTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'transferOwnership', values: [PromiseOrValue<string>]): string;
   encodeFunctionData(functionFragment: 'transferOwnership(address)', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'underlyingAddress', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'underlyingAddress()', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'underlyingScalar', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'underlyingScalar()', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'withdraw',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'withdraw(uint256,address)',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
+  ): string;
 
   decodeFunctionResult(functionFragment: '_cap', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: '_cap()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: '_underlying', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: '_underlying()', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: '_vaultController', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: '_vaultController()', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: '_votingVaultController', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: '_votingVaultController()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'allowance(address,address)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'approve(address,uint256)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'balanceOf(address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'convertToAssets', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'convertToAssets(uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'convertToShares', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'convertToShares(uint256)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'decimals()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'decreaseAllowance', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'decreaseAllowance(address,uint256)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'deposit(uint256,uint96)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'deposit(uint256,address)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'getCap', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'getCap()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'increaseAllowance', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'increaseAllowance(address,uint256)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'initialize(string,string,address,address,address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'initialize(string,string,address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxDeposit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxDeposit(address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxMint', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxMint(address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxRedeem', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxRedeem(address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxWithdraw', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'maxWithdraw(address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'mint', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'mint(uint256,address)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'name', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'name()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'owner()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewDeposit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewDeposit(uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewMint', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewMint(uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewRedeem', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewRedeem(uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewWithdraw', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'previewWithdraw(uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'redeem', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'redeem(uint256,address)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'renounceOwnership', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'renounceOwnership()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'setCap', data: BytesLike): Result;
@@ -231,12 +324,20 @@ export interface CappedGovTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'symbol()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'totalSupply', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'totalSupply()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'totalUnderlying', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'totalUnderlying()', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'transfer', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'transfer(address,uint256)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'transferFrom', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'transferFrom(address,address,uint256)', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'transferOwnership(address)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'underlyingAddress', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'underlyingAddress()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'underlyingScalar', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'underlyingScalar()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'withdraw(uint256,address)', data: BytesLike): Result;
 
   events: {
     'Approval(address,address,uint256)': EventFragment;
@@ -278,12 +379,12 @@ export type TransferEvent = TypedEvent<[string, string, BigNumber], TransferEven
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
-export interface CappedGovToken extends BaseContract {
+export interface CappedToken extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: CappedGovTokenInterface;
+  interface: CappedTokenInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -308,14 +409,6 @@ export interface CappedGovToken extends BaseContract {
     _underlying(overrides?: CallOverrides): Promise<[string]>;
 
     '_underlying()'(overrides?: CallOverrides): Promise<[string]>;
-
-    _vaultController(overrides?: CallOverrides): Promise<[string]>;
-
-    '_vaultController()'(overrides?: CallOverrides): Promise<[string]>;
-
-    _votingVaultController(overrides?: CallOverrides): Promise<[string]>;
-
-    '_votingVaultController()'(overrides?: CallOverrides): Promise<[string]>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -345,6 +438,14 @@ export interface CappedGovToken extends BaseContract {
 
     'balanceOf(address)'(account: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    convertToAssets(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'convertToAssets(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    convertToShares(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'convertToShares(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     'decimals()'(overrides?: CallOverrides): Promise<[number]>;
@@ -362,14 +463,14 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     deposit(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    'deposit(uint256,uint96)'(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+    'deposit(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
@@ -393,17 +494,41 @@ export interface CappedGovToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    'initialize(string,string,address,address,address)'(
+    'initialize(string,string,address)'(
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    maxDeposit(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'maxDeposit(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    maxMint(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'maxMint(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    maxRedeem(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'maxRedeem(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    maxWithdraw(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'maxWithdraw(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    mint(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    'mint(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
@@ -414,6 +539,34 @@ export interface CappedGovToken extends BaseContract {
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     'owner()'(overrides?: CallOverrides): Promise<[string]>;
+
+    previewDeposit(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'previewDeposit(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    previewMint(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'previewMint(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    previewRedeem(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'previewRedeem(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    previewWithdraw(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'previewWithdraw(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    redeem(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    'redeem(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
 
     renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
@@ -437,6 +590,10 @@ export interface CappedGovToken extends BaseContract {
 
     'totalSupply()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    totalUnderlying(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'totalUnderlying()'(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     transfer(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -450,18 +607,18 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     transferFrom(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
-    ): Promise<[boolean]>;
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
 
     'transferFrom(address,address,uint256)'(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
-    ): Promise<[boolean]>;
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -470,6 +627,26 @@ export interface CappedGovToken extends BaseContract {
 
     'transferOwnership(address)'(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    underlyingAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    'underlyingAddress()'(overrides?: CallOverrides): Promise<[string]>;
+
+    underlyingScalar(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    'underlyingScalar()'(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    withdraw(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    'withdraw(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
   };
@@ -481,14 +658,6 @@ export interface CappedGovToken extends BaseContract {
   _underlying(overrides?: CallOverrides): Promise<string>;
 
   '_underlying()'(overrides?: CallOverrides): Promise<string>;
-
-  _vaultController(overrides?: CallOverrides): Promise<string>;
-
-  '_vaultController()'(overrides?: CallOverrides): Promise<string>;
-
-  _votingVaultController(overrides?: CallOverrides): Promise<string>;
-
-  '_votingVaultController()'(overrides?: CallOverrides): Promise<string>;
 
   allowance(
     owner: PromiseOrValue<string>,
@@ -518,6 +687,14 @@ export interface CappedGovToken extends BaseContract {
 
   'balanceOf(address)'(account: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
+  convertToAssets(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'convertToAssets(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  convertToShares(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'convertToShares(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   'decimals()'(overrides?: CallOverrides): Promise<number>;
@@ -535,14 +712,14 @@ export interface CappedGovToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   deposit(
-    amount: PromiseOrValue<BigNumberish>,
-    vaultId: PromiseOrValue<BigNumberish>,
+    underlying_amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  'deposit(uint256,uint96)'(
-    amount: PromiseOrValue<BigNumberish>,
-    vaultId: PromiseOrValue<BigNumberish>,
+  'deposit(uint256,address)'(
+    underlying_amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
@@ -566,17 +743,41 @@ export interface CappedGovToken extends BaseContract {
     name_: PromiseOrValue<string>,
     symbol_: PromiseOrValue<string>,
     underlying_: PromiseOrValue<string>,
-    vaultController_: PromiseOrValue<string>,
-    votingVaultController_: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  'initialize(string,string,address,address,address)'(
+  'initialize(string,string,address)'(
     name_: PromiseOrValue<string>,
     symbol_: PromiseOrValue<string>,
     underlying_: PromiseOrValue<string>,
-    vaultController_: PromiseOrValue<string>,
-    votingVaultController_: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  maxDeposit(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'maxDeposit(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  maxMint(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'maxMint(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  maxRedeem(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'maxRedeem(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  maxWithdraw(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'maxWithdraw(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  mint(
+    shares: PromiseOrValue<BigNumberish>,
+    receiver: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  'mint(uint256,address)'(
+    shares: PromiseOrValue<BigNumberish>,
+    receiver: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
@@ -587,6 +788,34 @@ export interface CappedGovToken extends BaseContract {
   owner(overrides?: CallOverrides): Promise<string>;
 
   'owner()'(overrides?: CallOverrides): Promise<string>;
+
+  previewDeposit(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'previewDeposit(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  previewMint(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'previewMint(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  previewRedeem(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'previewRedeem(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  previewWithdraw(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  'previewWithdraw(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  redeem(
+    shares: PromiseOrValue<BigNumberish>,
+    receiver: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  'redeem(uint256,address)'(
+    shares: PromiseOrValue<BigNumberish>,
+    receiver: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
 
   renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
@@ -610,6 +839,10 @@ export interface CappedGovToken extends BaseContract {
 
   'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
+  totalUnderlying(overrides?: CallOverrides): Promise<BigNumber>;
+
+  'totalUnderlying()'(overrides?: CallOverrides): Promise<BigNumber>;
+
   transfer(
     recipient: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
@@ -623,18 +856,18 @@ export interface CappedGovToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   transferFrom(
-    arg0: PromiseOrValue<string>,
-    arg1: PromiseOrValue<string>,
-    arg2: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides,
-  ): Promise<boolean>;
+    sender: PromiseOrValue<string>,
+    recipient: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
 
   'transferFrom(address,address,uint256)'(
-    arg0: PromiseOrValue<string>,
-    arg1: PromiseOrValue<string>,
-    arg2: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides,
-  ): Promise<boolean>;
+    sender: PromiseOrValue<string>,
+    recipient: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
@@ -646,6 +879,26 @@ export interface CappedGovToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
+  underlyingAddress(overrides?: CallOverrides): Promise<string>;
+
+  'underlyingAddress()'(overrides?: CallOverrides): Promise<string>;
+
+  underlyingScalar(overrides?: CallOverrides): Promise<BigNumber>;
+
+  'underlyingScalar()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+  withdraw(
+    underlying_amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  'withdraw(uint256,address)'(
+    underlying_amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     _cap(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -654,14 +907,6 @@ export interface CappedGovToken extends BaseContract {
     _underlying(overrides?: CallOverrides): Promise<string>;
 
     '_underlying()'(overrides?: CallOverrides): Promise<string>;
-
-    _vaultController(overrides?: CallOverrides): Promise<string>;
-
-    '_vaultController()'(overrides?: CallOverrides): Promise<string>;
-
-    _votingVaultController(overrides?: CallOverrides): Promise<string>;
-
-    '_votingVaultController()'(overrides?: CallOverrides): Promise<string>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -691,6 +936,14 @@ export interface CappedGovToken extends BaseContract {
 
     'balanceOf(address)'(account: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
+    convertToAssets(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'convertToAssets(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    convertToShares(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'convertToShares(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<number>;
 
     'decimals()'(overrides?: CallOverrides): Promise<number>;
@@ -708,14 +961,14 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<boolean>;
 
     deposit(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: CallOverrides,
     ): Promise<void>;
 
-    'deposit(uint256,uint96)'(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+    'deposit(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: CallOverrides,
     ): Promise<void>;
 
@@ -739,17 +992,41 @@ export interface CappedGovToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
       overrides?: CallOverrides,
     ): Promise<void>;
 
-    'initialize(string,string,address,address,address)'(
+    'initialize(string,string,address)'(
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<void>;
+
+    maxDeposit(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxDeposit(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxMint(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxMint(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxRedeem(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxRedeem(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxWithdraw(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxWithdraw(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    mint(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<void>;
+
+    'mint(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
       overrides?: CallOverrides,
     ): Promise<void>;
 
@@ -760,6 +1037,34 @@ export interface CappedGovToken extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
 
     'owner()'(overrides?: CallOverrides): Promise<string>;
+
+    previewDeposit(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewDeposit(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    previewMint(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewMint(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    previewRedeem(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewRedeem(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    previewWithdraw(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewWithdraw(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    redeem(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<void>;
+
+    'redeem(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -777,6 +1082,10 @@ export interface CappedGovToken extends BaseContract {
 
     'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
+    totalUnderlying(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'totalUnderlying()'(overrides?: CallOverrides): Promise<BigNumber>;
+
     transfer(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -790,22 +1099,42 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<boolean>;
 
     transferFrom(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides,
     ): Promise<boolean>;
 
     'transferFrom(address,address,uint256)'(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides,
     ): Promise<boolean>;
 
     transferOwnership(newOwner: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
     'transferOwnership(address)'(newOwner: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
+
+    underlyingAddress(overrides?: CallOverrides): Promise<string>;
+
+    'underlyingAddress()'(overrides?: CallOverrides): Promise<string>;
+
+    underlyingScalar(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'underlyingScalar()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdraw(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<void>;
+
+    'withdraw(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<void>;
   };
 
   filters: {
@@ -850,14 +1179,6 @@ export interface CappedGovToken extends BaseContract {
 
     '_underlying()'(overrides?: CallOverrides): Promise<BigNumber>;
 
-    _vaultController(overrides?: CallOverrides): Promise<BigNumber>;
-
-    '_vaultController()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    _votingVaultController(overrides?: CallOverrides): Promise<BigNumber>;
-
-    '_votingVaultController()'(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
@@ -886,6 +1207,14 @@ export interface CappedGovToken extends BaseContract {
 
     'balanceOf(address)'(account: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
+    convertToAssets(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'convertToAssets(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    convertToShares(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'convertToShares(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     'decimals()'(overrides?: CallOverrides): Promise<BigNumber>;
@@ -903,14 +1232,14 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<BigNumber>;
 
     deposit(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    'deposit(uint256,uint96)'(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+    'deposit(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
@@ -934,17 +1263,41 @@ export interface CappedGovToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    'initialize(string,string,address,address,address)'(
+    'initialize(string,string,address)'(
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    maxDeposit(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxDeposit(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxMint(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxMint(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxRedeem(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxRedeem(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxWithdraw(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'maxWithdraw(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    mint(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    'mint(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
@@ -955,6 +1308,34 @@ export interface CappedGovToken extends BaseContract {
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     'owner()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    previewDeposit(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewDeposit(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    previewMint(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewMint(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    previewRedeem(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewRedeem(uint256)'(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    previewWithdraw(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'previewWithdraw(uint256)'(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    redeem(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    'redeem(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
 
     renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<BigNumber>;
 
@@ -978,6 +1359,10 @@ export interface CappedGovToken extends BaseContract {
 
     'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
+    totalUnderlying(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'totalUnderlying()'(overrides?: CallOverrides): Promise<BigNumber>;
+
     transfer(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -991,17 +1376,17 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<BigNumber>;
 
     transferFrom(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     'transferFrom(address,address,uint256)'(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     transferOwnership(
@@ -1011,6 +1396,26 @@ export interface CappedGovToken extends BaseContract {
 
     'transferOwnership(address)'(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    underlyingAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'underlyingAddress()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    underlyingScalar(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'underlyingScalar()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdraw(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    'withdraw(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
   };
@@ -1023,14 +1428,6 @@ export interface CappedGovToken extends BaseContract {
     _underlying(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     '_underlying()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    _vaultController(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    '_vaultController()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    _votingVaultController(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    '_votingVaultController()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1060,6 +1457,20 @@ export interface CappedGovToken extends BaseContract {
 
     'balanceOf(address)'(account: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    convertToAssets(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'convertToAssets(uint256)'(
+      shares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    convertToShares(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'convertToShares(uint256)'(
+      assets: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     'decimals()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1077,14 +1488,14 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     deposit(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    'deposit(uint256,uint96)'(
-      amount: PromiseOrValue<BigNumberish>,
-      vaultId: PromiseOrValue<BigNumberish>,
+    'deposit(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
@@ -1108,17 +1519,41 @@ export interface CappedGovToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    'initialize(string,string,address,address,address)'(
+    'initialize(string,string,address)'(
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       underlying_: PromiseOrValue<string>,
-      vaultController_: PromiseOrValue<string>,
-      votingVaultController_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    maxDeposit(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'maxDeposit(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    maxMint(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'maxMint(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    maxRedeem(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'maxRedeem(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    maxWithdraw(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'maxWithdraw(address)'(receiver: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    mint(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    'mint(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
@@ -1129,6 +1564,46 @@ export interface CappedGovToken extends BaseContract {
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     'owner()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    previewDeposit(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'previewDeposit(uint256)'(
+      assets: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    previewMint(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'previewMint(uint256)'(
+      shares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    previewRedeem(shares: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'previewRedeem(uint256)'(
+      shares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    previewWithdraw(assets: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'previewWithdraw(uint256)'(
+      assets: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    redeem(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    'redeem(uint256,address)'(
+      shares: PromiseOrValue<BigNumberish>,
+      receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
 
     renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<PopulatedTransaction>;
 
@@ -1152,6 +1627,10 @@ export interface CappedGovToken extends BaseContract {
 
     'totalSupply()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    totalUnderlying(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'totalUnderlying()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     transfer(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -1165,17 +1644,17 @@ export interface CappedGovToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     'transferFrom(address,address,uint256)'(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
-      arg2: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      sender: PromiseOrValue<string>,
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     transferOwnership(
@@ -1185,6 +1664,26 @@ export interface CappedGovToken extends BaseContract {
 
     'transferOwnership(address)'(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    underlyingAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'underlyingAddress()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    underlyingScalar(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'underlyingScalar()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    withdraw(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    'withdraw(uint256,address)'(
+      underlying_amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
   };
