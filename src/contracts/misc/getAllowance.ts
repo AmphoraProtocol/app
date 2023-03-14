@@ -3,7 +3,7 @@ import { ERC20Detailed__factory } from '../../chain/contracts';
 import { Rolodex } from '../../chain/rolodex/rolodex';
 
 export const getUSDCAllowanceWithRolodex = async (owner: string, spender: string, rolodex: Rolodex) => {
-  const allowance = await rolodex.USDC?.allowance(owner, spender);
+  const allowance = await rolodex.SUSD?.allowance(owner, spender);
   return allowance;
 };
 

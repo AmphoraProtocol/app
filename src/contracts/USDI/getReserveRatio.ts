@@ -19,7 +19,7 @@ export const getReserveRatioPercentage = async (rolodex: Rolodex): Promise<strin
 
 export const getReserveRatio = async (rolodex: Rolodex) => {
   try {
-    const reserveRatio = await rolodex?.USDI.reserveRatio();
+    const reserveRatio = await rolodex?.USDA.reserveRatio();
 
     return reserveRatio;
   } catch (err) {

@@ -73,10 +73,10 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
   const [collateralDepositAmountMax, setCollateralDepositAmountMax] = useState(false);
   const [collateralWithdrawAmountMax, setCollateralWithdrawAmountMax] = useState(false);
 
-  const { USDC: usdcContext } = useStableCoinsContext();
+  const { SUSD: susdContext } = useStableCoinsContext();
   const createDepositWithdrawUSDC = () => {
     return {
-      token: usdcContext,
+      token: susdContext,
       amountToDeposit: '0',
       amountToWithdraw: '0',
       maxWithdraw: false,

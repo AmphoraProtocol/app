@@ -12,9 +12,9 @@ export const withdrawUSDC = async (usdc_amount: string | BigNumber, rolodex: Rol
   }
 
   try {
-    const ge = (await rolodex.USDI.connect(signer).estimateGas.withdraw(formattedUSDCAmount)).mul(100).div(90);
+    const ge = (await rolodex.USDA.connect(signer).estimateGas.withdraw(formattedUSDCAmount)).mul(100).div(90);
 
-    const withdrawAttempt = await rolodex.USDI.connect(signer).withdraw(
+    const withdrawAttempt = await rolodex.USDA.connect(signer).withdraw(
       formattedUSDCAmount,
       // { gasLimit: ge }
     );

@@ -8,12 +8,15 @@ import { DisableableModalButton } from '../button/DisableableModalButton';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { locale } from '../../../locale';
-import { ContractReceipt, ContractTransaction, utils } from 'ethers';
-import { depositCollateral } from '../../../contracts/ERC20';
+import { BigNumber, ContractReceipt, ContractTransaction, utils } from 'ethers';
+import { depositCollateral } from '~/contracts/Vault';
 import depositToVotingVault from '../../../contracts/VotingVault/depositToVotingVault';
 import { ERC20Detailed__factory } from '../../../chain/contracts';
 import { hasTokenAllowance } from '../../../contracts/misc/hasAllowance';
 import { DEFAULT_APPROVE_AMOUNT } from '../../../constants';
+import { useRolodexContext } from '~/components/libs/rolodex-data-provider/RolodexDataProvider';
+import { getAllowance } from '~/contracts/ERC20/getAllowance';
+import { approveCollateral } from '~/contracts/ERC20/approveCollateral';
 
 export const DepositCollateralConfirmationModal = () => {
   const {
@@ -31,10 +34,28 @@ export const DepositCollateralConfirmationModal = () => {
   const [loadmsg, setLoadmsg] = useState('');
   const { vaultAddress, vaultID, hasVotingVault } = useVaultDataContext();
   const [hasAllowance, setHasAllowance] = useState(false);
+  const rolodex = useRolodexContext();
+  const [hasCollateralAllowance, setHasCollateralAllowance] = useState(false);
+  const [allowance, setAllowance] = useState<string>('0');
 
   const amount = collateralDepositAmountMax ? collateralToken.wallet_amount : collateralDepositAmount;
 
   const contract = ERC20Detailed__factory.connect(collateralToken.address, currentSigner!);
+
+  useEffect(() => {
+    if (rolodex && type === 'DEPOSIT_COLLATERAL_CONFIRMATION') {
+      getAllowance(currentAccount, vaultAddress!, collateralToken.address, rolodex.provider).then(
+        (res: { num: number; str: string; bn: BigNumber }) => {
+          if (res.num >= Number.parseFloat(collateralDepositAmount)) {
+            setHasCollateralAllowance(true);
+          } else {
+            setHasCollateralAllowance(false);
+          }
+          setAllowance(res.str);
+        },
+      );
+    }
+  }, [type, allowance, hasCollateralAllowance]);
 
   useEffect(() => {
     if (collateralToken.capped_address && amount) {
@@ -115,6 +136,31 @@ export const DepositCollateralConfirmationModal = () => {
     setLoading(false);
   };
 
+  const handleAllowance = async () => {
+    setLoading(true);
+    setLoadmsg(locale('CheckWallet'));
+    try {
+      if (amount) {
+        let attempt = await approveCollateral(
+          amount,
+          collateralToken.address,
+          provider?.getSigner(currentAccount)!,
+          vaultAddress!,
+        );
+
+        await attempt!.wait();
+        setHasCollateralAllowance(true);
+        setAllowance(amount.toString());
+      }
+    } catch (err) {
+      const error = err as ContractReceipt;
+      updateTransactionState(error);
+    }
+
+    setLoadmsg('');
+    setLoading(false);
+  };
+
   const isLight = useLight();
 
   return (
@@ -163,11 +209,15 @@ export const DepositCollateralConfirmationModal = () => {
           !collateralToken.capped_token ||
           (collateralToken.capped_token && collateralToken.capped_address && !hasVotingVault) ||
           hasAllowance
-            ? 'Confirm Deposit'
+            ? hasCollateralAllowance
+              ? 'Confirm Deposit'
+              : 'Approve'
             : 'Set Allowance'
         }
         disabled={false}
-        onClick={handleDepositConfirmationRequest}
+        onClick={() => {
+          hasCollateralAllowance ? handleDepositConfirmationRequest() : handleAllowance();
+        }}
         loading={loading}
         load_text={loadmsg}
       />

@@ -6,4 +6,4 @@ export const depositUSDC = async (
   depositAmount: BigNumber,
   rolodex: Rolodex,
   signer: JsonRpcSigner,
-): Promise<ContractTransaction> => await rolodex.USDI.connect(signer!).deposit(depositAmount);
+): Promise<ContractTransaction> => await rolodex.USDA.connect(signer!).deposit(depositAmount);

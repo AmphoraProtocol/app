@@ -6,8 +6,8 @@ import { useRolodexContext } from '../rolodex-data-provider/RolodexDataProvider'
 import { useWeb3Context } from '../web3-data-provider/Web3Provider';
 
 export type StableCoinsContextType = {
-  USDI: Token;
-  USDC: Token;
+  USDA: Token;
+  SUSD: Token;
 };
 
 export const StableCoinsContext = createContext({} as StableCoinsContextType);
@@ -16,26 +16,26 @@ export const StableCoinsProvider = ({ children }: { children: ReactElement }) =>
   const { currentAccount, dataBlock, chainId } = useWeb3Context();
   const rolodex = useRolodexContext();
 
-  const [USDC, setUSDC] = useState<Token>(() => getStablecoins(rolodex!).USDC!);
-  const [USDI, setUSDI] = useState<Token>(() => getStablecoins(rolodex!).USDI!);
+  const [SUSD, setSUSD] = useState<Token>(() => getStablecoins(rolodex!).SUSD!);
+  const [USDA, setUSDA] = useState<Token>(() => getStablecoins(rolodex!).USDA!);
 
   useEffect(() => {
-    if (rolodex && rolodex?.addressUSDC) {
-      getBalanceOf(currentAccount, rolodex.addressUSDC, rolodex.provider).then((res) => {
-        setUSDC({ ...USDC, wallet_balance: res.str, wallet_amount: res.bn });
+    if (rolodex && rolodex?.addressSUSD) {
+      getBalanceOf(currentAccount, rolodex.addressSUSD, rolodex.provider).then((res) => {
+        setSUSD({ ...SUSD, wallet_balance: res.str, wallet_amount: res.bn });
       });
     }
   }, [currentAccount, dataBlock, chainId, rolodex]);
 
   useEffect(() => {
-    if (rolodex && rolodex?.addressUSDI) {
-      getBalanceOf(currentAccount, rolodex.addressUSDI, rolodex.provider).then((res) =>
-        setUSDI({ ...USDI, wallet_balance: res.str, wallet_amount: res.bn }),
+    if (rolodex && rolodex?.addressUSDA) {
+      getBalanceOf(currentAccount, rolodex.addressUSDA, rolodex.provider).then((res) =>
+        setUSDA({ ...USDA, wallet_balance: res.str, wallet_amount: res.bn }),
       );
     }
   }, [currentAccount, dataBlock, chainId, rolodex]);
 
-  return <StableCoinsContext.Provider value={{ USDC, USDI }}>{children}</StableCoinsContext.Provider>;
+  return <StableCoinsContext.Provider value={{ SUSD, USDA }}>{children}</StableCoinsContext.Provider>;
 };
 
 export const useStableCoinsContext = () => {

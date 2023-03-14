@@ -7,18 +7,18 @@ import { tokensToChains } from './tokensToChains';
 export const getStablecoins = (
   rolodex: Rolodex,
 ): {
-  USDI: Token;
-  USDC: Token;
+  USDA: Token;
+  SUSD: Token;
 } => {
   return {
-    USDI: initializeToken({
+    USDA: initializeToken({
       name: 'USDA',
-      address: rolodex?.addressUSDI,
+      address: rolodex?.addressUSDA,
       ticker: 'USDA',
     }),
-    USDC: initializeToken({
+    SUSD: initializeToken({
       name: 'sUSD',
-      address: rolodex?.addressUSDC!,
+      address: rolodex?.addressSUSD!,
       ticker: 'sUSD',
       decimals: 6,
     }),
@@ -33,6 +33,7 @@ export const getTokensListOnCurrentChain = (chain_id: ChainIDs): CollateralToken
       ticker: 'WETH',
     }),
     // temporary commented tokens to reduce some eth_calls
+
     // stETH: initializeToken({
     //   name: 'Lido Staked ETH',
     //   address: tokensToChains.stETH[chain_id],

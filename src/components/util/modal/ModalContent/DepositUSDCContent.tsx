@@ -10,13 +10,13 @@ import { useLight } from '../../../../hooks/useLight';
 import { round } from '../../../../easy/bn';
 
 export const DepositUSDCContent = () => {
-  const { USDC: USDCToken } = useStableCoinsContext();
+  const { SUSD: SUSDToken } = useStableCoinsContext();
   const { setType, updateUSDC, USDC } = useModalContext();
   const [disabled, setDisabled] = useState(true);
   const [focus, setFocus] = useState(false);
   const [isMoneyValue, setIsMoneyValue] = useState(false);
   const toggle = () => setFocus(!focus);
-  const setMax = () => updateUSDC('amountToDeposit', USDCToken.wallet_amount!.toString());
+  const setMax = () => updateUSDC('amountToDeposit', SUSDToken.wallet_amount!.toString());
   const numAmountToDeposit = Number(USDC.amountToDeposit);
   const isLight = useLight();
   useEffect(() => {
@@ -28,7 +28,7 @@ export const DepositUSDCContent = () => {
       <Box textAlign='right' mb={2}>
         <Typography variant='label_semi' color={formatColor(neutral.gray3)}>
           {' '}
-          Wallet Balance: {round(USDCToken.wallet_balance || 0, 2)} USDC
+          Wallet Balance: {round(SUSDToken.wallet_balance || 0, 2)} USDC
         </Typography>
       </Box>
 
@@ -37,7 +37,7 @@ export const DepositUSDCContent = () => {
           onFocus={toggle}
           onBlur={toggle}
           onChange={(amount) => updateUSDC('amountToDeposit', amount)}
-          placeholder={`0 ${isMoneyValue ? 'USD' : USDCToken.ticker}`}
+          placeholder={`0 ${isMoneyValue ? 'USD' : SUSDToken.ticker}`}
           value={USDC.amountToDeposit}
           isMoneyValue={isMoneyValue}
         />

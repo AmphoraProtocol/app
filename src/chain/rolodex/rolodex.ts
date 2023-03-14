@@ -1,51 +1,50 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
-import { Web3Data } from '../../components/libs/web3-data-provider/Web3Provider';
-import { BACKUP_PROVIDER } from '../../constants';
+import { Web3Data } from '~/components/libs/web3-data-provider/Web3Provider';
+import { BACKUP_PROVIDER } from '~/constants';
 import { Chains } from '../chains';
+
 import {
-  IUSDI,
-  USDI__factory,
-  VaultController__factory,
-  OracleMaster__factory,
-  IOracleMaster,
-  VaultController,
+  IUSDA,
+  IVaultController__factory,
+  IVaultController,
+  IUSDA__factory,
   ICurveMaster,
-  CurveMaster__factory,
-  ERC20Detailed,
-  ERC20Detailed__factory,
-  GovernorCharlieDelegate,
-} from '../contracts';
+  ICurveMaster__factory,
+  IERC20,
+  IERC20__factory,
+  IGovernorCharlieDelegate,
+} from '../newContracts';
 
 export const backupProvider = new JsonRpcProvider(BACKUP_PROVIDER);
 
 export class Rolodex {
   provider: JsonRpcProvider;
 
-  charlie?: GovernorCharlieDelegate;
+  charlie?: IGovernorCharlieDelegate;
 
-  addressUSDI: string;
-  USDI: IUSDI;
+  addressUSDA: string;
+  USDA: IUSDA;
 
   addressVC?: string;
-  VC?: VaultController;
+  VC?: IVaultController;
 
-  addressOracle?: string;
-  Oracle?: IOracleMaster;
+  // addressOracle?: string;
+  // Oracle?: IOracleMaster;
 
   addressCurve?: string;
   Curve?: ICurveMaster;
 
-  addressUSDC?: string;
-  USDC?: ERC20Detailed;
+  addressSUSD?: string;
+  SUSD?: IERC20;
 
-  constructor(signerOrProvider: JsonRpcSigner | JsonRpcProvider, usdi: string) {
+  constructor(signerOrProvider: JsonRpcSigner | JsonRpcProvider, usda: string) {
     if (signerOrProvider instanceof JsonRpcSigner) {
       this.provider = signerOrProvider.provider;
     } else {
       this.provider = signerOrProvider;
     }
-    this.addressUSDI = usdi;
-    this.USDI = USDI__factory.connect(this.addressUSDI, signerOrProvider);
+    this.addressUSDA = usda;
+    this.USDA = IUSDA__factory.connect(this.addressUSDA, signerOrProvider);
   }
 }
 
@@ -59,28 +58,32 @@ export const NewRolodex = async (ctx: Web3Data) => {
     if (ctx.currentAccount) {
       const signer = await ctx.provider!.getSigner(ctx.currentAccount);
       provider = ctx.provider!;
-      rolo = new Rolodex(signer!, token.usdi_address!);
-      rolo.addressVC = await rolo.USDI?.getVaultController();
-      rolo.VC = VaultController__factory.connect(rolo.addressVC!, signer!);
+      rolo = new Rolodex(signer!, token.usda_address!);
+      // temporary
+      // rolo.addressVC = await rolo.USDI?.getVaultController();
+      rolo.addressVC = '0x773330693cb7d5D233348E25809770A32483A940';
+      rolo.VC = IVaultController__factory.connect(rolo.addressVC!, signer!);
     } else {
-      rolo = new Rolodex(provider!, token.usdi_address!);
-      rolo.addressVC = await rolo.USDI?.getVaultController();
-      rolo.VC = VaultController__factory.connect(rolo.addressVC, provider);
+      rolo = new Rolodex(provider!, token.usda_address!);
+      // temporary
+      // rolo.addressVC = await rolo.USDI?.getVaultController();
+      rolo.addressVC = '0x773330693cb7d5D233348E25809770A32483A940';
+      rolo.VC = IVaultController__factory.connect(rolo.addressVC, provider);
     }
     // connect
-    if (!rolo.addressUSDC) {
-      rolo.addressUSDC = await rolo.USDI.reserveAddress();
-      rolo.USDC = ERC20Detailed__factory.connect(rolo.addressUSDC!, provider!);
+    if (!rolo.addressSUSD) {
+      rolo.addressSUSD = await rolo.USDA.reserveAddress();
+      rolo.SUSD = IERC20__factory.connect(rolo.addressSUSD!, provider!);
     }
 
-    if (!rolo.addressOracle) {
-      rolo.addressOracle = await rolo.VC?.getOracleMaster();
-      rolo.Oracle = OracleMaster__factory.connect(rolo.addressOracle!, provider!);
-    }
+    // if (!rolo.addressOracle) {
+    //   rolo.addressOracle = await rolo.VC?.getOracleMaster();
+    //   rolo.Oracle = OracleMaster__factory.connect(rolo.addressOracle!, provider!);
+    // }
 
     if (!rolo.addressCurve) {
-      rolo.addressCurve = await rolo.VC?.getCurveMaster();
-      rolo.Curve = CurveMaster__factory.connect(rolo.addressCurve!, provider!);
+      rolo.addressCurve = await rolo.VC?.curveMaster();
+      rolo.Curve = ICurveMaster__factory.connect(rolo.addressCurve!, provider!);
     }
   } catch (e) {
     throw new Error(`Error creating rolodex: ${e}`);
