@@ -4,5 +4,3 @@
 export * as external from './_external';
 export * as governance from './governance';
 export * as lending from './lending';
-export * as token from './token';
-export { USDI__factory } from './USDI__factory';
