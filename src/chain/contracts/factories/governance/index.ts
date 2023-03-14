@@ -2,4 +2,3 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as governor from './governor';
-export * as token from './token';

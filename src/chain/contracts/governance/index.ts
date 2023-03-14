@@ -3,5 +3,3 @@
 /* eslint-disable */
 import type * as governor from './governor';
 export type { governor };
-import type * as token from './token';
-export type { token };

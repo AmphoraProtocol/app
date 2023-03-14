@@ -3,6 +3,4 @@
 /* eslint-disable */
 export * as governorDelegateSol from './GovernorDelegate.sol';
 export * as governorDelegatorSol from './GovernorDelegator.sol';
-export * as governorStorageSol from './GovernorStorage.sol';
-export * as iGovernorSol from './IGovernor.sol';
 export { IIpt__factory } from './IIpt__factory';

@@ -5,8 +5,4 @@ import type * as governorDelegateSol from './GovernorDelegate.sol';
 export type { governorDelegateSol };
 import type * as governorDelegatorSol from './GovernorDelegator.sol';
 export type { governorDelegatorSol };
-import type * as governorStorageSol from './GovernorStorage.sol';
-export type { governorStorageSol };
-import type * as iGovernorSol from './IGovernor.sol';
-export type { iGovernorSol };
 export type { IIpt } from './IIpt';
