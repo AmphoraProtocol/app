@@ -1,4 +1,5 @@
 import { JsonRpcSigner } from '@ethersproject/providers';
-import { Vault__factory } from '../../../chain/contracts/';
+import { IVault__factory } from '~/chain/newContracts';
 
-export const connectVaultContract = (address: string, signer: JsonRpcSigner) => Vault__factory.connect(address, signer);
+export const connectVaultContract = (address: string, signer: JsonRpcSigner) =>
+  IVault__factory.connect(address, signer);

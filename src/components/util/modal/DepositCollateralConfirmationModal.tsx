@@ -11,7 +11,8 @@ import { locale } from '../../../locale';
 import { BigNumber, ContractReceipt, ContractTransaction, utils } from 'ethers';
 import { depositCollateral } from '~/contracts/Vault';
 import depositToVotingVault from '../../../contracts/VotingVault/depositToVotingVault';
-import { ERC20Detailed__factory } from '../../../chain/contracts';
+import { IERC20Metadata__factory } from '~/chain/newContracts';
+
 import { hasTokenAllowance } from '../../../contracts/misc/hasAllowance';
 import { DEFAULT_APPROVE_AMOUNT } from '../../../constants';
 import { useRolodexContext } from '~/components/libs/rolodex-data-provider/RolodexDataProvider';
@@ -40,7 +41,7 @@ export const DepositCollateralConfirmationModal = () => {
 
   const amount = collateralDepositAmountMax ? collateralToken.wallet_amount : collateralDepositAmount;
 
-  const contract = ERC20Detailed__factory.connect(collateralToken.address, currentSigner!);
+  const contract = IERC20Metadata__factory.connect(collateralToken.address, currentSigner!);
 
   useEffect(() => {
     if (rolodex && type === 'DEPOSIT_COLLATERAL_CONFIRMATION') {
