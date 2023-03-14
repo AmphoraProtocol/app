@@ -2,4 +2,3 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as governance from './governance';
-export * as lending from './lending';
