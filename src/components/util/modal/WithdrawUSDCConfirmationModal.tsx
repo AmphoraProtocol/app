@@ -23,7 +23,7 @@ export const WithdrawUSDCConfirmationModal = () => {
   const { currentSigner } = useWeb3Context();
   const isLight = useLight();
 
-  const { USDI } = useStableCoinsContext();
+  const { USDA } = useStableCoinsContext();
 
   const handleWithdrawUSDC = async () => {
     if (rolodex && currentSigner) {
@@ -32,7 +32,7 @@ export const WithdrawUSDCConfirmationModal = () => {
         setLoadmsg(locale('CheckWallet'));
 
         const withdrawTxn = await withdrawUSDC(
-          USDC.maxWithdraw ? USDI.wallet_amount! : USDC.amountToWithdraw,
+          USDC.maxWithdraw ? USDA.wallet_amount! : USDC.amountToWithdraw,
           rolodex,
           currentSigner,
         );

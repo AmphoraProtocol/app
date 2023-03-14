@@ -8,27 +8,27 @@ export const SLOWROLL_ADDRESS = '0xFbD3060Fe1Ed10c34E236Cee837d82F019cF1D1d';
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-export const USDI_DECIMALS = 18;
+export const USDA_DECIMALS = 18;
 
 // temporary for use forks
 export const BACKUP_PROVIDER = 'http://localhost:8545'; //'http://mainnet.rpc.gfx.xyz';
 
+// remove all, dont apply:
 export const STAGING_ANALYTICS_URL = 'https://ip-stats-api.staging.gfx.town';
 export const ANALYTICS_URL = 'https://analytics-api.gfx.xyz';
 export const CHART_INTEREST_RATE_OVERTIME = '/charts/interest_rates_overtime';
-export const LIVE_DELTAS = '/live/deltas'; // remove, no apply
+export const LIVE_DELTAS = '/live/deltas';
 export const LIVE_AVERAGE_RATES = '/live/average_rates';
-export const SALE_SUMMARY = '/sale/summary'; // remove, no apply
-
+export const SALE_SUMMARY = '/sale/summary';
 export const GOV_PROPOSAL_CREATED_EVENTS = '/gov/proposal_created_events';
 export const GOV_PROPOSAL_VOTE_CAST_EVENTS = '/gov/proposal_vote_cast_events';
 
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
   [GOVERNOR_ADDRESS]: 'Governance',
-  '0x4aaE9823Fb4C70490F1d802fC697F3ffF8D5CbE3': 'Vault Controller',
+  /*  '0x4aaE9823Fb4C70490F1d802fC697F3ffF8D5CbE3' */ '0x773330693cb7d5D233348E25809770A32483A940': 'Vault Controller',
   '0xb800ca12a3e37c381e92daa0a2910d70a267da6e': 'Voting Vault Controller',
   '0xf4818813045E954f5Dc55a40c9B60Def0ba3D477': 'Oracle Master',
-  '0x0029abd74B7B32e6a82Bf9f62CB9Dd4Bf8e39aAf': 'Curve Master',
+  /* '0x0029abd74B7B32e6a82Bf9f62CB9Dd4Bf8e39aAf' */ '0xd977422c9eE9B646f64A4C4389a6C98ad356d8C4': 'Curve Master',
   '0x65dA327b1740D00fF7B366a4fd8F33830a2f03A2': 'wETH AnchoredViewRelay',
   '0x8E7d39560b15B2D29E01b2502252C4B5f26f5326': 'wBTC AnchoredViewRelay',
   '0xCE554405b9a257eD00A4e0f114fF12ab832b4e3B': 'UNI AnchoredViewRelay',

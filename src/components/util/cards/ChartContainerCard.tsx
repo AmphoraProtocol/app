@@ -14,7 +14,6 @@ import type { EChartOption, EChartsType } from 'echarts';
 import axios from 'axios';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import { useLight } from '../../../hooks/useLight';
-import { iTokenSol } from '../../../chain/contracts/governance/token';
 
 export interface ChartContainerCardProps {
   src: string;

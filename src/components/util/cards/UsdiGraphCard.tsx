@@ -8,8 +8,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { BN } from '../../../easy/bn';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { Spinner, WithSpinner } from '../loading';
-import { InterestEventEvent } from '../../../chain/contracts/lending/VaultController';
-import { DonationEvent } from '../../../chain/contracts/USDI';
+import { InterestEventEvent } from '~/chain/newContracts/IVaultController';
+import { DonationEvent } from '~/chain/newContracts/IUSDA';
 import SVGBox from '../../icons/misc/SVGBox';
 
 export const UsdiGraphCard = () => {
@@ -79,7 +79,7 @@ export const UsdiGraphCard = () => {
       const getRates = rolodex.VC.queryFilter(rolodex.VC.filters.InterestEvent(), startBlock, dataBlock).then(
         addInterestEvents,
       );
-      const getPays = rolodex.USDI.queryFilter(rolodex.USDI.filters.Donation(), startBlock, dataBlock).then(
+      const getPays = rolodex.USDA.queryFilter(rolodex.USDA.filters.Donation(), startBlock, dataBlock).then(
         addDonateEvents,
       );
       Promise.all([getRates, getPays])
@@ -110,7 +110,7 @@ export const UsdiGraphCard = () => {
       const from = dataBlock - (1 + queryHistory) * queryLimit;
       const to = dataBlock - queryHistory * queryLimit;
       const getRates = rolodex.VC.queryFilter(rolodex.VC.filters.InterestEvent(), from, to).then(addInterestEvents);
-      const getPays = rolodex.USDI.queryFilter(rolodex.USDI.filters.Donation(), from, to).then(addDonateEvents);
+      const getPays = rolodex.USDA.queryFilter(rolodex.USDA.filters.Donation(), from, to).then(addDonateEvents);
       Promise.all([getRates, getPays])
         .then(() => {
           for (const [k, v] of temp.entries()) {

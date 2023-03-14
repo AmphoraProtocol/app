@@ -13,12 +13,12 @@ import { round } from '../../../../easy/bn';
 
 export const WithdrawUSDCContent = () => {
   const { setType, USDC, updateUSDC } = useModalContext();
-  const { USDC: USDCToken } = useStableCoinsContext();
+  const { SUSD: SUSDToken } = useStableCoinsContext();
   const isLight = useLight();
 
   const setMax = () => {
-    if (USDCToken && USDCToken.vault_amount) {
-      updateUSDC('amountToWithdraw', USDCToken.vault_amount.toString());
+    if (SUSDToken && SUSDToken.vault_amount) {
+      updateUSDC('amountToWithdraw', SUSDToken.vault_amount.toString());
     } else {
       updateUSDC('amountToWithdraw', '0');
     }
@@ -39,7 +39,7 @@ export const WithdrawUSDCContent = () => {
     <Box>
       <Typography variant='body2' color={formatColor(neutral.gray10)} textAlign='right'>
         {' '}
-        Vault Balance: {round(USDCToken.vault_amount || 0, 2)} {USDCToken.ticker}
+        Vault Balance: {round(SUSDToken.vault_amount || 0, 2)} {SUSDToken.ticker}
       </Typography>
 
       <ModalInputContainer focus={focus}>
@@ -47,7 +47,7 @@ export const WithdrawUSDCContent = () => {
           onBlur={toggle}
           onFocus={toggle}
           onChange={(amount) => updateUSDC('amountToWithdraw', amount)}
-          placeholder={`0 ${USDCToken.ticker}`}
+          placeholder={`0 ${SUSDToken.ticker}`}
           value={USDC.amountToWithdraw}
         />
         <Box sx={{ display: 'flex', paddingBottom: 0.5, alignItems: 'center' }}>

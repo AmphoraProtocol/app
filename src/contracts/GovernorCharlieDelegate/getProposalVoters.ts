@@ -1,6 +1,6 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumberish } from 'ethers';
-import { VoteCastEventObject } from '../../chain/contracts/_external/openzeppelin/GovernorBravoInterfaces.sol/GovernorBravoEvents';
+import { VoteCastEventObject } from '../../chain/contracts/GovernorBravoEvents';
 import connectToGovernorContract from './connectToGovernorContract';
 
 export const getProposalVoters = async (

@@ -1,6 +1,6 @@
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumber, utils } from 'ethers';
-import { ERC20Detailed__factory, Vault__factory } from '../../chain/contracts';
+import { IERC20Metadata__factory, IVault__factory } from '~/chain/newContracts';
 
 const withdrawCollateral = async (
   amount: string | BigNumber,
@@ -12,17 +12,17 @@ const withdrawCollateral = async (
 
   try {
     if (typeof amount === 'string') {
-      decimal = await ERC20Detailed__factory.connect(collateral_address, signer).decimals();
+      decimal = await IERC20Metadata__factory.connect(collateral_address, signer).decimals();
 
       amount = utils.parseUnits(amount, decimal);
     }
 
     const ge = (
-      await Vault__factory.connect(vault_address, signer).estimateGas.withdrawErc20(collateral_address, amount)
+      await IVault__factory.connect(vault_address, signer).estimateGas.withdrawERC20(collateral_address, amount)
     )
       .mul(100)
       .div(90);
-    const transferAttempt = await Vault__factory.connect(vault_address, signer).withdrawErc20(
+    const transferAttempt = await IVault__factory.connect(vault_address, signer).withdrawERC20(
       collateral_address,
       amount,
       { gasLimit: ge },
@@ -31,7 +31,7 @@ const withdrawCollateral = async (
     return transferAttempt;
   } catch (err) {
     console.error(err);
-    throw new Error('Could not deposit');
+    throw new Error('Could not withdraw');
   }
 };
 

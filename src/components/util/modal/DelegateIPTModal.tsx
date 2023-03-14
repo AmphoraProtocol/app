@@ -1,6 +1,6 @@
 import { Box, Typography, Button, TextField } from '@mui/material';
 import { useState } from 'react';
-import { ContractReceipt } from 'ethers';
+import { ContractReceipt, ContractTransaction } from 'ethers';
 
 import { blue, formatColor, neutral } from '../../../theme';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
@@ -44,7 +44,7 @@ export const DelegateIPTModal = () => {
         updateTransactionState(res);
         setLoadmsg(locale('TransactionPending'));
         setLoading(true);
-        return res!.wait().then((res) => {
+        return res!.wait().then((res: ContractReceipt | ContractTransaction) => {
           setLoadmsg('');
           setLoading(false);
 

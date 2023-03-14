@@ -9,7 +9,7 @@ import { useRolodexContext } from '../../../libs/rolodex-data-provider/RolodexDa
 import { useWeb3Context } from '../../../libs/web3-data-provider/Web3Provider';
 import { locale } from '../../../../locale';
 import { useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
-import { repayAllUsdi, repayUsdi } from '../../../../contracts/VaultController';
+import { repayAllUsda, repayUsda } from '../../../../contracts/VaultController';
 import { TransactionReceipt } from '@ethersproject/providers';
 
 interface RepayContent {
@@ -65,7 +65,7 @@ export const RepayContent = (props: RepayContent) => {
     setRepayAmount(accountLiabilityString);
 
     try {
-      const repayAllTransaction = await repayAllUsdi(vaultID, rolodex!, currentSigner!);
+      const repayAllTransaction = await repayAllUsda(vaultID, rolodex!, currentSigner!);
 
       updateTransactionState(repayAllTransaction);
 
@@ -87,7 +87,7 @@ export const RepayContent = (props: RepayContent) => {
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
     try {
-      const repayTransaction = await repayUsdi(vaultID, repayAmount, rolodex!, currentSigner!);
+      const repayTransaction = await repayUsda(vaultID, repayAmount, rolodex!, currentSigner!);
 
       updateTransactionState(repayTransaction);
 

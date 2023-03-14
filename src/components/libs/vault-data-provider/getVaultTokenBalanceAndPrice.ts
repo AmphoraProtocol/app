@@ -1,6 +1,7 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
-import { Rolodex } from '../../../chain/rolodex/rolodex';
+import { IOracleRelay__factory } from '../../../chain/newContracts';
+import { backupProvider, Rolodex } from '../../../chain/rolodex/rolodex';
 import { getBalanceOf } from '../../../contracts/ERC20/getBalanceOf';
 import getDecimals from '../../../contracts/misc/getDecimals';
 import { BN } from '../../../easy/bn';
@@ -35,7 +36,12 @@ export const getVaultTokenBalanceAndPrice = async (
       balanceBN = balanceOf.bn;
     }
 
-    const price = await rolodex?.Oracle?.getLivePrice(token_address);
+    // temporary to get token price
+    // const price = await rolodex?.Oracle?.getLivePrice(token_address);
+    const oracleAddr = await rolodex.VC?.tokensOracle(token_address);
+    const provider = backupProvider;
+    const oracle = IOracleRelay__factory.connect(oracleAddr!, provider);
+    const price = await oracle.currentValue();
 
     const decimals = await getDecimals(token_address, SOP);
     const livePrice = useFormatBNWithDecimals(price!, 18 + (18 - decimals));
@@ -56,9 +62,9 @@ export const getVaultTokenMetadata = async (
   token_address: string,
   rolodex: Rolodex,
 ): Promise<{ ltv: number; penalty: number }> => {
-  const tokenId = await rolodex?.VC?._tokenAddress_tokenId(token_address);
-  const ltvBig = await rolodex?.VC!._tokenId_tokenLTV(tokenId!);
-  const penaltyBig = await rolodex?.VC!._tokenAddress_liquidationIncentive(token_address);
+  // temporary we can batch these calls
+  const ltvBig = await rolodex?.VC!.tokenLTV(token_address);
+  const penaltyBig = await rolodex?.VC!.tokenLiquidationIncentive(token_address);
   const ltv = ltvBig.div(BN('1e16')).toNumber();
   const penalty = penaltyBig.div(BN('1e16')).toNumber();
   return { ltv, penalty };

@@ -21,7 +21,7 @@ import { DEFAULT_APPROVE_AMOUNT } from '../../../constants';
 export const DepositUSDCConfirmationModal = () => {
   const { type, setType, USDC, updateTransactionState } = useModalContext();
   const { currentAccount, dataBlock, currentSigner, chainId } = useWeb3Context();
-  const { USDC: USDC_TOKEN } = useStableCoinsContext();
+  const { SUSD: SUSD_TOKEN } = useStableCoinsContext();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
   const rolodex = useRolodexContext();
@@ -35,8 +35,8 @@ export const DepositUSDCConfirmationModal = () => {
     if (rolodex && USDC.amountToDeposit) {
       hasUSDCAllowance(
         currentAccount,
-        rolodex.addressUSDI,
-        USDC.maxDeposit ? USDC_TOKEN.wallet_amount! : USDC.amountToDeposit,
+        rolodex.addressUSDA,
+        USDC.maxDeposit ? SUSD_TOKEN.wallet_amount! : USDC.amountToDeposit,
         rolodex,
       ).then(setHasAllowance);
     }
@@ -48,7 +48,7 @@ export const DepositUSDCConfirmationModal = () => {
       setLoadmsg(locale('CheckWallet'));
       try {
         const depositTransaction = await depositUSDC(
-          USDC.maxDeposit ? USDC_TOKEN.wallet_amount! : BN(USDC.amountToDeposit).mul(BN('1e6')),
+          USDC.maxDeposit ? SUSD_TOKEN.wallet_amount! : BN(USDC.amountToDeposit).mul(BN('1e6')),
           rolodex,
           currentSigner!,
         );
@@ -74,7 +74,7 @@ export const DepositUSDCConfirmationModal = () => {
       setLoading(true);
       try {
         setLoadmsg(locale('CheckWallet'));
-        const txn = await rolodex.USDC?.connect(currentSigner!).approve(rolodex.addressUSDI, depositAmount);
+        const txn = await rolodex.SUSD?.connect(currentSigner!).approve(rolodex.addressUSDA, depositAmount);
 
         setApprovalTxn(txn);
 

@@ -23,6 +23,7 @@ export const BorrowRepayModal = () => {
   const [tokenName, setTokenName] = useState('USDA');
   const [vaultBorrowPower, setVaultBorrowPower] = useState('0');
   const [borrowAmount, setBorrowAmount] = useState('');
+
   useEffect(() => {
     if (borrowingPower) {
       setVaultBorrowPower(borrowingPower.toFixed(0));

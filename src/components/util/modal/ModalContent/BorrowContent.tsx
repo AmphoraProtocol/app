@@ -10,7 +10,8 @@ import { useRolodexContext } from '../../../libs/rolodex-data-provider/RolodexDa
 import { useWeb3Context } from '../../../libs/web3-data-provider/Web3Provider';
 import { locale } from '../../../../locale';
 import { useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
-import { borrowUsdi } from '../../../../contracts/VaultController';
+import { borrowUsda } from '~/contracts/VaultController';
+
 interface BorrowContent {
   tokenName: string;
   vaultBorrowPower: string;
@@ -62,7 +63,8 @@ export const BorrowContent = (props: BorrowContent) => {
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
     try {
-      const borrowTransaction = await borrowUsdi(vaultID, borrowAmount, rolodex!, currentSigner!);
+      console.log(rolodex);
+      const borrowTransaction = await borrowUsda(vaultID, borrowAmount, rolodex!, currentSigner!);
 
       updateTransactionState(borrowTransaction);
 

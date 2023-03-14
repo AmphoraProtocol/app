@@ -3,7 +3,7 @@ export interface ChainInfo {
   name: string;
   symbol: string;
   logo: string;
-  usdi_address?: string;
+  usda_address?: string;
   scan_url: string;
   scan_site: string;
 }

@@ -7,19 +7,19 @@ type SwapTokenContextType = [Token, Token, () => void];
 export const SwapTokenContext = createContext([] as unknown as SwapTokenContextType);
 
 export const SwapTokenProvider = ({ children }: { children: React.ReactElement }) => {
-  const { USDI, USDC } = useStableCoinsContext();
-  const [token1, setToken1] = useState<Token>(USDC);
-  const [token2, setToken2] = useState<Token>(USDI);
+  const { USDA, SUSD } = useStableCoinsContext();
+  const [token1, setToken1] = useState<Token>(SUSD);
+  const [token2, setToken2] = useState<Token>(USDA);
 
   useEffect(() => {
-    if (token1.ticker === USDC.ticker) {
-      setToken1(USDC);
-      setToken2(USDI);
+    if (token1.ticker === SUSD.ticker) {
+      setToken1(SUSD);
+      setToken2(USDA);
     } else {
-      setToken1(USDI);
-      setToken2(USDC);
+      setToken1(USDA);
+      setToken2(SUSD);
     }
-  }, [USDI, USDC]);
+  }, [USDA, SUSD]);
 
   const swapTokenPositions = () => {
     const newToken2 = { ...token1 };

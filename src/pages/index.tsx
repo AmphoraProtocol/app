@@ -58,8 +58,8 @@ const Dashboard = () => {
   }, [currentAccount, rolodex]);
 
   useEffect(() => {
-    if (rolodex && rolodex.USDC && rolodex.addressUSDI) {
-      rolodex.USDC.balanceOf(rolodex.addressUSDI).then((val) => {
+    if (rolodex && rolodex.SUSD && rolodex.addressUSDA) {
+      rolodex.SUSD.balanceOf(rolodex.addressUSDA).then((val) => {
         setTotalUSDCDeposited(val.div(BN('1e6')).toLocaleString());
       });
 

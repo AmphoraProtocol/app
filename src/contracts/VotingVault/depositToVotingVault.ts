@@ -1,6 +1,6 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumber, utils } from 'ethers';
-import { CappedGovToken__factory } from '../../chain/contracts/factories/lending/CappedGovToken__factory';
+import { CappedGovToken__factory } from '../../chain/contracts/factories/CappedGovToken__factory';
 import { Token } from '../../types/token';
 
 const depositToVotingVault = async (
