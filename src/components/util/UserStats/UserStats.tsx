@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { useState, useEffect } from 'react';
+
 import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { UserTokenCard } from './UserTokenCard';
 import { CardContainer } from '../cards/CardContainer';
@@ -36,7 +37,8 @@ export const UserStats = () => {
             LTVPercent={val.token_LTV!.toLocaleString()}
             penaltyPercent={val.token_penalty!.toLocaleString()}
             canDelegate={val.can_delegate ? true : false}
-            cappedAddress={val.capped_address}
+            cappedToken={val.capped_token}
+            tokenAddress={val.address}
           />,
         );
       }
@@ -60,7 +62,7 @@ export const UserStats = () => {
             px: { xs: 2, lg: 3 },
             gridTemplateColumns: {
               xs: '1.5fr 1fr 1fr',
-              lg: '1.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr  1fr',
+              lg: '1.5fr 0.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr  0.8fr',
             },
             mb: 0,
             columnGap: 2,
@@ -68,6 +70,9 @@ export const UserStats = () => {
           }}
         >
           <Typography variant='label'>Assets</Typography>
+          <Typography display={{ xs: 'none', lg: 'block' }} textAlign='end' variant='label'>
+            Oracle
+          </Typography>
           <Typography display={{ xs: 'none', lg: 'block' }} textAlign='end' variant='label'>
             Price
           </Typography>

@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState, Dispatch, SetStateAction } from 'react';
-import { getTokensListOnCurrentChain } from '../../../chain/tokens';
+
+import { getTokensListOnCurrentChain } from '~/chain/tokens';
+import { BNtoDec, BNtoDecSpecific } from '~/easy/bn';
+import { Logp } from '~/logger';
+import { getBalanceOf } from '~/contracts/ERC20/getBalanceOf';
+import { getVotingVaultAddress, hasVotingVaultAddress } from '~/contracts/VotingVault/hasVotingVault';
+import { CollateralTokens } from '~/types/token';
 import { useRolodexContext } from '../rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../web3-data-provider/Web3Provider';
 import { getVaultTokenBalanceAndPrice, getVaultTokenMetadata } from './getVaultTokenBalanceAndPrice';
 import { getVaultBorrowingPower } from './getBorrowingPower';
-import { BNtoDec, BNtoDecSpecific } from '../../../easy/bn';
-import { Logp } from '../../../logger';
-import { getBalanceOf } from '../../../contracts/ERC20/getBalanceOf';
-import { getVotingVaultAddress, hasVotingVaultAddress } from '../../../contracts/VotingVault/hasVotingVault';
-import { CollateralTokens } from '../../../types/token';
 
 export type VaultDataContextType = {
   hasVault: boolean;
@@ -44,7 +45,6 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
   const [borrowingPower, setBorrowingPower] = useState(0);
   const [tokens, setTokens] = useState<VaultDataContextType['tokens']>(undefined);
   const [totalBaseLiability, setTotalBaseLiability] = useState(0);
-  //
   const [votingVaultAddress, setVotingVaultAddress] = useState<string | undefined>(undefined);
   const [hasVotingVault, setHasVotingVault] = useState(false);
 
@@ -79,6 +79,7 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
           .then((res) => {
             token.token_penalty = res.penalty;
             token.token_LTV = res.ltv;
+            token.capped_token = res.capped;
           })
           .catch(Logp('failed token metadata check'));
         if (!(token.token_LTV && token.token_penalty)) {
