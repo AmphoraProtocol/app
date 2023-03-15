@@ -88,7 +88,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
 
   useEffect(() => {
     if (cappedAddress && signerOrProvider) {
-      getCappedPercentOf(cappedAddress, signerOrProvider).then((res) => {
+      getCappedPercentOf(cappedAddress, signerOrProvider, rolodex!).then((res) => {
         // show minimum 5%
         if (res <= 5) {
           res = 5;
@@ -114,7 +114,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
           display: 'grid',
           gridTemplateColumns: {
             xs: '1.5fr 1fr 1fr',
-            lg: '1.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr 1fr',
+            lg: '1.5fr 0.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr 0.8fr',
           },
           mb: 0,
           columnGap: 2,
@@ -133,6 +133,9 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             </Typography>
           </Box>
         </Box>
+        <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
+          Chainlink
+        </Typography>
         <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
           {tokenPrice}
         </Typography>

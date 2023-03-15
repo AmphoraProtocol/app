@@ -60,7 +60,7 @@ export const UserStats = () => {
             px: { xs: 2, lg: 3 },
             gridTemplateColumns: {
               xs: '1.5fr 1fr 1fr',
-              lg: '1.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr  1fr',
+              lg: '1.5fr 0.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr  0.8fr',
             },
             mb: 0,
             columnGap: 2,
@@ -68,6 +68,9 @@ export const UserStats = () => {
           }}
         >
           <Typography variant='label'>Assets</Typography>
+          <Typography display={{ xs: 'none', lg: 'block' }} textAlign='end' variant='label'>
+            Oracle
+          </Typography>
           <Typography display={{ xs: 'none', lg: 'block' }} textAlign='end' variant='label'>
             Price
           </Typography>
