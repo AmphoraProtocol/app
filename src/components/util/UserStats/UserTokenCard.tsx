@@ -58,7 +58,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     cappedToken,
     tokenAddress,
   } = props;
-  console.log(cappedToken, tokenAddress);
+
   const openVault = async () => {
     try {
       const mintVaultRes = await rolodex!.VC!.mintVault();
