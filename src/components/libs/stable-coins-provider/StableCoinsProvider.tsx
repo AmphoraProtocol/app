@@ -20,18 +20,13 @@ export const StableCoinsProvider = ({ children }: { children: ReactElement }) =>
   const [USDA, setUSDA] = useState<Token>(() => getStablecoins(rolodex!).USDA!);
 
   useEffect(() => {
-    if (rolodex && rolodex?.addressSUSD) {
+    if (rolodex && rolodex?.addressUSDA && rolodex?.addressSUSD) {
       getBalanceOf(currentAccount, rolodex.addressSUSD, rolodex.provider).then((res) => {
         setSUSD({ ...SUSD, wallet_balance: res.str, wallet_amount: res.bn });
       });
-    }
-  }, [currentAccount, dataBlock, chainId, rolodex]);
-
-  useEffect(() => {
-    if (rolodex && rolodex?.addressUSDA) {
-      getBalanceOf(currentAccount, rolodex.addressUSDA, rolodex.provider).then((res) =>
-        setUSDA({ ...USDA, wallet_balance: res.str, wallet_amount: res.bn }),
-      );
+      getBalanceOf(currentAccount, rolodex.addressUSDA, rolodex.provider).then((res) => {
+        setUSDA({ ...USDA, wallet_balance: res.str, wallet_amount: res.bn });
+      });
     }
   }, [currentAccount, dataBlock, chainId, rolodex]);
 

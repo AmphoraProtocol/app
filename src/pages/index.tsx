@@ -25,6 +25,7 @@ import { UserIPTVault } from '../components/util/UserStats/UserIPTVault';
 import SVGBox from '../components/icons/misc/SVGBox';
 import { RedirectTo } from '../components/util/redirect';
 import getAPRs from '../contracts/USDI/getAPRs';
+import { useStableCoinsContext } from '~/components/libs/stable-coins-provider/StableCoinsProvider';
 
 const Dashboard = () => {
   // temporary
@@ -41,6 +42,7 @@ const Dashboard = () => {
 
   const [totalSupply, setTotalSupply] = useState<string>('');
   const [totalUSDCDeposited, setTotalUSDCDeposited] = useState<string>('');
+  const { SUSD } = useStableCoinsContext();
   const [reserveRatio, setReserveRatio] = useState('0');
   const [borrowAPR, setBorrowAPR] = useState(0);
   const [depositAPR, setDepositAPR] = useState(0);
@@ -60,7 +62,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (rolodex && rolodex.SUSD && rolodex.addressUSDA) {
       rolodex.SUSD.balanceOf(rolodex.addressUSDA).then((val) => {
-        setTotalUSDCDeposited(val.div(BN('1e6')).toLocaleString());
+        setTotalUSDCDeposited(val.div(BN(`1e${SUSD.decimals}`)).toLocaleString());
       });
 
       getTotalSupply(rolodex).then(setTotalSupply);

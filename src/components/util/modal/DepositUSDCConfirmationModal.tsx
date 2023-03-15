@@ -12,9 +12,9 @@ import { ContractTransaction } from 'ethers';
 import { locale } from '../../../locale';
 import { TransactionReceipt } from '@ethersproject/providers';
 import { Chains } from '../../../chain/chains';
-import { depositUSDC } from '../../../contracts/USDI/depositUSDC';
+import { depositUSDA } from '../../../contracts/USDI/depositUSDA';
 import SVGBox from '../../icons/misc/SVGBox';
-import { hasUSDCAllowance } from '../../../contracts/misc/hasAllowance';
+import { hasSUSDAllowance } from '../../../contracts/misc/hasAllowance';
 import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';
 import { DEFAULT_APPROVE_AMOUNT } from '../../../constants';
 
@@ -33,11 +33,12 @@ export const DepositUSDCConfirmationModal = () => {
 
   useEffect(() => {
     if (rolodex && USDC.amountToDeposit) {
-      hasUSDCAllowance(
+      hasSUSDAllowance(
         currentAccount,
         rolodex.addressUSDA,
         USDC.maxDeposit ? SUSD_TOKEN.wallet_amount! : USDC.amountToDeposit,
         rolodex,
+        SUSD_TOKEN.decimals,
       ).then(setHasAllowance);
     }
   }, [rolodex, dataBlock, chainId, USDC.amountToDeposit, loadmsg]);
@@ -47,8 +48,8 @@ export const DepositUSDCConfirmationModal = () => {
       setLoading(true);
       setLoadmsg(locale('CheckWallet'));
       try {
-        const depositTransaction = await depositUSDC(
-          USDC.maxDeposit ? SUSD_TOKEN.wallet_amount! : BN(USDC.amountToDeposit).mul(BN('1e6')),
+        const depositTransaction = await depositUSDA(
+          USDC.maxDeposit ? SUSD_TOKEN.wallet_amount! : BN(USDC.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`)),
           rolodex,
           currentSigner!,
         );
@@ -69,7 +70,7 @@ export const DepositUSDCConfirmationModal = () => {
   };
   const handleApprovalRequest = async () => {
     if (rolodex && USDC.amountToDeposit) {
-      const depositAmount = BN(DEFAULT_APPROVE_AMOUNT).mul(BN('1e6'));
+      const depositAmount = BN(DEFAULT_APPROVE_AMOUNT).mul(BN(`1e${SUSD_TOKEN.decimals}`));
 
       setLoading(true);
       try {
@@ -113,7 +114,7 @@ export const DepositUSDCConfirmationModal = () => {
         }}
       >
         <Box display='flex' alignItems='center'>
-          <SVGBox width={36} height={36} svg_name='USDC' alt='USDC' sx={{ mr: 3 }} />
+          <SVGBox width={36} height={36} svg_name='sUSD' alt='sUSD' sx={{ mr: 3 }} />
           <Box>
             <Typography variant='body3' color='text.primary'>
               {'$' +
@@ -138,13 +139,13 @@ export const DepositUSDCConfirmationModal = () => {
             </Typography>
           </Box>
 
-          <SVGBox width={36} height={36} svg_name='USDI' alt='USDI' sx={{ ml: 3 }} />
+          <SVGBox width={36} height={36} svg_name='USDA' alt='USDA' sx={{ ml: 3 }} />
         </Box>
       </Box>
 
       <Box textAlign='center' mb={5}>
         <Typography variant='body3_medium' color={formatColor(neutral.gray3)} fontStyle='italic'>
-          1 USDC = 1 USDi ($1)
+          1 sUSD = 1 USDA ($1)
         </Typography>
       </Box>
 
