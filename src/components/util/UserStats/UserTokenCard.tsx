@@ -1,19 +1,19 @@
+import { useEffect, useState } from 'react';
+import { ContractReceipt } from 'ethers';
 import { Box, BoxProps, Button, LinearProgress, Typography } from '@mui/material';
-import { formatColor, neutral } from '../../../theme';
-import { ForwardIcon } from '../../icons/misc/ForwardIcon';
+
+import { formatColor, neutral } from '~/theme';
+import { useLight } from '~/hooks/useLight';
+import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
+import getCappedPercentOf from '~/contracts/VotingVault/getCappedPercentOf';
+import SVGBox from '../../icons/misc/SVGBox';
 import { useAppGovernanceContext } from '../../libs/app-governance-provider/AppGovernanceProvider';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
 import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { useWalletModalContext } from '../../libs/wallet-modal-provider/WalletModalProvider';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { ContractReceipt } from 'ethers';
 import { ToolTip } from '../tooltip/ToolTip';
-import { useLight } from '../../../hooks/useLight';
-import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
-import getCappedPercentOf from '../../../contracts/VotingVault/getCappedPercentOf';
-import { useEffect, useState } from 'react';
-import SVGBox from '../../icons/misc/SVGBox';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -29,7 +29,8 @@ interface UserTokenCardProps extends BoxProps {
   penaltyPercent: string;
   canDelegate: boolean | undefined;
   index: number;
-  cappedAddress: string | undefined;
+  cappedToken: boolean | undefined;
+  tokenAddress: string | undefined;
 }
 
 export const UserTokenCard = (props: UserTokenCardProps) => {
@@ -54,9 +55,10 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     penaltyPercent,
     canDelegate = false,
     index,
-    cappedAddress,
+    cappedToken,
+    tokenAddress,
   } = props;
-
+  console.log(cappedToken, tokenAddress);
   const openVault = async () => {
     try {
       const mintVaultRes = await rolodex!.VC!.mintVault();
@@ -87,8 +89,8 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   };
 
   useEffect(() => {
-    if (cappedAddress && signerOrProvider) {
-      getCappedPercentOf(cappedAddress, signerOrProvider, rolodex!).then((res) => {
+    if (cappedToken) {
+      getCappedPercentOf(tokenAddress!, rolodex!).then((res) => {
         // show minimum 5%
         if (res <= 5) {
           res = 5;
@@ -161,7 +163,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
           />
         </Box>
         <Box display={{ xs: 'none', lg: 'flex' }} justifyContent='center'>
-          {cappedAddress && (
+          {cappedToken && (
             <LinearProgress
               color='success'
               variant='determinate'

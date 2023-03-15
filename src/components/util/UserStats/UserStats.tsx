@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { useState, useEffect } from 'react';
+
 import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { UserTokenCard } from './UserTokenCard';
 import { CardContainer } from '../cards/CardContainer';
@@ -36,7 +37,8 @@ export const UserStats = () => {
             LTVPercent={val.token_LTV!.toLocaleString()}
             penaltyPercent={val.token_penalty!.toLocaleString()}
             canDelegate={val.can_delegate ? true : false}
-            cappedAddress={val.capped_address}
+            cappedToken={val.capped_token}
+            tokenAddress={val.address}
           />,
         );
       }

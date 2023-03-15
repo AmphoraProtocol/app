@@ -1,14 +1,11 @@
-import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
-import { CappedGovToken__factory } from '../../chain/contracts/factories/CappedGovToken__factory';
+import { Rolodex } from '~/chain/rolodex/rolodex';
 
-const getCappedPercentOf = async (capped_token_address: string, signerOrProvider: JsonRpcSigner | JsonRpcProvider) => {
+const getCappedPercentOf = async (tokenAddress: string, rolodex: Rolodex) => {
   try {
-    const cappedTokenContract = CappedGovToken__factory.connect(capped_token_address, signerOrProvider);
+    const maximumCap = await rolodex.VC?.tokenCap(tokenAddress);
+    const totalSupply = await rolodex.VC?.tokenTotalDeposited(tokenAddress);
 
-    const maximumCap = await cappedTokenContract.getCap();
-    const totalSupply = await cappedTokenContract.totalSupply();
-
-    return totalSupply.div(maximumCap).toNumber() * 100;
+    return totalSupply!.div(maximumCap!).toNumber() * 100;
   } catch (err) {
     console.log(err);
     throw new Error('Could not get capped percent');

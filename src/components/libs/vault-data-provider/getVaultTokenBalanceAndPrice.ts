@@ -1,12 +1,13 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
-import { BigNumber } from 'ethers';
-import { IOracleRelay__factory } from '../../../chain/newContracts';
-import { backupProvider, Rolodex } from '../../../chain/rolodex/rolodex';
-import { getBalanceOf } from '../../../contracts/ERC20/getBalanceOf';
-import getDecimals from '../../../contracts/misc/getDecimals';
-import { BN } from '../../../easy/bn';
-import { useFormatBNWithDecimals } from '../../../hooks/useFormatBNWithDecimals';
-import { Token } from '../../../types/token';
+import { BigNumber, constants } from 'ethers';
+
+import { IOracleRelay__factory } from '~/chain/newContracts';
+import { backupProvider, Rolodex } from '~/chain/rolodex/rolodex';
+import { getBalanceOf } from '~/contracts/ERC20/getBalanceOf';
+import getDecimals from '~/contracts/misc/getDecimals';
+import { BN } from '~/easy/bn';
+import { useFormatBNWithDecimals } from '~/hooks/useFormatBNWithDecimals';
+import { Token } from '~/types/token';
 
 export const getVaultTokenBalanceAndPrice = async (
   vault_address: string | undefined,
@@ -61,11 +62,13 @@ export const getVaultTokenBalanceAndPrice = async (
 export const getVaultTokenMetadata = async (
   token_address: string,
   rolodex: Rolodex,
-): Promise<{ ltv: number; penalty: number }> => {
+): Promise<{ ltv: number; penalty: number; capped: boolean }> => {
   // temporary we can batch these calls
   const ltvBig = await rolodex?.VC!.tokenLTV(token_address);
   const penaltyBig = await rolodex?.VC!.tokenLiquidationIncentive(token_address);
   const ltv = ltvBig.div(BN('1e16')).toNumber();
   const penalty = penaltyBig.div(BN('1e16')).toNumber();
-  return { ltv, penalty };
+  const cappedValue = await rolodex.VC?.tokenCap(token_address);
+  const capped = !constants.MaxUint256.eq(cappedValue!);
+  return { ltv, penalty, capped };
 };
