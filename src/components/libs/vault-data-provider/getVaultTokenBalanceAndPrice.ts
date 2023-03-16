@@ -62,13 +62,25 @@ export const getVaultTokenBalanceAndPrice = async (
 export const getVaultTokenMetadata = async (
   token_address: string,
   rolodex: Rolodex,
-): Promise<{ ltv: number; penalty: number; capped: boolean }> => {
-  // temporary we can batch these calls
-  const ltvBig = await rolodex?.VC!.tokenLTV(token_address);
-  const penaltyBig = await rolodex?.VC!.tokenLiquidationIncentive(token_address);
-  const ltv = ltvBig.div(BN('1e16')).toNumber();
-  const penalty = penaltyBig.div(BN('1e16')).toNumber();
-  const cappedValue = await rolodex.VC?.tokenCap(token_address);
-  const capped = !constants.MaxUint256.eq(cappedValue!);
-  return { ltv, penalty, capped };
+): Promise<{ ltv: number; penalty: number; capped: boolean; cappedPercent: number }> => {
+  const tokenData = await rolodex?.VC!.tokenCollateralInfo(token_address);
+
+  const ltv = tokenData.ltv.div(BN('1e16')).toNumber();
+  const penalty = tokenData.liquidationIncentive.div(BN('1e16')).toNumber();
+  const capped = !constants.MaxUint256.eq(tokenData.cap);
+
+  let cappedPercent: number = 0;
+  if (capped) {
+    const totalDeposited = tokenData.totalDeposited;
+    cappedPercent = totalDeposited!.div(tokenData.cap).toNumber() * 100;
+
+    // show minimum 5%
+    if (cappedPercent <= 5) {
+      cappedPercent = 5;
+    } else if (cappedPercent >= 100) {
+      cappedPercent = 100;
+    }
+  }
+
+  return { ltv, penalty, capped, cappedPercent };
 };

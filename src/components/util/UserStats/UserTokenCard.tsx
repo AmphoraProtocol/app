@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
 import { ContractReceipt } from 'ethers';
-import { Box, BoxProps, Button, LinearProgress, Typography } from '@mui/material';
+import { Box, BoxProps, Button, LinearProgress, Link, Typography } from '@mui/material';
 
 import { formatColor, neutral } from '~/theme';
 import { useLight } from '~/hooks/useLight';
 import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
-import getCappedPercentOf from '~/contracts/VotingVault/getCappedPercentOf';
 import SVGBox from '../../icons/misc/SVGBox';
 import { useAppGovernanceContext } from '../../libs/app-governance-provider/AppGovernanceProvider';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
@@ -31,18 +29,18 @@ interface UserTokenCardProps extends BoxProps {
   index: number;
   cappedToken: boolean | undefined;
   tokenAddress: string | undefined;
+  cappedPercent: number | undefined;
 }
 
 export const UserTokenCard = (props: UserTokenCardProps) => {
   const isLight = useLight();
   const rolodex = useRolodexContext();
-  const { connected, signerOrProvider } = useWeb3Context();
+  const { connected } = useWeb3Context();
   const { setIsWalletModalOpen } = useWalletModalContext();
   const { tokens } = useVaultDataContext();
   const { setType, setCollateralToken, updateTransactionState } = useModalContext();
   const { hasVault, vaultAddress } = useVaultDataContext();
   const { setDelegateToken } = useAppGovernanceContext();
-  const [cappedPercent, setCappedPercent] = useState(10);
 
   const {
     tokenName,
@@ -57,6 +55,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     index,
     cappedToken,
     tokenAddress,
+    cappedPercent,
   } = props;
 
   const openVault = async () => {
@@ -88,20 +87,6 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     setType(ModalType.Delegate);
   };
 
-  useEffect(() => {
-    if (cappedToken) {
-      getCappedPercentOf(tokenAddress!, rolodex!).then((res) => {
-        // show minimum 5%
-        if (res <= 5) {
-          res = 5;
-        } else if (res >= 100) {
-          res = 100;
-        }
-        setCappedPercent(res);
-      });
-    }
-  }, [signerOrProvider]);
-
   return (
     <Box
       sx={{
@@ -125,15 +110,16 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
       >
         <Box display='flex' alignItems='center' columnGap={2}>
           <SVGBox width={{ xs: 24, lg: 40 }} height={{ xs: 24, lg: 40 }} svg_name={image.src} alt={image.alt} />
-
-          <Box display='flex' flexDirection='column'>
-            <Typography variant='body1' color='text.primary' display={{ xs: 'none', lg: 'block' }}>
-              {tokenName}
-            </Typography>
-            <Typography variant='label_semi' fontWeight={400} color='text.secondary'>
-              {tokenTicker}
-            </Typography>
-          </Box>
+          <Link href={`https://etherscan.io/token/${tokenAddress}`} target='_blank'>
+            <Box display='flex' flexDirection='column'>
+              <Typography variant='body1' color='text.primary' display={{ xs: 'none', lg: 'block' }}>
+                {tokenName}
+              </Typography>
+              <Typography variant='label_semi' fontWeight={400} color='text.secondary'>
+                {tokenTicker}
+              </Typography>
+            </Box>
+          </Link>
         </Box>
         <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
           Chainlink
@@ -186,38 +172,6 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             {tokenAmount} {tokenTicker}
           </Typography>
         </Box>
-
-        {/* temporary */}
-        {/* <Box display={{ xs: 'none', lg: 'flex' }} justifyContent='center'>
-          {canDelegate && (
-            <Button
-              variant='text'
-              sx={{
-                width: 'fit-content',
-                color: 'text.delegate',
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                  color: formatColor(neutral.gray3),
-
-                  '& path': {
-                    stroke: formatColor(neutral.gray3),
-                  },
-                },
-              }}
-              onClick={setAndOpenDelegate}
-            >
-              <Typography variant='body1'>Delegate</Typography>
-              <ForwardIcon
-                sx={{
-                  marginLeft: 1,
-                  width: 12,
-                  height: 10,
-                }}
-                stroke='#5E64F4'
-              />{' '}
-            </Button>
-          )}
-        </Box> */}
 
         <Box
           sx={{

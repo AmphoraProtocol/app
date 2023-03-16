@@ -74,12 +74,13 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
         setTotalBaseLiability(bl);
       });
       for (const [key, token] of Object.entries(tokens!)) {
-        const tokenAddress = token.capped_address ? token.capped_address : token.address;
+        const tokenAddress = token.address;
         const p1 = getVaultTokenMetadata(tokenAddress, rolodex!)
           .then((res) => {
             token.token_penalty = res.penalty;
             token.token_LTV = res.ltv;
             token.capped_token = res.capped;
+            token.capped_percent = res.cappedPercent;
           })
           .catch(Logp('failed token metadata check'));
         if (!(token.token_LTV && token.token_penalty)) {

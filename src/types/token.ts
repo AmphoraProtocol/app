@@ -22,6 +22,7 @@ export interface Token {
 
   capped_token?: boolean;
   capped_address?: string;
+  capped_percent?: number;
 }
 
 export interface InitializeTokenProps {

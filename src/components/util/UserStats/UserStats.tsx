@@ -39,6 +39,7 @@ export const UserStats = () => {
             canDelegate={val.can_delegate ? true : false}
             cappedToken={val.capped_token}
             tokenAddress={val.address}
+            cappedPercent={val.capped_percent}
           />,
         );
       }
