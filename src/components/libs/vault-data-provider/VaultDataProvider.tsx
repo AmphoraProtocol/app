@@ -25,8 +25,6 @@ export type VaultDataContextType = {
   totalBaseLiability: number;
   tokens: CollateralTokens | undefined;
   setTokens: Dispatch<SetStateAction<CollateralTokens | undefined>>;
-  hasVotingVault: boolean;
-  setHasVotingVault: Dispatch<SetStateAction<boolean>>;
 };
 
 export const VaultDataContext = React.createContext({} as VaultDataContextType);
@@ -43,7 +41,6 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
   const [borrowingPower, setBorrowingPower] = useState(0);
   const [tokens, setTokens] = useState<VaultDataContextType['tokens']>(undefined);
   const [totalBaseLiability, setTotalBaseLiability] = useState(0);
-  const [hasVotingVault, setHasVotingVault] = useState(false);
 
   const update = async () => {
     const px: Array<Promise<any>> = [];
@@ -170,8 +167,6 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
         setTokens,
         accountLiability,
         totalBaseLiability,
-        hasVotingVault,
-        setHasVotingVault,
       }}
     >
       {children}

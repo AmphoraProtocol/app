@@ -30,7 +30,7 @@ export const DepositCollateralConfirmationModal = () => {
   const { provider, currentAccount, currentSigner } = useWeb3Context();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
-  const { vaultAddress, vaultID, hasVotingVault } = useVaultDataContext();
+  const { vaultAddress } = useVaultDataContext();
   const [hasAllowance, setHasAllowance] = useState(false);
   const rolodex = useRolodexContext();
   const [hasCollateralAllowance, setHasCollateralAllowance] = useState(false);
@@ -166,7 +166,7 @@ export const DepositCollateralConfirmationModal = () => {
       <DisableableModalButton
         text={
           !collateralToken.capped_token ||
-          (collateralToken.capped_token && collateralToken.capped_address && !hasVotingVault) ||
+          (collateralToken.capped_token && collateralToken.capped_address) ||
           hasAllowance
             ? hasCollateralAllowance
               ? 'Confirm Deposit'
