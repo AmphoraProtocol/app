@@ -5,18 +5,19 @@ import { BN } from '../../easy/bn';
 import { getAllowance } from '../ERC20/getAllowance';
 import { getUSDCAllowanceWithRolodex } from './getAllowance';
 
-export const hasUSDCAllowance = async (
+export const hasSUSDAllowance = async (
   owner: string,
   spender: string,
   amount: string | BigNumber,
   rolodex: Rolodex,
+  decimals: number,
 ) => {
   const allowance = await getUSDCAllowanceWithRolodex(owner, spender, rolodex);
 
   if (allowance !== undefined) {
     let usdcBN: BigNumber;
     if (typeof amount === 'string') {
-      usdcBN = BN(amount).mul(BN('1e6'));
+      usdcBN = BN(amount).mul(BN('1e' + decimals));
     } else {
       usdcBN = amount;
     }

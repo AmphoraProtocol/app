@@ -11,7 +11,7 @@ import { ForwardIcon } from '../../icons/misc/ForwardIcon';
 import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { locale } from '../../../locale';
-import { withdrawUSDC } from '../../../contracts/USDI/withdrawUSDC';
+import { withdrawSUSD } from '../../../contracts/USDI/withdrawSUSD';
 import SVGBox from '../../icons/misc/SVGBox';
 import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';
 
@@ -31,7 +31,7 @@ export const WithdrawUSDCConfirmationModal = () => {
       try {
         setLoadmsg(locale('CheckWallet'));
 
-        const withdrawTxn = await withdrawUSDC(
+        const withdrawTxn = await withdrawSUSD(
           USDC.maxWithdraw ? USDA.wallet_amount! : USDC.amountToWithdraw,
           rolodex,
           currentSigner,

@@ -15,12 +15,13 @@ export const getStablecoins = (
       name: 'USDA',
       address: rolodex?.addressUSDA,
       ticker: 'USDA',
+      decimals: 18,
     }),
     SUSD: initializeToken({
       name: 'sUSD',
       address: rolodex?.addressSUSD!,
       ticker: 'sUSD',
-      decimals: 6,
+      decimals: 18,
     }),
   };
 };

@@ -50,7 +50,6 @@ export const Web3ContextProvider = ({ children }: { children: React.ReactElement
     deactivate,
     setError,
   } = useWeb3React<providers.Web3Provider>();
-
   const [loading, setLoading] = useState<boolean>(false);
   const [connector, setConnector] = useState<AbstractConnector>();
   const [currentSigner, setCurrentSigner] = useState<JsonRpcSigner>();
