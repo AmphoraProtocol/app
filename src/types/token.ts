@@ -23,6 +23,8 @@ export interface Token {
   capped_token?: boolean;
   capped_address?: string;
   capped_percent?: number;
+  oracle_address?: string;
+  oracle_type?: string;
 }
 
 export interface InitializeTokenProps {

@@ -81,12 +81,13 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
             token.token_LTV = res.ltv;
             token.capped_token = res.capped;
             token.capped_percent = res.cappedPercent;
+            token.oracle_address = res.oracle;
           })
           .catch(Logp('failed token metadata check'));
         if (!(token.token_LTV && token.token_penalty)) {
           px.push(p1);
         }
-        const p2 = getVaultTokenBalanceAndPrice(vaultAddress, token, rolodex!, signerOrProvider!)
+        const p2 = getVaultTokenBalanceAndPrice(vaultAddress, token, rolodex!)
           .then((res) => {
             token.price = Math.round(100 * res.livePrice) / 100;
             token.vault_amount_str = res.unformattedBalance;
