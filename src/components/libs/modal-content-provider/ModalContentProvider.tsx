@@ -21,7 +21,6 @@ export enum ModalType {
   Delegate = 'DELEGATE',
   DelegateIPT = 'DELEGATE_IPT',
   TransactionStatus = 'TRANSACTION_STATUS',
-  EnableCappedToken = 'ENABLE_CAPPED_TOKEN',
   SetAllowance = 'SET_ALLOWANCE',
 }
 

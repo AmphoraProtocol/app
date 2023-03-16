@@ -63,7 +63,6 @@ export const BorrowContent = (props: BorrowContent) => {
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
     try {
-      console.log(rolodex);
       const borrowTransaction = await borrowUsda(vaultID, borrowAmount, rolodex!, currentSigner!);
 
       updateTransactionState(borrowTransaction);
