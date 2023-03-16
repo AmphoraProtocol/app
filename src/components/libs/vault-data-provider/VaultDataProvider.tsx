@@ -87,7 +87,7 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
         if (!(token.token_LTV && token.token_penalty)) {
           px.push(p1);
         }
-        const p2 = getVaultTokenBalanceAndPrice(vaultAddress, token, rolodex!)
+        const p2 = getVaultTokenBalanceAndPrice(vaultAddress, token)
           .then((res) => {
             token.price = Math.round(100 * res.livePrice) / 100;
             token.vault_amount_str = res.unformattedBalance;

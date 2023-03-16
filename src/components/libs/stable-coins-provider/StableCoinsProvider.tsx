@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState, ReactElement, createContext } from 'react';
+import { Address, getAddress } from 'viem';
+import { viemClient } from '~/App';
+import { IERC20Metadata__factory } from '~/chain/newContracts';
+import { useFormatBigInt } from '~/hooks/useFormatBNWithDecimals';
 import { getStablecoins } from '../../../chain/tokens';
-import { getBalanceOf } from '../../../contracts/ERC20/getBalanceOf';
 import { Token } from '../../../types/token';
 import { useRolodexContext } from '../rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../web3-data-provider/Web3Provider';
@@ -20,13 +23,52 @@ export const StableCoinsProvider = ({ children }: { children: ReactElement }) =>
   const [USDA, setUSDA] = useState<Token>(() => getStablecoins(rolodex!).USDA!);
 
   useEffect(() => {
-    if (rolodex && rolodex?.addressUSDA && rolodex?.addressSUSD) {
-      getBalanceOf(currentAccount, rolodex.addressSUSD, rolodex.provider).then((res) => {
-        setSUSD({ ...SUSD, wallet_balance: res.str, wallet_amount: res.bn });
-      });
-      getBalanceOf(currentAccount, rolodex.addressUSDA, rolodex.provider).then((res) => {
-        setUSDA({ ...USDA, wallet_balance: res.str, wallet_amount: res.bn });
-      });
+    if (rolodex && rolodex?.addressUSDA && rolodex?.addressSUSD && currentAccount) {
+      const susdContract = {
+        address: rolodex?.addressSUSD as Address,
+        abi: IERC20Metadata__factory.abi,
+      } as const;
+
+      const usdaContract = {
+        address: rolodex?.addressUSDA as Address,
+        abi: IERC20Metadata__factory.abi,
+      } as const;
+
+      viemClient
+        .multicall({
+          contracts: [
+            {
+              ...susdContract,
+              functionName: 'decimals',
+            },
+            {
+              ...susdContract,
+              functionName: 'balanceOf',
+              args: [getAddress(currentAccount)],
+            },
+            {
+              ...usdaContract,
+              functionName: 'decimals',
+            },
+            {
+              ...usdaContract,
+              functionName: 'balanceOf',
+              args: [getAddress(currentAccount)],
+            },
+          ],
+        })
+        .then((result) => {
+          setSUSD({
+            ...SUSD,
+            wallet_balance: useFormatBigInt(result[1].result!, result[0].result!).str,
+            wallet_amount: useFormatBigInt(result[1].result!, result[0].result!).bn,
+          });
+          setUSDA({
+            ...USDA,
+            wallet_balance: useFormatBigInt(result[3].result!, result[2].result!).str,
+            wallet_amount: useFormatBigInt(result[3].result!, result[2].result!).bn,
+          });
+        });
     }
   }, [currentAccount, dataBlock, chainId, rolodex]);
 

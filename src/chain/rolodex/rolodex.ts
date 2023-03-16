@@ -1,6 +1,6 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { Web3Data } from '~/components/libs/web3-data-provider/Web3Provider';
-import { BACKUP_PROVIDER } from '~/constants';
+import { BACKUP_PROVIDER, VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { Chains } from '../chains';
 
 import {
@@ -56,30 +56,21 @@ export const NewRolodex = async (ctx: Web3Data) => {
 
   try {
     if (ctx.currentAccount) {
-      const signer = await ctx.provider!.getSigner(ctx.currentAccount);
+      const signer = ctx.provider!.getSigner(ctx.currentAccount);
       provider = ctx.provider!;
       rolo = new Rolodex(signer!, token.usda_address!);
-      // temporary
-      // rolo.addressVC = await rolo.USDI?.getVaultController();
-      rolo.addressVC = '0x773330693cb7d5D233348E25809770A32483A940';
+      rolo.addressVC = VAULT_CONTROLLER_ADDRESS;
       rolo.VC = IVaultController__factory.connect(rolo.addressVC!, signer!);
     } else {
       rolo = new Rolodex(provider!, token.usda_address!);
-      // temporary
-      // rolo.addressVC = await rolo.USDI?.getVaultController();
-      rolo.addressVC = '0x773330693cb7d5D233348E25809770A32483A940';
+      rolo.addressVC = VAULT_CONTROLLER_ADDRESS;
       rolo.VC = IVaultController__factory.connect(rolo.addressVC, provider);
     }
     // connect
     if (!rolo.addressSUSD) {
-      rolo.addressSUSD = await rolo.USDA.reserveAddress();
-      rolo.SUSD = IERC20__factory.connect(rolo.addressSUSD!, provider!);
+      rolo.addressSUSD = token.susd_address!;
+      rolo.SUSD = IERC20__factory.connect(token.susd_address!, provider!);
     }
-
-    // if (!rolo.addressOracle) {
-    //   rolo.addressOracle = await rolo.VC?.getOracleMaster();
-    //   rolo.Oracle = OracleMaster__factory.connect(rolo.addressOracle!, provider!);
-    // }
 
     if (!rolo.addressCurve) {
       rolo.addressCurve = await rolo.VC?.curveMaster();

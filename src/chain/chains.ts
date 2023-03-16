@@ -15,6 +15,7 @@ const configs: Array<ChainInfo> = [
     symbol: 'ETH',
     logo: 'ETH',
     usda_address: '0x40A633EeF249F21D95C8803b7144f19AAfeEF7ae',
+    susd_address: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
     scan_url: 'https://etherscan.io/tx/',
     scan_site: 'Etherscan',
   },
@@ -25,6 +26,7 @@ const configs: Array<ChainInfo> = [
     logo: 'ETH',
     // temporary: set all addresses in one place
     usda_address: '0x40A633EeF249F21D95C8803b7144f19AAfeEF7ae',
+    susd_address: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
     scan_url: 'https://etherscan.io/tx/',
     scan_site: 'Etherscan',
   },

@@ -4,6 +4,7 @@ export interface ChainInfo {
   symbol: string;
   logo: string;
   usda_address?: string;
+  susd_address?: string;
   scan_url: string;
   scan_site: string;
 }

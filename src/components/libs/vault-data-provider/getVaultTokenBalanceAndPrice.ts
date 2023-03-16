@@ -1,24 +1,17 @@
+import { Address, getAddress } from 'viem';
 import { BigNumber, constants } from 'ethers';
 
+import { viemClient } from '~/App';
+import { ZERO_ADDRESS } from '~/constants';
 import { IERC20Metadata__factory, IOracleRelay__factory } from '~/chain/newContracts';
 import { Rolodex } from '~/chain/rolodex/rolodex';
 import { BN } from '~/easy/bn';
-import { useFormatBNtoPreciseStringAndNumber, useFormatBNWithDecimals } from '~/hooks/useFormatBNWithDecimals';
+import { useFormatBigInt, useFormatBNWithDecimals } from '~/hooks/useFormatBNWithDecimals';
 import { Token } from '~/types/token';
-
-import { Address, createPublicClient, getAddress, http } from 'viem';
-import { BACKUP_PROVIDER, ZERO_ADDRESS } from '~/constants';
-import { mainnet } from 'viem/chains';
-
-const client = createPublicClient({
-  chain: mainnet,
-  transport: http(BACKUP_PROVIDER),
-});
 
 export const getVaultTokenBalanceAndPrice = async (
   vault_address: string | undefined,
   token: Token,
-  rolodex: Rolodex,
 ): Promise<{
   balance: number;
   livePrice: number;
@@ -36,7 +29,7 @@ export const getVaultTokenBalanceAndPrice = async (
       abi: IOracleRelay__factory.abi,
     } as const;
 
-    const [decimals, balanceOf, currentValue] = await client.multicall({
+    const [decimals, balanceOf, currentValue] = await viemClient.multicall({
       contracts: [
         {
           ...erc20Contract,
@@ -59,10 +52,7 @@ export const getVaultTokenBalanceAndPrice = async (
     let balanceBN = BigNumber.from(0);
 
     if (vault_address !== undefined) {
-      const formattedBalanceOf = useFormatBNtoPreciseStringAndNumber(
-        BN(balanceOf.result?.toString()),
-        decimals.result!,
-      );
+      const formattedBalanceOf = useFormatBigInt(balanceOf.result!, decimals.result!);
 
       balance = formattedBalanceOf.num;
       unformattedBalance = formattedBalanceOf.str;
