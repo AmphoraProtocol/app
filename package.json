@@ -19,14 +19,13 @@
   "dependencies": {
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
-    "@esbuild-plugins/node-globals-polyfill": "0.1.1",
-    "@esbuild-plugins/node-modules-polyfill": "0.1.4",
+    "@esbuild-plugins/node-globals-polyfill": "0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "0.2.2",
     "@ethersproject/abi": "5.6.3",
     "@ethersproject/bytes": "5.6.1",
     "@ethersproject/providers": "5.6.8",
     "@mui/material": "5.8.2",
     "@mui/system": "5.8.2",
-    "@types/echarts": "4.9.16",
     "@web3-react/abstract-connector": "6.0.7",
     "@web3-react/core": "6.1.9",
     "@web3-react/frame-connector": "6.0.9",
@@ -36,7 +35,6 @@
     "@web3-react/walletlink-connector": "6.2.14",
     "chroma.ts": "1.0.10",
     "d3": "7.4.4",
-    "echarts": "5.3.3",
     "ethers": "5.6.8",
     "react": "18.1.0",
     "react-dom": "18.1.0",
@@ -75,7 +73,7 @@
     "prettier": "2.8.4",
     "rollup": "2.75.5",
     "typescript": "4.7.3",
-    "vite": "2.9.9",
+    "vite": "4.2.0",
     "web3-provider-engine": "16.0.4"
   }
 }

@@ -17,7 +17,6 @@ import { InverseButton } from '../components/util/button';
 import { TitleTextToolTip } from '../components/util/text/TitleTextToolTip';
 import { useModalContext, ModalType } from '../components/libs/modal-content-provider/ModalContentProvider';
 import { OpenVaultButton } from '../components/util/button/OpenVaultButton';
-import { InterestRateGraphCard } from '../components/util/cards/InterestRateGraphCard';
 import { Substat } from '../components/util/text/Substat';
 import getAverages, { Averages } from '../components/util/api/getAverages';
 import { useLight } from '../hooks/useLight';
@@ -142,9 +141,6 @@ const Dashboard = () => {
             </>
           </SingleStatCard>
         </Box>
-
-        {/* Chart Section */}
-        <InterestRateGraphCard />
 
         {/* Your Position Section */}
         <Box display='flex' flexDirection={{ xs: 'column-reverse', lg: 'column' }}>
