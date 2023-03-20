@@ -10,16 +10,12 @@ export const borrowUsda = async (
   rolodex: Rolodex,
   signer: JsonRpcSigner,
 ): Promise<ContractTransaction> => {
-  const formattedUSDIAmount = utils.parseUnits(amount, USDA_DECIMALS);
+  const formattedUSDAAmount = utils.parseUnits(amount, USDA_DECIMALS);
 
   try {
     const VC = rolodex.VC!.connect(signer);
 
-    const gasEstimation = (await VC.estimateGas.borrowUSDA(vaultID, formattedUSDIAmount)).mul(100).div(50);
-    console.log('here');
-    return await VC.borrowUSDA(vaultID.toString(), formattedUSDIAmount.toString(), {
-      gasLimit: gasEstimation,
-    });
+    return await VC.borrowUSDA(vaultID.toString(), formattedUSDAAmount.toString());
   } catch (err) {
     throw new Error('Could not borrow');
   }
