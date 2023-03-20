@@ -36,6 +36,15 @@ import { Governance } from './pages/governance';
 import { EnableCappedTokenModal } from './components/util/modal/EnableCappedTokenModal';
 import { RedirectTo } from './components/util/redirect';
 
+import { mainnet } from 'viem/chains';
+import { createPublicClient, http } from 'viem';
+import { BACKUP_PROVIDER } from './constants';
+
+export const viemClient = createPublicClient({
+  chain: mainnet,
+  transport: http(BACKUP_PROVIDER),
+});
+
 // https://github.com/NoahZinsmeister/web3-react/tree/v6/docs
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getWeb3Library(provider: any): providers.Web3Provider {

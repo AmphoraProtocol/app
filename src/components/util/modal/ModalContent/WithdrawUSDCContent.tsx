@@ -85,7 +85,7 @@ export const WithdrawUSDCContent = () => {
       <Box marginTop={2}>
         <DisableableModalButton
           text='Withdraw'
-          onClick={() => setType(ModalType.WithdrawUSDCConfirmation)}
+          onClick={() => setType(ModalType.WithdrawSUSDConfirmation)}
           disabled={disabled}
         />
       </Box>

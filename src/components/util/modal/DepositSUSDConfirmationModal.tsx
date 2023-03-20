@@ -92,7 +92,7 @@ export const DepositUSDCConfirmationModal = () => {
 
   return (
     <BaseModal
-      open={type === ModalType.DepositUSDCConfirmation}
+      open={type === ModalType.DepositSUSDConfirmation}
       setOpen={() => {
         setType(null);
       }}
