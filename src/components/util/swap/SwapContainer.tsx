@@ -135,7 +135,7 @@ export const SwapContainer = () => {
             disabled={Number(token1Amount) <= 0 || !token1.wallet_balance}
             onClick={() => {
               if (Number(token1Amount) > 0) {
-                setType(ModalType.DepositUSDCConfirmation);
+                setType(ModalType.DepositSUSDConfirmation);
               }
             }}
           >
@@ -150,7 +150,7 @@ export const SwapContainer = () => {
               width: '100%',
             }}
             disabled={!token1.wallet_balance || Number(token1Amount) <= 0}
-            onClick={() => setType(ModalType.WithdrawUSDCConfirmation)}
+            onClick={() => setType(ModalType.WithdrawSUSDConfirmation)}
           >
             Redeem USDA
           </Button>

@@ -18,7 +18,6 @@ import { TitleTextToolTip } from '../components/util/text/TitleTextToolTip';
 import { useModalContext, ModalType } from '../components/libs/modal-content-provider/ModalContentProvider';
 import { OpenVaultButton } from '../components/util/button/OpenVaultButton';
 import { Substat } from '../components/util/text/Substat';
-import getAverages, { Averages } from '../components/util/api/getAverages';
 import { useLight } from '../hooks/useLight';
 import { UserIPTVault } from '../components/util/UserStats/UserIPTVault';
 import SVGBox from '../components/icons/misc/SVGBox';
@@ -45,7 +44,6 @@ const Dashboard = () => {
   const [reserveRatio, setReserveRatio] = useState('0');
   const [borrowAPR, setBorrowAPR] = useState(0);
   const [depositAPR, setDepositAPR] = useState(0);
-  const [averages, setAverages] = useState<Averages | undefined>();
 
   useEffect(() => {
     if (currentAccount && rolodex) {
@@ -79,7 +77,6 @@ const Dashboard = () => {
           setDepositAPR(0);
         });
     }
-    getAverages().then((averages) => setAverages(averages));
   }, [rolodex, dataBlock, chainId]);
 
   return (
@@ -201,7 +198,6 @@ const Dashboard = () => {
                   title={`Deposit APR`}
                   tooltipContent='Current annualized rate paid to USDA holders'
                   text={depositAPR !== null ? depositAPR.toFixed(2) + '%' : null}
-                  substat={<Substat days={7} stat={((averages?.Supply || 0) * 100).toFixed(2)} suffix='%' />}
                 />
               </SingleStatCard>
               <SingleStatCard>
@@ -209,7 +205,6 @@ const Dashboard = () => {
                   title={`Borrow APR`}
                   tooltipContent='Current annualized rate paid by USDA borrowers'
                   text={borrowAPR !== null ? borrowAPR.toFixed(2) + '%' : null}
-                  substat={<Substat days={7} stat={((averages?.Borrow || 0) * 100).toFixed(2)} suffix='%' />}
                 />
               </SingleStatCard>
             </Box>

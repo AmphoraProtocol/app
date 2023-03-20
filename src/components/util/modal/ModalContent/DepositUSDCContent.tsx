@@ -77,7 +77,7 @@ export const DepositUSDCContent = () => {
         <DisableableModalButton
           text='Deposit'
           disabled={disabled}
-          onClick={() => setType(ModalType.DepositUSDCConfirmation)}
+          onClick={() => setType(ModalType.DepositSUSDConfirmation)}
         />
       </Box>
 
