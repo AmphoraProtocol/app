@@ -11,7 +11,7 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const USDA_DECIMALS = 18;
 
 // temporary for use forks
-export const BACKUP_PROVIDER = 'http://localhost:8545'; //'http://mainnet.rpc.gfx.xyz';
+export const BACKUP_PROVIDER = import.meta.env.VITE_BACKUP_PROVIDER;
 
 // remove all, dont apply:
 export const STAGING_ANALYTICS_URL = 'https://ip-stats-api.staging.gfx.town';
