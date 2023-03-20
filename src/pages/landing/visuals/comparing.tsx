@@ -118,7 +118,7 @@ const BarChart = (props: { rr: number; deposits: number }) => {
     const cval = Math.floor(deposits - (rr * deposits) / 100);
     const data = [
       {
-        group: `IP w/ USDi ($${ival.toLocaleString()})`,
+        group: `IP w/ USDA ($${ival.toLocaleString()})`,
         value: ival,
         color: '#69b3a2',
       },

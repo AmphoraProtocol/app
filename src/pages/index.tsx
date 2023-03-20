@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useVaultDataContext } from '../components/libs/vault-data-provider/VaultDataProvider';
 import Cookies from 'universal-cookie';
 import fetchVaultOf from '../contracts/Vault/fetchVaultOf';
-import { getTotalSupply, getReserveRatioPercentage } from '../contracts/USDI';
+import { getTotalSupply, getReserveRatioPercentage } from '../contracts/USDA';
 import { BN } from '../easy/bn';
 import { GweiBlockText, TitleText } from '../components/util/text';
 import { SingleStatCard } from '../components/util/cards';
@@ -22,7 +22,7 @@ import { useLight } from '../hooks/useLight';
 import { UserIPTVault } from '../components/util/UserStats/UserIPTVault';
 import SVGBox from '../components/icons/misc/SVGBox';
 import { RedirectTo } from '../components/util/redirect';
-import getAPRs from '../contracts/USDI/getAPRs';
+import getAPRs from '../contracts/USDA/getAPRs';
 import { useStableCoinsContext } from '~/components/libs/stable-coins-provider/StableCoinsProvider';
 
 const Dashboard = () => {

@@ -12,7 +12,7 @@ import { ContractTransaction } from 'ethers';
 import { locale } from '../../../locale';
 import { TransactionReceipt } from '@ethersproject/providers';
 import { Chains } from '../../../chain/chains';
-import { depositUSDA } from '../../../contracts/USDI/depositUSDA';
+import { depositUSDA } from '../../../contracts/USDA/depositUSDA';
 import SVGBox from '../../icons/misc/SVGBox';
 import { hasSUSDAllowance } from '../../../contracts/misc/hasAllowance';
 import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';

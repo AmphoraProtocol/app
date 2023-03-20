@@ -11,7 +11,7 @@ import { ForwardIcon } from '../../icons/misc/ForwardIcon';
 import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { locale } from '../../../locale';
-import { withdrawSUSD } from '../../../contracts/USDI/withdrawSUSD';
+import { withdrawSUSD } from '../../../contracts/USDA/withdrawSUSD';
 import SVGBox from '../../icons/misc/SVGBox';
 import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';
 
