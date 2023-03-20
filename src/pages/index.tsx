@@ -39,7 +39,7 @@ const Dashboard = () => {
   const { setVaultID, setVaultAddress, accountLiability, hasVault, borrowingPower } = useVaultDataContext();
 
   const [totalSupply, setTotalSupply] = useState<string>('');
-  const [totalUSDCDeposited, setTotalUSDCDeposited] = useState<string>('');
+  const [totalSUSDDeposited, setTotalSUSDDeposited] = useState<string>('');
   const { SUSD } = useStableCoinsContext();
   const [reserveRatio, setReserveRatio] = useState('0');
   const [borrowAPR, setBorrowAPR] = useState(0);
@@ -59,7 +59,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (rolodex && rolodex.SUSD && rolodex.addressUSDA) {
       rolodex.SUSD.balanceOf(rolodex.addressUSDA).then((val) => {
-        setTotalUSDCDeposited(val.div(BN(`1e${SUSD.decimals}`)).toLocaleString());
+        setTotalSUSDDeposited(val.div(BN(`1e${SUSD.decimals}`)).toLocaleString());
       });
 
       getTotalSupply(rolodex).then(setTotalSupply);
@@ -127,7 +127,7 @@ const Dashboard = () => {
             <>
               <SVGBox svg_name={`cube_${isLight ? 'light' : 'dark'}`} width={36} height={36} sx={{ mr: 3 }} />
 
-              <TitleText title='sUSD in Reserve' text={Math.round(Number(totalUSDCDeposited)).toLocaleString()} />
+              <TitleText title='sUSD in Reserve' text={Math.round(Number(totalSUSDDeposited)).toLocaleString()} />
             </>
           </SingleStatCard>
           <SingleStatCard>

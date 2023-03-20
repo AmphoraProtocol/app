@@ -73,13 +73,13 @@ export const DiscreteSliderSteps: React.FC = () => {
         </Box>
         <Box sx={{ width: 300 }}>
           <FormControl fullWidth sx={{ marginTop: 3, marginLeft: -1 }}>
-            <InputLabel htmlFor='outlined-adornment-amount'>Total USDC Deposited</InputLabel>
+            <InputLabel htmlFor='outlined-adornment-amount'>Total sUSD Deposited</InputLabel>
             <OutlinedInput
               id='outlined-adornment-amount'
               value={deposits}
               onChange={handleChange}
               startAdornment={<InputAdornment position='start'>$</InputAdornment>}
-              label='Total USDC Deposited'
+              label='Total sUSD Deposited'
               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
               sx={{
                 MozAppearance: 'textfield',
@@ -180,7 +180,7 @@ const BarChart = (props: { rr: number; deposits: number }) => {
       .attr('y', 80)
       .attr('text-anchor', 'middle')
       .style('font-size', '16px')
-      .text(`$${deposits.toLocaleString()} USDC supplied, ${rr}% Reserve Ratio`);
+      .text(`$${deposits.toLocaleString()} sUSD supplied, ${rr}% Reserve Ratio`);
   }, [rr, deposits]);
   return <svg preserveAspectRatio={'xMaxYMax'} viewBox={`0 0 ${width} ${height}`} ref={svgRef} />;
 };

@@ -18,8 +18,8 @@ import { hasSUSDAllowance } from '../../../contracts/misc/hasAllowance';
 import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';
 import { DEFAULT_APPROVE_AMOUNT } from '../../../constants';
 
-export const DepositUSDCConfirmationModal = () => {
-  const { type, setType, USDC, updateTransactionState } = useModalContext();
+export const DepositSUSDConfirmationModal = () => {
+  const { type, setType, SUSD, updateTransactionState } = useModalContext();
   const { currentAccount, dataBlock, currentSigner, chainId } = useWeb3Context();
   const { SUSD: SUSD_TOKEN } = useStableCoinsContext();
   const [loading, setLoading] = useState(false);
@@ -32,24 +32,24 @@ export const DepositUSDCConfirmationModal = () => {
   const chain = Chains.getInfo(chainId);
 
   useEffect(() => {
-    if (rolodex && USDC.amountToDeposit) {
+    if (rolodex && SUSD.amountToDeposit) {
       hasSUSDAllowance(
         currentAccount,
         rolodex.addressUSDA,
-        USDC.maxDeposit ? SUSD_TOKEN.wallet_amount! : USDC.amountToDeposit,
+        SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : SUSD.amountToDeposit,
         rolodex,
         SUSD_TOKEN.decimals,
       ).then(setHasAllowance);
     }
-  }, [rolodex, dataBlock, chainId, USDC.amountToDeposit, loadmsg]);
+  }, [rolodex, dataBlock, chainId, SUSD.amountToDeposit, loadmsg]);
 
   const handleDepositConfirmationRequest = async () => {
-    if (rolodex && USDC.amountToDeposit && currentSigner) {
+    if (rolodex && SUSD.amountToDeposit && currentSigner) {
       setLoading(true);
       setLoadmsg(locale('CheckWallet'));
       try {
         const depositTransaction = await depositUSDA(
-          USDC.maxDeposit ? SUSD_TOKEN.wallet_amount! : BN(USDC.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`)),
+          SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`)),
           rolodex,
           currentSigner!,
         );
@@ -69,7 +69,7 @@ export const DepositUSDCConfirmationModal = () => {
     }
   };
   const handleApprovalRequest = async () => {
-    if (rolodex && USDC.amountToDeposit) {
+    if (rolodex && SUSD.amountToDeposit) {
       const depositAmount = BN(DEFAULT_APPROVE_AMOUNT).mul(BN(`1e${SUSD_TOKEN.decimals}`));
 
       setLoading(true);
@@ -118,7 +118,7 @@ export const DepositUSDCConfirmationModal = () => {
           <Box>
             <Typography variant='body3' color='text.primary'>
               {'$' +
-                Number(USDC.amountToDeposit).toLocaleString(undefined, {
+                Number(SUSD.amountToDeposit).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -132,7 +132,7 @@ export const DepositUSDCConfirmationModal = () => {
           <Box>
             <Typography variant='body3' color='text.primary'>
               {'$' +
-                Number(USDC.amountToDeposit).toLocaleString(undefined, {
+                Number(SUSD.amountToDeposit).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}

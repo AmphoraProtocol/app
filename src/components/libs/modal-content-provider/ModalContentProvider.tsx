@@ -25,7 +25,7 @@ export enum ModalType {
 
 type TransactionState = 'PENDING' | 'SUCCESS' | 'FAILURE' | null;
 
-interface DepositWithdrawUSDC {
+interface DepositWithdrawSUSD {
   token: Token;
   amountToDeposit: string;
   amountToWithdraw: string;
@@ -49,9 +49,9 @@ export type ModalContextType = {
   collateralWithdrawAmountMax: boolean;
   setCollateralDepositAmountMax: (val: boolean) => void;
   setCollateralWithdrawAmountMax: (val: boolean) => void;
-  // Control USDC
-  USDC: DepositWithdrawUSDC;
-  updateUSDC: (prop: string, val: any) => void;
+  // Control SUSD
+  SUSD: DepositWithdrawSUSD;
+  updateSUSD: (prop: string, val: any) => void;
 
   // Transaction State
   transactionState: TransactionState;
@@ -72,7 +72,7 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
   const [collateralWithdrawAmountMax, setCollateralWithdrawAmountMax] = useState(false);
 
   const { SUSD: susdContext } = useStableCoinsContext();
-  const createDepositWithdrawUSDC = () => {
+  const createDepositWithdrawSUSD = () => {
     return {
       token: susdContext,
       amountToDeposit: '0',
@@ -82,11 +82,11 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
     };
   };
 
-  const [USDC, setUSDC] = useState<DepositWithdrawUSDC>(createDepositWithdrawUSDC);
+  const [SUSD, setSUSD] = useState<DepositWithdrawSUSD>(createDepositWithdrawSUSD);
 
-  const updateUSDC = (prop: string, val: any) => {
-    setUSDC({
-      ...USDC,
+  const updateSUSD = (prop: string, val: any) => {
+    setSUSD({
+      ...SUSD,
       [prop]: val,
     });
   };
@@ -131,8 +131,8 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
         collateralWithdrawAmountMax,
         setCollateralWithdrawAmount,
         setCollateralWithdrawAmountMax,
-        USDC,
-        updateUSDC,
+        SUSD: SUSD,
+        updateSUSD: updateSUSD,
 
         transactionState,
         updateTransactionState,

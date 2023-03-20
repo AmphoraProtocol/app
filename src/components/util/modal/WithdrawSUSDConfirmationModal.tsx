@@ -15,8 +15,8 @@ import { withdrawSUSD } from '../../../contracts/USDI/withdrawSUSD';
 import SVGBox from '../../icons/misc/SVGBox';
 import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';
 
-export const WithdrawUSDCConfirmationModal = () => {
-  const { type, setType, USDC, updateTransactionState } = useModalContext();
+export const WithdrawSUSDConfirmationModal = () => {
+  const { type, setType, SUSD, updateTransactionState } = useModalContext();
   const rolodex = useRolodexContext();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
@@ -25,14 +25,14 @@ export const WithdrawUSDCConfirmationModal = () => {
 
   const { USDA } = useStableCoinsContext();
 
-  const handleWithdrawUSDC = async () => {
+  const handleWithdrawSUSD = async () => {
     if (rolodex && currentSigner) {
       setLoading(true);
       try {
         setLoadmsg(locale('CheckWallet'));
 
         const withdrawTxn = await withdrawSUSD(
-          USDC.maxWithdraw ? USDA.wallet_amount! : USDC.amountToWithdraw,
+          SUSD.maxWithdraw ? USDA.wallet_amount! : SUSD.amountToWithdraw,
           rolodex,
           currentSigner,
         );
@@ -76,7 +76,7 @@ export const WithdrawUSDCConfirmationModal = () => {
           <Box>
             <Typography variant='body3' color='text.secondary'>
               {'$' +
-                Number(USDC.amountToWithdraw).toLocaleString(undefined, {
+                Number(SUSD.amountToWithdraw).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -94,7 +94,7 @@ export const WithdrawUSDCConfirmationModal = () => {
           <Box>
             <Typography variant='body3' color='text.secondary'>
               {'$' +
-                Number(USDC.amountToWithdraw).toLocaleString(undefined, {
+                Number(SUSD.amountToWithdraw).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -105,7 +105,7 @@ export const WithdrawUSDCConfirmationModal = () => {
 
       <Box textAlign='center'>
         <Typography variant='body3_medium' color={formatColor(neutral.gray3)} fontStyle='italic'>
-          1 {USDC.token?.ticker} = 1 USDA ($1){' '}
+          1 {SUSD.token?.ticker} = 1 USDA ($1){' '}
         </Typography>
       </Box>
 
@@ -113,7 +113,7 @@ export const WithdrawUSDCConfirmationModal = () => {
       <DisableableModalButton
         text='Confirm Withdraw'
         disabled={false}
-        onClick={handleWithdrawUSDC}
+        onClick={handleWithdrawSUSD}
         loading={loading}
         load_text={loadmsg}
       />
