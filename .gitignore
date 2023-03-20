@@ -31,5 +31,7 @@ docs/book
 stats.html
 tsconfig.tsbuildinfo
 
+.eslintcache
+
 #yarn
 .yarn
