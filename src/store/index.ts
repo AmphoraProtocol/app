@@ -9,21 +9,33 @@ import { cloneDeep, get, merge } from 'lodash';
 import themeReducer, { themeInitialState } from './theme/theme.reducer';
 import { ThemeActions } from './theme/theme.actions';
 
+// Collaterals state
+import { collateralReducer, collateralInitialState } from './collaterals/collaterals.reducer';
+import { CollateralActions } from './collaterals/collaterals.actions';
+
+// Stablecoins state
+import { stablecoinReducer, stablecoinInitialState } from './stablecoin/stablecoin.reducer';
+import { StablecoinActions } from './stablecoin/stablecoin.actions';
+
 export const rootReducer: Reducer<RootState> = combineReducers({
   theme: themeReducer,
+  collaterals: collateralReducer,
+  stablecoins: stablecoinReducer,
 });
 
 // Actions
-export { ThemeActions };
+export { ThemeActions, CollateralActions, StablecoinActions };
 
 // initialStates
-export { themeInitialState };
+export { themeInitialState, collateralInitialState, stablecoinInitialState };
 
 export function getStore() {
   const isDev = true; //import.meta.env.ALLOW_DEV_MODE === 'true';
 
   const initialState = {
     theme: cloneDeep(themeInitialState),
+    collaterals: cloneDeep(collateralInitialState),
+    stablecoins: cloneDeep(stablecoinInitialState),
   };
 
   const logger = createLogger({ collapsed: true });
@@ -55,6 +67,5 @@ export type AppDispatch = Store['dispatch'];
 export interface ThunkAPI {
   dispatch: AppDispatch;
   state: RootState;
-  // extra: DIContainer;
 }
 export default store;

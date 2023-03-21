@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { InitializeTokenProps, Token } from '../../../types/token';
 
 const initializeToken = ({
@@ -18,9 +17,9 @@ const initializeToken = ({
   decimals,
   vault_balance: '0',
   vault_amount_str: '0',
-  vault_amount: BigNumber.from(0),
+  vault_amount: '0',
   wallet_balance: '0',
-  wallet_amount: BigNumber.from(0),
+  wallet_amount: '0',
   wallet_amount_str: '0',
   token_LTV: 0,
   token_penalty: 0,

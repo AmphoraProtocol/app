@@ -2,10 +2,9 @@ import { useContext, useEffect, useState, ReactElement, createContext } from 're
 import { Address, getAddress } from 'viem';
 import { viemClient } from '~/App';
 import { IERC20Metadata__factory } from '~/chain/newContracts';
-import { useFormatBigInt } from '~/hooks/useFormatBNWithDecimals';
+import { formatBigInt } from '~/hooks/formatBNWithDecimals';
 import { getStablecoins } from '../../../chain/tokens';
 import { Token } from '../../../types/token';
-import { useRolodexContext } from '../rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../web3-data-provider/Web3Provider';
 
 export type StableCoinsContextType = {
@@ -17,20 +16,19 @@ export const StableCoinsContext = createContext({} as StableCoinsContextType);
 
 export const StableCoinsProvider = ({ children }: { children: ReactElement }) => {
   const { currentAccount, dataBlock, chainId } = useWeb3Context();
-  const rolodex = useRolodexContext();
 
-  const [SUSD, setSUSD] = useState<Token>(() => getStablecoins(rolodex!).SUSD!);
-  const [USDA, setUSDA] = useState<Token>(() => getStablecoins(rolodex!).USDA!);
+  const [SUSD, setSUSD] = useState<Token>(() => getStablecoins().SUSD!);
+  const [USDA, setUSDA] = useState<Token>(() => getStablecoins().USDA!);
 
   useEffect(() => {
-    if (rolodex && rolodex?.addressUSDA && rolodex?.addressSUSD && currentAccount) {
+    if (currentAccount) {
       const susdContract = {
-        address: rolodex?.addressSUSD as Address,
+        address: SUSD.address as Address,
         abi: IERC20Metadata__factory.abi,
       } as const;
 
       const usdaContract = {
-        address: rolodex?.addressUSDA as Address,
+        address: USDA.address as Address,
         abi: IERC20Metadata__factory.abi,
       } as const;
 
@@ -60,17 +58,17 @@ export const StableCoinsProvider = ({ children }: { children: ReactElement }) =>
         .then((result) => {
           setSUSD({
             ...SUSD,
-            wallet_balance: useFormatBigInt(result[1].result!, result[0].result!).str,
-            wallet_amount: useFormatBigInt(result[1].result!, result[0].result!).bn,
+            wallet_balance: formatBigInt(result[1].result!, result[0].result!).str,
+            wallet_amount: result[1].result!.toString(),
           });
           setUSDA({
             ...USDA,
-            wallet_balance: useFormatBigInt(result[3].result!, result[2].result!).str,
-            wallet_amount: useFormatBigInt(result[3].result!, result[2].result!).bn,
+            wallet_balance: formatBigInt(result[3].result!, result[2].result!).str,
+            wallet_amount: result[3].result!.toString(),
           });
         });
     }
-  }, [currentAccount, dataBlock, chainId, rolodex]);
+  }, [currentAccount, dataBlock, chainId]);
 
   return <StableCoinsContext.Provider value={{ SUSD, USDA }}>{children}</StableCoinsContext.Provider>;
 };

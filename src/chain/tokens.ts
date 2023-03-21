@@ -4,22 +4,20 @@ import { CollateralTokens, Token } from '../types/token';
 import { ChainIDs } from './chains';
 import { tokensToChains } from './tokensToChains';
 
-export const getStablecoins = (
-  rolodex: Rolodex,
-): {
+export const getStablecoins = (): {
   USDA: Token;
   SUSD: Token;
 } => {
   return {
     USDA: initializeToken({
-      name: 'USDA',
-      address: rolodex?.addressUSDA,
+      name: 'Amphora USD',
+      address: '0x40A633EeF249F21D95C8803b7144f19AAfeEF7ae',
       ticker: 'USDA',
       decimals: 18,
     }),
     SUSD: initializeToken({
-      name: 'sUSD',
-      address: rolodex?.addressSUSD!,
+      name: 'Synth sUSD',
+      address: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
       ticker: 'sUSD',
       decimals: 18,
     }),
