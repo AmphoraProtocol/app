@@ -6,12 +6,12 @@ import { BaseModal } from './BaseModal';
 import { useLight } from '../../../hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { locale } from '../../../locale';
 import { TransactionReceipt } from '@ethersproject/providers';
 import { round } from '../../../easy/bn';
 import withdrawCollateral from '../../../contracts/Vault/withdrawCollateral';
 import SVGBox from '../../icons/misc/SVGBox';
+import { useAppSelector } from '~/hooks/store';
 
 export const WithdrawCollateralConfirmationModal = () => {
   const {
@@ -25,7 +25,7 @@ export const WithdrawCollateralConfirmationModal = () => {
     setCollateralWithdrawAmountMax,
   } = useModalContext();
   const { provider, currentAccount } = useWeb3Context();
-  const { vaultAddress } = useVaultDataContext();
+  const { vaultAddress } = useAppSelector((state) => state.VC.userVault);
   const [loadmsg, setLoadmsg] = useState('');
   const [loading, setLoading] = useState(false);
   const isLight = useLight();
@@ -40,7 +40,7 @@ export const WithdrawCollateralConfirmationModal = () => {
         amount!,
         collateralToken.capped_address ? collateralToken.capped_address : collateralToken.address,
         vaultAddress!,
-        provider?.getSigner(currentAccount)!,
+        provider?.getSigner(currentAccount),
       );
 
       updateTransactionState(attempt);

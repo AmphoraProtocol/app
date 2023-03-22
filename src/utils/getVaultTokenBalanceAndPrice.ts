@@ -2,9 +2,7 @@ import { Address, getAddress } from 'viem';
 import { BigNumber, constants } from 'ethers';
 
 import { viemClient } from '~/App';
-import { ZERO_ADDRESS } from '~/constants';
 import { IERC20Metadata__factory, IOracleRelay__factory, IVaultController } from '~/chain/newContracts';
-import { Rolodex } from '~/chain/rolodex/rolodex';
 import { BN } from '~/easy/bn';
 import { formatBigInt, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
 import { Token } from '~/types/token';
@@ -39,7 +37,7 @@ export const getVaultTokenBalanceAndPrice = async (
         {
           ...erc20Contract,
           functionName: 'balanceOf',
-          args: [getAddress(vaultAddress || ZERO_ADDRESS)],
+          args: [getAddress(vaultAddress || '')],
         },
         {
           ...oracleContract,
@@ -51,10 +49,8 @@ export const getVaultTokenBalanceAndPrice = async (
     let balance = 0;
     let unformattedBalance = '0';
     let balanceBN = BigNumber.from(0);
-
-    if (vaultAddress !== undefined) {
+    if (balanceOf.result) {
       const formattedBalanceOf = formatBigInt(balanceOf.result!, decimals.result!);
-
       balance = formattedBalanceOf.num;
       unformattedBalance = formattedBalanceOf.str;
       balanceBN = formattedBalanceOf.bn;

@@ -1,15 +1,15 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { useState, useEffect } from 'react';
 
-import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { UserTokenCard } from './UserTokenCard';
 import { CardContainer } from '../cards/CardContainer';
+import { useAppSelector } from '~/hooks/store';
 
 export const UserStats = () => {
   const [token_cards, setTokenCards] = useState<JSX.Element | undefined>(undefined);
 
   const theme = useTheme();
-  const { tokens, redraw } = useVaultDataContext();
+  const tokens = useAppSelector((state) => state.collaterals.elements);
 
   useEffect(() => {
     if (tokens) {
@@ -26,9 +26,9 @@ export const UserStats = () => {
               val.price?.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
-              })!
+              })
             }
-            vaultBalance={'$' + val.vault_balance?.toLocaleString()!}
+            vaultBalance={'$' + val.vault_balance?.toLocaleString()}
             tokenAmount={Number(val.vault_amount_str).toLocaleString()}
             image={{
               src: val.ticker,
@@ -45,7 +45,7 @@ export const UserStats = () => {
       }
       setTokenCards(<>{el}</>);
     }
-  }, [redraw]);
+  }, [tokens]);
 
   return (
     <CardContainer>

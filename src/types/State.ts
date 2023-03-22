@@ -17,8 +17,27 @@ export interface StablecoinState {
   status: Status;
 }
 
+export interface VCState {
+  usdaSupply: number;
+  totalSUSDDeposited: number;
+  reserveRatio: number;
+  borrowAPR: number | undefined;
+  depositAPR: number | undefined;
+  status: Status;
+  userVault: UserVault;
+}
+
+export interface UserVault {
+  vaultID: number | undefined;
+  vaultAddress: string | undefined;
+  tokenAddresses: string[] | undefined;
+  borrowingPower: number;
+  accountLiability: number;
+}
+
 export interface RootState {
   theme: ThemeState;
   collaterals: CollateralState;
   stablecoins: StablecoinState;
+  VC: VCState;
 }

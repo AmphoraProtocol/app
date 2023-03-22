@@ -8,25 +8,35 @@ import { BaseModal } from './BaseModal';
 import { Chains } from '../../../chain/chains';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { ContractReceipt, ContractTransaction } from 'ethers';
-import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { useEffect } from 'react';
 import SVGBox from '../../icons/misc/SVGBox';
+import { VCActions, CollateralActions } from '~/store';
+import { getTokensListOnCurrentChain } from '~/chain/tokens';
+import { useAppSelector, useAppDispatch } from '~/hooks/store';
 
 export const TransactionStatusModal = () => {
   const { type, setType, transactionState, transaction } = useModalContext();
-  const { chainId } = useWeb3Context();
+  const { chainId, currentAccount, signerOrProvider } = useWeb3Context();
+  const vaultControllerData = useAppSelector((state) => state.VC);
+  const dispatch = useAppDispatch();
+  const isLight = useLight();
 
-  const { setRefresh } = useVaultDataContext();
-
+  // temporary
   useEffect(() => {
     if (transactionState === 'SUCCESS') {
-      setRefresh(true);
+      dispatch(VCActions.getVCData({ userAddress: currentAccount }));
+      dispatch(
+        CollateralActions.getCollateralData({
+          userAddress: currentAccount,
+          vaultAddress: vaultControllerData.userVault.vaultAddress,
+          tokens: getTokensListOnCurrentChain(chainId),
+          signerOrProvider,
+        }),
+      );
     }
   }, [transactionState]);
 
   const renderTransitionState = () => {
-    const isLight = useLight();
-
     const chain = Chains.getInfo(chainId);
 
     switch (transactionState) {

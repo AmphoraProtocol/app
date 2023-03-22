@@ -7,9 +7,9 @@ import { BaseModal } from './BaseModal';
 import { useLight } from '../../../hooks/useLight';
 import { BorrowContent } from './ModalContent/BorrowContent';
 import { RepayContent } from './ModalContent/RepayContent';
-import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { ForwardIcon } from '../../icons/misc/ForwardIcon';
 import SVGBox from '../../icons/misc/SVGBox';
+import { useAppSelector } from '~/hooks/store';
 
 export const BorrowRepayModal = () => {
   const { type, setType } = useModalContext();
@@ -18,7 +18,7 @@ export const BorrowRepayModal = () => {
 
   const isLight = useLight();
 
-  const { vaultID, borrowingPower, accountLiability } = useVaultDataContext();
+  const { vaultID: vaultId, borrowingPower, accountLiability } = useAppSelector((state) => state.VC.userVault);
 
   const [tokenName, setTokenName] = useState('USDA');
   const [vaultBorrowPower, setVaultBorrowPower] = useState('0');
@@ -109,7 +109,7 @@ export const BorrowRepayModal = () => {
         <BorrowContent
           tokenName={tokenName}
           vaultBorrowPower={vaultBorrowPower}
-          vaultID={Number(vaultID)}
+          vaultID={vaultId || 0}
           borrowAmount={borrowAmount}
           setBorrowAmount={setBorrowAmount}
           accountLiability={accountLiability}
@@ -118,7 +118,7 @@ export const BorrowRepayModal = () => {
         <RepayContent
           tokenName={tokenName}
           vaultBorrowPower={vaultBorrowPower}
-          vaultID={Number(vaultID)}
+          vaultID={vaultId || 0}
           repayAmount={borrowAmount}
           setRepayAmount={setBorrowAmount}
           accountLiability={accountLiability}

@@ -105,7 +105,7 @@ export const Web3ContextProvider = ({ children }: { children: React.ReactElement
 
     // @ts-expect-error close can be returned by wallet
     if (connector && connector.close) {
-      // @ts-expect-error
+      // @ts-expect-error idk
       await connector.close();
     }
 
@@ -146,7 +146,7 @@ export const Web3ContextProvider = ({ children }: { children: React.ReactElement
 
   useEffect(() => {
     if (provider) {
-      console.log('started auto refresh of blockNumber for', provider);
+      // console.log('started auto refresh of blockNumber for', provider);
       provider.on('block', (n: number) => {
         const tempSignerOrProvider = signerOrProvider ? signerOrProvider : provider;
 
@@ -156,8 +156,10 @@ export const Web3ContextProvider = ({ children }: { children: React.ReactElement
         }
       });
       return () => {
-        console.log('stopped auto refresh of blockNumber for', provider);
-        provider.on('block', () => {});
+        // console.log('stopped auto refresh of blockNumber for', provider);
+        provider.on('block', () => {
+          console.log();
+        });
       };
     }
   }, [provider]);
