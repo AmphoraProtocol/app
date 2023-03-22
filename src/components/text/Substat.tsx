@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
-import { blue, formatColor, green, pink } from '../../../theme';
-import { ArrowDownIcon } from '../../icons/misc/ArrowDownIcon';
-import { ArrowUpIcon } from '../../icons/misc/ArrowUpIcon';
+import { blue, formatColor, green, pink } from '~/theme';
+import { ArrowDownIcon } from '../icons/misc/ArrowDownIcon';
+import { ArrowUpIcon } from '../icons/misc/ArrowUpIcon';
 
 export const Substat = ({ stat, suffix, days }: { stat: number | string; suffix: string; days: number }) => {
   const getArrow = (stat: number) => {

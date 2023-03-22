@@ -3,9 +3,9 @@ import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { useLight } from '../../../hooks/useLight';
-import { formatColor, neutral } from '../../../theme';
-import { ToolTipInfoIcon } from '../../icons/misc/ToolTipInfoIcon';
+import { useLight } from '~/hooks/useLight';
+import { formatColor, neutral } from '~/theme';
+import { ToolTipInfoIcon } from '../icons/misc/ToolTipInfoIcon';
 
 const GovernanceToolTipContainer = styled(({ className, ...props }: TooltipProps) => {
   return <Tooltip {...props} classes={{ popper: className }} />;

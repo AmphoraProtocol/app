@@ -1,6 +1,6 @@
 import { Button, Typography } from '@mui/material';
-import { blue, formatColor } from '../../../theme';
-import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
+import { blue, formatColor } from '~/theme';
+import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 
 export const ClaimsButton = () => {
   const { setType } = useModalContext();

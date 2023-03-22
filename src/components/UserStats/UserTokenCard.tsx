@@ -4,12 +4,12 @@ import { Box, BoxProps, Button, LinearProgress, Link, Typography } from '@mui/ma
 import { formatColor, neutral } from '~/theme';
 import { useLight } from '~/hooks/useLight';
 import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
-import SVGBox from '../../icons/misc/SVGBox';
-import { useAppGovernanceContext } from '../../libs/app-governance-provider/AppGovernanceProvider';
-import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
-import { useWalletModalContext } from '../../libs/wallet-modal-provider/WalletModalProvider';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
+import SVGBox from '../icons/misc/SVGBox';
+import { useAppGovernanceContext } from '../libs/app-governance-provider/AppGovernanceProvider';
+import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
+import { useRolodexContext } from '../libs/rolodex-data-provider/RolodexDataProvider';
+import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { ToolTip } from '../tooltip/ToolTip';
 import { useAppSelector } from '~/hooks/store';
 

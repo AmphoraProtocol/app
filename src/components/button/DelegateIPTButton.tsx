@@ -1,6 +1,6 @@
 import { Button, Typography } from '@mui/material';
-import { ForwardIcon } from '../../icons/misc/ForwardIcon';
-import { useModalContext, ModalType } from '../../libs/modal-content-provider/ModalContentProvider';
+import { ForwardIcon } from '../icons/misc/ForwardIcon';
+import { useModalContext, ModalType } from '../libs/modal-content-provider/ModalContentProvider';
 
 export const DelegateIPTButton = ({ iptBalance }: { iptBalance: number }) => {
   const { setType } = useModalContext();

@@ -1,8 +1,8 @@
 import { Chains } from '~/utils/chains';
 import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { useLight } from '~/hooks/useLight';
-import SVGBox from '../../icons/misc/SVGBox';
+import SVGBox from '../icons/misc/SVGBox';
 
 export const SelectedChainButton = () => {
   const ctx = useWeb3Context();

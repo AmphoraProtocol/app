@@ -1,6 +1,6 @@
 import { BN } from '~/utils/bn';
 import { Voter } from '../governance/proposal/VoteCount';
-import getProposalDetails, { ProposalDetails } from '~/utils/helpers/getProposalDescription';
+import getProposalDetails, { ProposalDetails } from '~/utils/getProposalDescription';
 import getProposalCreatedEvents from './getProposalCreatedEvents';
 import getProposalVoteCastEvents from './getProposalVoteCastEvents';
 

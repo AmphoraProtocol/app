@@ -1,6 +1,6 @@
 import { Button, Typography } from '@mui/material';
-import { useLight } from '../../../hooks/useLight';
-import { StarIcon } from '../../icons/misc/StarIcon';
+import { useLight } from '~/hooks/useLight';
+import { StarIcon } from '../icons/misc/StarIcon';
 import { Link } from '../link';
 
 export const TokenSaleButton = () => {

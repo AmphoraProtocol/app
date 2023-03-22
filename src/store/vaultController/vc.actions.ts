@@ -9,7 +9,7 @@ import {
   IVaultController__factory,
 } from '~/chain/newContracts';
 import { getStablecoins } from '~/utils/tokens';
-import { BNtoHexNumber } from '~/utils/helpers/BNtoHex';
+import { BNtoHexNumber } from '~/utils/BNtoHex';
 import { CURVE_MASTER_ADDRESS, VAULT_CONTROLLER_ADDRESS, ZERO_ADDRESS } from '~/constants';
 import { BN, BNtoDec, round } from '~/utils/bn';
 import { ThunkAPI } from '~/store';

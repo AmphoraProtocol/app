@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
-import { useLight } from '../../../hooks/useLight';
-import { formatColor, neutral } from '../../../theme';
-import { ThumbsUpIcon } from '../../icons/misc/ThumbsUpIcon';
+import { useLight } from '~/hooks/useLight';
+import { formatColor, neutral } from '~/theme';
+import { ThumbsUpIcon } from '../icons/misc/ThumbsUpIcon';
 
 export const Votes = ({ noVotes, yesVotes }: { noVotes: number; yesVotes: number }) => {
   const isLight = useLight();

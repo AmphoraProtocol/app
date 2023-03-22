@@ -10,10 +10,10 @@ import {
   ClickAwayListener,
 } from '@mui/material';
 import { useContext, useState } from 'react';
-import { useLight } from '../../../hooks/useLight';
-import { EllipsisIcon } from '../../icons/misc/EllipsisIcon';
-import SVGBox from '../../icons/misc/SVGBox';
-import { PaletteModeContext } from '../../libs/palette-mode-provider/palette-mode-provider';
+import { useLight } from '~/hooks/useLight';
+import { EllipsisIcon } from '../icons/misc/EllipsisIcon';
+import SVGBox from '../icons/misc/SVGBox';
+import { PaletteModeContext } from '../libs/palette-mode-provider/palette-mode-provider';
 
 interface StyledDropdownButton extends ButtonProps {
   text: string;

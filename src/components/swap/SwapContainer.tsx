@@ -1,15 +1,15 @@
 import { Box, useTheme, Button } from '@mui/material';
 import { useEffect } from 'react';
 
-import { useLight } from '../../../hooks/useLight';
-import { formatColor, neutral } from '../../../theme';
-import { ForwardIcon } from '../../icons/misc/ForwardIcon';
-import { useSwapTokenContext } from '../../libs/swap-token-provider/SwapTokenProvider';
+import { useLight } from '~/hooks/useLight';
+import { formatColor, neutral } from '~/theme';
+import { ForwardIcon } from '../icons/misc/ForwardIcon';
+import { useSwapTokenContext } from '../libs/swap-token-provider/SwapTokenProvider';
 import { TokenSelect } from './TokenSelect';
 import { useTokenAmountInput } from './useTokenAmountInput';
-import { useWalletModalContext } from '../../libs/wallet-modal-provider/WalletModalProvider';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { useModalContext, ModalType } from '../../libs/modal-content-provider/ModalContentProvider';
+import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
+import { useModalContext, ModalType } from '../libs/modal-content-provider/ModalContentProvider';
 
 export const SwapContainer = () => {
   const isLight = useLight();

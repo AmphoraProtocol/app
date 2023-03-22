@@ -1,5 +1,5 @@
 import { Typography, Box, BoxProps, Skeleton } from '@mui/material';
-import { formatColor, neutral } from '../../../theme';
+import { formatColor, neutral } from '~/theme';
 export interface TitleTextProps extends BoxProps {
   title: string;
   text: string | null;

@@ -2,8 +2,8 @@ import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { formatColor, neutral } from '../../../theme';
-import { ToolTipInfoIcon } from '../../icons/misc/ToolTipInfoIcon';
+import { formatColor, neutral } from '~/theme';
+import { ToolTipInfoIcon } from '../icons/misc/ToolTipInfoIcon';
 import { IProposalType } from '../governance/ProposalCard';
 
 const BaseToolTipContainer = styled(({ className, ...props }: TooltipProps) => {

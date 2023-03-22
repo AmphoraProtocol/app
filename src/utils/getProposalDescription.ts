@@ -1,5 +1,5 @@
 import { defaultAbiCoder } from '@ethersproject/abi';
-import { ProposalCreatedEvent } from '../../components/api/getProposalCreatedEvents';
+import { ProposalCreatedEvent } from '~/components/api/getProposalCreatedEvents';
 
 export interface ProposalDetails {
   target: string;

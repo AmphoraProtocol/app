@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { useLight } from '../../../hooks/useLight';
-import { ClockIcon } from '../../icons/misc/ClockIcon';
+import { useLight } from '~/hooks/useLight';
+import { ClockIcon } from '../icons/misc/ClockIcon';
 
 type statusColor = string;
 

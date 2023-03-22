@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { ConnectWalletButton, CopyButton } from '../button';
 import { addressShortener } from '../text';
 

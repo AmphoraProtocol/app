@@ -2,8 +2,8 @@ import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { formatColor, neutral } from '../../../theme';
-import { ToolTipInfoIcon } from '../../icons/misc/ToolTipInfoIcon';
+import { formatColor, neutral } from '~/theme';
+import { ToolTipInfoIcon } from '../icons/misc/ToolTipInfoIcon';
 
 const BaseToolTipContainer = styled(({ className, ...props }: TooltipProps) => {
   return <Tooltip arrow sx={{ cursor: 'pointer' }} {...props} classes={{ popper: className }} />;

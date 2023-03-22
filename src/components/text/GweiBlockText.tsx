@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 
 export const GweiBlockText = () => {
   const { gasPrice, dataBlock } = useWeb3Context();

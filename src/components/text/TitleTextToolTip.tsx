@@ -1,6 +1,6 @@
 import { Typography, Box, BoxProps, Skeleton } from '@mui/material';
 import { ReactElement } from 'react';
-import { formatColor, neutral } from '../../../theme';
+import { formatColor, neutral } from '~/theme';
 import { ToolTip } from '../tooltip/ToolTip';
 export interface TitleTextProps extends BoxProps {
   title: string;

@@ -1,6 +1,6 @@
 import { PaletteMode, createTheme, ThemeProvider } from '@mui/material';
 import { createContext, useState } from 'react';
-import { getDesignTokens } from '../../../theme';
+import { getDesignTokens } from '~/theme';
 
 export type PaletteModeContextType = {
   toggleMode: () => void;

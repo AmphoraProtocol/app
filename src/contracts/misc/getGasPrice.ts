@@ -1,6 +1,6 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumber, Contract } from 'ethers';
-import { BNtoHexNumber } from '../../utils/helpers/BNtoHex';
+import { BNtoHexNumber } from '../../utils/BNtoHex';
 import { LINK_FAST_GAS_GWEI } from '../../constants';
 
 const CHAIN_DATA_ABI = [

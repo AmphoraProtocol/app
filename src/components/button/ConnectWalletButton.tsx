@@ -8,9 +8,9 @@ import {
   ClickAwayListener,
 } from '@mui/material';
 import { useState } from 'react';
-import { useLight } from '../../../hooks/useLight';
-import { useWalletModalContext } from '../../libs/wallet-modal-provider/WalletModalProvider';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
+import { useLight } from '~/hooks/useLight';
+import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 
 import { WalletModal } from '../modal';
 import { addressShortener } from '../text';

@@ -1,11 +1,11 @@
 import { Typography, Button, Box } from '@mui/material';
 import { BaseModal } from '../../modal';
-import { formatColor, neutral } from '../../../../theme';
+import { formatColor, neutral } from '~/theme';
 import { JsonRpcSigner } from '@ethersproject/providers';
-import { useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
+import { useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { ContractReceipt } from 'ethers';
 import { useState } from 'react';
-import { castVote } from '../../../../contracts/GovernorCharlieDelegate';
+import { castVote } from '~/contracts/GovernorCharlieDelegate';
 
 type VoteModalProps = {
   open: boolean;

@@ -3,7 +3,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 
-import { BACKUP_PROVIDER } from '../../../constants';
+import { BACKUP_PROVIDER } from '~/constants';
 
 export enum WalletType {
   INJECTED = 'injected', // browser wallets (metamask)

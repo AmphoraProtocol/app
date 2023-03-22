@@ -1,9 +1,9 @@
 import { Box, Button, Typography, Link, CircularProgress } from '@mui/material';
 import { useState } from 'react';
-import SVGBox from '../../icons/misc/SVGBox';
-import { useWalletModalContext } from '../../libs/wallet-modal-provider/WalletModalProvider';
-import { WalletType } from '../../libs/web3-data-provider/WalletOptions';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
+import SVGBox from '../icons/misc/SVGBox';
+import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
+import { WalletType } from '../libs/web3-data-provider/WalletOptions';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 
 export const WalletModalContent = () => {
   const { connectWallet, loading } = useWeb3Context();

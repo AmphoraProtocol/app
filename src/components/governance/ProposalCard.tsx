@@ -1,5 +1,5 @@
 import { Box, Divider, Link, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import { Votes } from './Votes';
 import { Status } from './Status';
 import { Spinner } from '../loading';
@@ -8,23 +8,23 @@ import ReactMarkdown from 'react-markdown';
 import { NormalComponents } from 'react-markdown/lib/complex-types';
 import { SpecialComponents } from 'react-markdown/lib/ast-to-react';
 import remarkGfm from 'remark-gfm';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
+import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import ProposalDetails from './proposal';
-import { formatBNWithDecimals } from '../../../hooks/formatBNWithDecimals';
+import { formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
 import VoteButton from './VoteButton';
-import { getProposalInfo, ProposalInfo, getProposalState } from '../../../contracts/GovernorCharlieDelegate';
-import { useLight } from '../../../hooks/useLight';
+import { getProposalInfo, ProposalInfo, getProposalState } from '~/contracts/GovernorCharlieDelegate';
+import { useLight } from '~/hooks/useLight';
 import { useParams } from 'react-router';
 import { useRef } from 'react';
-import { COMMON_CONTRACT_NAMES } from '../../../constants';
+import { COMMON_CONTRACT_NAMES } from '~/constants';
 import { formatEther, formatUnits, getAddress } from 'ethers/lib/utils';
-import { getProposalIsOptimistic } from '../../../contracts/GovernorCharlieDelegate/getProposerWhiteListed';
+import { getProposalIsOptimistic } from '~/contracts/GovernorCharlieDelegate/getProposerWhiteListed';
 import { proposalTimeRemaining } from './proposalTimeRemaining';
-import { CaratUpIcon } from '../../icons/misc/CaratUpIcon';
+import { CaratUpIcon } from '../icons/misc/CaratUpIcon';
 import { ProposalTypeToolTip } from './ProposalTypeToolTip';
-import { getPriorVotes } from '../../../contracts/IPTDelegate/getPriorVotes';
-import { getReceiptOf } from '../../../contracts/GovernorCharlieDelegate/getReceiptOf';
-import SVGBox from '../../icons/misc/SVGBox';
+import { getPriorVotes } from '~/contracts/IPTDelegate/getPriorVotes';
+import { getReceiptOf } from '~/contracts/GovernorCharlieDelegate/getReceiptOf';
+import SVGBox from '../icons/misc/SVGBox';
 import { Proposal } from '../api/getProposals';
 
 export interface ProposalCardProps {
@@ -310,7 +310,7 @@ export const ProposalCard = (props: ProposalCardProps) => {
                     key={i}
                   >
                     {i + 1}: {linkIfAddress(d.target)}.{d.functionSig}(
-                    {d.callData.split(',').map((content, i) => {
+                    {d.callData.split(',').map((content: string, i: Key | null | undefined) => {
                       return (
                         <span key={i}>
                           {linkIfAddress(content)}

@@ -1,4 +1,4 @@
-import { InitializeTokenProps, Token } from '../../../types/token';
+import { InitializeTokenProps, Token } from '~/types/token';
 
 const initializeToken = ({
   name,
