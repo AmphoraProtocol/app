@@ -1,4 +1,4 @@
-import { BN } from '../../../easy/bn';
+import { BN } from '~/utils/bn';
 import { Voter } from '../governance/proposal/VoteCount';
 import getProposalDetails, { ProposalDetails } from '../helpers/getProposalDescription';
 import getProposalCreatedEvents from './getProposalCreatedEvents';

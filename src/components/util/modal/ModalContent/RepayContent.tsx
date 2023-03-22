@@ -7,7 +7,7 @@ import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
 import { useRolodexContext } from '../../../libs/rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../../../libs/web3-data-provider/Web3Provider';
-import { locale } from '../../../../locale';
+import { locale } from '../../../../utils/locale';
 import { useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
 import { repayAllUsda, repayUsda } from '../../../../contracts/VaultController';
 import { TransactionReceipt } from '@ethersproject/providers';

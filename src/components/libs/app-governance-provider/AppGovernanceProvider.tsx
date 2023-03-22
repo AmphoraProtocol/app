@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from 'react';
-import { getTokensListOnCurrentChain } from '../../../chain/tokens';
-import { Token } from '../../../types/token';
+import { getTokensListOnCurrentChain } from '~/utils/tokens';
+import { Token } from '~/types/token';
 import { useWeb3Context } from '../web3-data-provider/Web3Provider';
 
 interface AppGovernanceContextType {

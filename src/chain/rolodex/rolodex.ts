@@ -1,7 +1,7 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { Web3Data } from '~/components/libs/web3-data-provider/Web3Provider';
-import { BACKUP_PROVIDER, VAULT_CONTROLLER_ADDRESS } from '~/constants';
-import { Chains } from '../chains';
+import { BACKUP_PROVIDER, CURVE_MASTER_ADDRESS, VAULT_CONTROLLER_ADDRESS } from '~/constants';
+import { Chains } from '~/utils/chains';
 
 import {
   IUSDA,
@@ -73,7 +73,7 @@ export const NewRolodex = async (ctx: Web3Data) => {
     }
 
     if (!rolo.addressCurve) {
-      rolo.addressCurve = await rolo.VC?.curveMaster();
+      rolo.addressCurve = CURVE_MASTER_ADDRESS;
       rolo.Curve = ICurveMaster__factory.connect(rolo.addressCurve!, provider!);
     }
   } catch (e) {

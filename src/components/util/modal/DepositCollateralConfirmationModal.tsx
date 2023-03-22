@@ -8,7 +8,7 @@ import { BaseModal } from './BaseModal';
 import { useLight } from '~/hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { locale } from '~/locale';
+import { locale } from '~/utils/locale';
 import { depositCollateral } from '~/contracts/Vault';
 import { hasTokenAllowance } from '~/contracts/misc/hasAllowance';
 import { useRolodexContext } from '~/components/libs/rolodex-data-provider/RolodexDataProvider';

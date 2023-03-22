@@ -3,7 +3,7 @@ import { Box, useTheme } from '@mui/material';
 import { formatColor, neutral } from '../../../../theme';
 import { VoteCount, Voter } from './VoteCount';
 import { useWeb3Context } from '../../../libs/web3-data-provider/Web3Provider';
-import { BNtoDec } from '../../../../easy/bn';
+import { BNtoDec } from '../../../../utils/bn';
 import { getProposalVoters } from '../../../../contracts/GovernorCharlieDelegate/getProposalVoters';
 import { IProposalType } from '../ProposalCard';
 import { Proposal } from '../../api/getProposals';

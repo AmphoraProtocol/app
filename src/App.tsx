@@ -27,7 +27,6 @@ import {
 import { ClaimModal } from './components/util/modal/ClaimModal';
 import { RolodexContentProvider } from './components/libs/rolodex-data-provider/RolodexDataProvider';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
-import { StableCoinsProvider } from './components/libs/stable-coins-provider/StableCoinsProvider';
 import { AppGovernanceProvider } from './components/libs/app-governance-provider/AppGovernanceProvider';
 import { TestingPage } from './pages/playground';
 import { Governance } from './pages/governance';
@@ -58,29 +57,27 @@ const DashboardContext = (props: { children: any }) => {
   return (
     <Web3ContextProvider>
       <RolodexContentProvider>
-        <StableCoinsProvider>
-          <ModalContentProvider>
-            <AppGovernanceProvider>
-              <>
-                <WalletModalProvider>
-                  <>
-                    <SwapTokenProvider>{props.children}</SwapTokenProvider>
-                    <DelegateIPTModal />
-                    <DepositWithdrawCollateralModal />
-                    <DepositCollateralConfirmationModal />
-                    <WithdrawCollateralConfirmationModal />
-                    <DepositWithdrawSUSDModal />
-                    <BorrowRepayModal />
-                    <DepositSUSDConfirmationModal />
-                    <WithdrawSUSDConfirmationModal />
-                    <ClaimModal />
-                    <TransactionStatusModal />
-                  </>
-                </WalletModalProvider>
-              </>
-            </AppGovernanceProvider>
-          </ModalContentProvider>
-        </StableCoinsProvider>
+        <ModalContentProvider>
+          <AppGovernanceProvider>
+            <>
+              <WalletModalProvider>
+                <>
+                  <SwapTokenProvider>{props.children}</SwapTokenProvider>
+                  <DelegateIPTModal />
+                  <DepositWithdrawCollateralModal />
+                  <DepositCollateralConfirmationModal />
+                  <WithdrawCollateralConfirmationModal />
+                  <DepositWithdrawSUSDModal />
+                  <BorrowRepayModal />
+                  <DepositSUSDConfirmationModal />
+                  <WithdrawSUSDConfirmationModal />
+                  <ClaimModal />
+                  <TransactionStatusModal />
+                </>
+              </WalletModalProvider>
+            </>
+          </AppGovernanceProvider>
+        </ModalContentProvider>
       </RolodexContentProvider>
     </Web3ContextProvider>
   );

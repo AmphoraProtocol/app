@@ -1,13 +1,14 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { Token } from '../../../types/token';
-import { useStableCoinsContext } from '../stable-coins-provider/StableCoinsProvider';
+import { useAppSelector } from '~/hooks/store';
+import { Token } from '~/types/token';
 
 type SwapTokenContextType = [Token, Token, () => void];
 
 export const SwapTokenContext = createContext([] as unknown as SwapTokenContextType);
 
 export const SwapTokenProvider = ({ children }: { children: React.ReactElement }) => {
-  const { USDA, SUSD } = useStableCoinsContext();
+  const { SUSD, USDA } = useAppSelector((state) => state.stablecoins);
+
   const [token1, setToken1] = useState<Token>(SUSD);
   const [token2, setToken2] = useState<Token>(USDA);
 

@@ -4,7 +4,7 @@ import { IVaultController__factory } from '~/chain/newContracts';
 import { getVaultTokenBalanceAndPrice, getVaultTokenMetadata } from '~/utils/getVaultTokenBalanceAndPrice';
 import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { getBalanceOf } from '~/contracts/ERC20/getBalanceOf';
-import { BN, BNtoDecSpecific } from '~/easy/bn';
+import { BN, BNtoDecSpecific } from '~/utils/bn';
 import { ThunkAPI } from '~/store';
 import { CollateralTokens } from '~/types';
 

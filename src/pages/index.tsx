@@ -19,8 +19,8 @@ import SVGBox from '../components/icons/misc/SVGBox';
 import { RedirectTo } from '../components/util/redirect';
 import { useAppDispatch, useAppSelector } from '~/hooks/store';
 import { useEffect } from 'react';
-import { CollateralActions, VCActions } from '~/store';
-import { getTokensListOnCurrentChain } from '~/chain/tokens';
+import { CollateralActions, StablecoinActions, VCActions } from '~/store';
+import { getTokensListOnCurrentChain } from '~/utils/tokens';
 
 const Dashboard = () => {
   // temporary
@@ -37,9 +37,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(VCActions.getVCData({ userAddress: currentAccount }));
-  }, [currentAccount, dataBlock, chainId]);
-
-  useEffect(() => {
     dispatch(
       CollateralActions.getCollateralData({
         userAddress: currentAccount,
@@ -48,7 +45,11 @@ const Dashboard = () => {
         signerOrProvider,
       }),
     );
-  }, [currentAccount, vaultControllerData.userVault.vaultAddress]);
+
+    if (currentAccount) {
+      dispatch(StablecoinActions.getStablesData({ userAddress: currentAccount }));
+    }
+  }, [currentAccount, vaultControllerData.userVault.vaultAddress, dataBlock, chainId]);
 
   return (
     <Box

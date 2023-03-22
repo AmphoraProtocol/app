@@ -7,13 +7,13 @@ import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
 
 import { ModalType, useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
-import { useStableCoinsContext } from '../../../libs/stable-coins-provider/StableCoinsProvider';
 import { useLight } from '../../../../hooks/useLight';
-import { round } from '../../../../easy/bn';
+import { round } from '../../../../utils/bn';
+import { useAppSelector } from '~/hooks/store';
 
 export const WithdrawSUSDContent = () => {
   const { setType, SUSD, updateSUSD } = useModalContext();
-  const { SUSD: SUSDToken } = useStableCoinsContext();
+  const { SUSD: SUSDToken } = useAppSelector((state) => state.stablecoins);
   const isLight = useLight();
 
   const setMax = () => {

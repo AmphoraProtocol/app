@@ -7,21 +7,21 @@ import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../../icons/misc/ForwardIcon';
 import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { BN } from '../../../easy/bn';
+import { BN } from '../../../utils/bn';
 import { ContractTransaction } from 'ethers';
-import { locale } from '../../../locale';
+import { locale } from '../../../utils/locale';
 import { TransactionReceipt } from '@ethersproject/providers';
-import { Chains } from '../../../chain/chains';
+import { Chains } from '../../../utils/chains';
 import { depositUSDA } from '../../../contracts/USDA/depositUSDA';
 import SVGBox from '../../icons/misc/SVGBox';
 import { hasSUSDAllowance } from '../../../contracts/misc/hasAllowance';
-import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';
 import { DEFAULT_APPROVE_AMOUNT } from '../../../constants';
+import { useAppSelector } from '~/hooks/store';
 
 export const DepositSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
   const { currentAccount, dataBlock, currentSigner, chainId } = useWeb3Context();
-  const { SUSD: SUSD_TOKEN } = useStableCoinsContext();
+  const { SUSD: SUSD_TOKEN } = useAppSelector((state) => state.stablecoins);
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
   const rolodex = useRolodexContext();

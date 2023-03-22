@@ -9,11 +9,11 @@ import { useLight } from '../../../hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalContent/ModalInputContainer';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { locale } from '../../../locale';
+import { locale } from '../../../utils/locale';
 import { delegateUserVotingPower, getUserDelegates, getUserVotingPower } from '../../../contracts/IPTDelegate';
 import { useAppGovernanceContext } from '../../libs/app-governance-provider/AppGovernanceProvider';
 import { getUserIPTBalance } from '../../../contracts/IPTDelegate/getUserIPTbalance';
-import { BN, BNtoDec } from '../../../easy/bn';
+import { BN, BNtoDec } from '../../../utils/bn';
 import { ZERO_ADDRESS } from '../../../constants';
 
 export const DelegateIPTModal = () => {
@@ -121,7 +121,7 @@ export const DelegateIPTModal = () => {
             {delegatedTo != ZERO_ADDRESS ? (
               <> You are currently delegating to {delegatedTo}</>
             ) : (
-              <>"You should delegate your IPT votes to yourself or a friend."</>
+              <>&quot;You should delegate your IPT votes to yourself or a friend.&quot;</>
             )}
           </Typography>
         )}

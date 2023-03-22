@@ -12,8 +12,8 @@ export interface CollateralState {
 }
 
 export interface StablecoinState {
-  USDA: Token | undefined;
-  SUSD: Token | undefined;
+  USDA: Token;
+  SUSD: Token;
   status: Status;
 }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { round } from '../../../../easy/bn';
+import { round } from '../../../../utils/bn';
 
 import { blue, formatColor, neutral } from '../../../../theme';
 import { DecimalInput } from '../../textFields';

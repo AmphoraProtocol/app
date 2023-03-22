@@ -1,4 +1,3 @@
-import { Rolodex } from '../chain/rolodex/rolodex';
 import initializeToken from '../components/util/tokens/initializeToken';
 import { CollateralTokens, Token } from '../types/token';
 import { ChainIDs } from './chains';

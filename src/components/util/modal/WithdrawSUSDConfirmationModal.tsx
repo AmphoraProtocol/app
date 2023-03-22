@@ -10,10 +10,10 @@ import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../../icons/misc/ForwardIcon';
 import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { locale } from '../../../locale';
+import { locale } from '../../../utils/locale';
 import { withdrawSUSD } from '../../../contracts/USDA/withdrawSUSD';
 import SVGBox from '../../icons/misc/SVGBox';
-import { useStableCoinsContext } from '../../libs/stable-coins-provider/StableCoinsProvider';
+import { useAppSelector } from '~/hooks/store';
 
 export const WithdrawSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
@@ -23,7 +23,7 @@ export const WithdrawSUSDConfirmationModal = () => {
   const { currentSigner } = useWeb3Context();
   const isLight = useLight();
 
-  const { USDA } = useStableCoinsContext();
+  const { USDA } = useAppSelector((state) => state.stablecoins);
 
   const handleWithdrawSUSD = async () => {
     if (rolodex && currentSigner) {

@@ -5,13 +5,13 @@ import { CircleExclamationIcon } from '../../icons/misc/CircleExclamationIcon';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { Spinner } from '../loading';
 import { BaseModal } from './BaseModal';
-import { Chains } from '../../../chain/chains';
+import { Chains } from '../../../utils/chains';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { ContractReceipt, ContractTransaction } from 'ethers';
 import { useEffect } from 'react';
 import SVGBox from '../../icons/misc/SVGBox';
 import { VCActions, CollateralActions } from '~/store';
-import { getTokensListOnCurrentChain } from '~/chain/tokens';
+import { getTokensListOnCurrentChain } from '~/utils/tokens';
 import { useAppSelector, useAppDispatch } from '~/hooks/store';
 
 export const TransactionStatusModal = () => {

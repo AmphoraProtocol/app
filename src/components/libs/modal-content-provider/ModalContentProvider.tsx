@@ -1,8 +1,8 @@
 import { ContractReceipt, ContractTransaction } from 'ethers';
 import { createContext, useState, useContext } from 'react';
-import { getTokensListOnCurrentChain } from '../../../chain/tokens';
-import { Token } from '../../../types/token';
-import { useStableCoinsContext } from '../stable-coins-provider/StableCoinsProvider';
+import { useAppSelector } from '~/hooks/store';
+import { getTokensListOnCurrentChain } from '~/utils/tokens';
+import { Token } from '~/types/token';
 import { useWeb3Context } from '../web3-data-provider/Web3Provider';
 
 export enum ModalType {
@@ -26,7 +26,7 @@ export enum ModalType {
 type TransactionState = 'PENDING' | 'SUCCESS' | 'FAILURE' | null;
 
 interface DepositWithdrawSUSD {
-  token: Token;
+  token: Token | undefined;
   amountToDeposit: string;
   amountToWithdraw: string;
   maxWithdraw: boolean;
@@ -71,7 +71,8 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
   const [collateralDepositAmountMax, setCollateralDepositAmountMax] = useState(false);
   const [collateralWithdrawAmountMax, setCollateralWithdrawAmountMax] = useState(false);
 
-  const { SUSD: susdContext } = useStableCoinsContext();
+  const { SUSD: susdContext } = useAppSelector((state) => state.stablecoins);
+
   const createDepositWithdrawSUSD = () => {
     return {
       token: susdContext,

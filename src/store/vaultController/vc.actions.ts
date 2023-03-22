@@ -8,10 +8,10 @@ import {
   IUSDA__factory,
   IVaultController__factory,
 } from '~/chain/newContracts';
-import { getStablecoins } from '~/chain/tokens';
+import { getStablecoins } from '~/utils/tokens';
 import { BNtoHexNumber } from '~/components/util/helpers/BNtoHex';
 import { CURVE_MASTER_ADDRESS, VAULT_CONTROLLER_ADDRESS, ZERO_ADDRESS } from '~/constants';
-import { BN, BNtoDec, round } from '~/easy/bn';
+import { BN, BNtoDec, round } from '~/utils/bn';
 import { ThunkAPI } from '~/store';
 import { Token } from '~/types';
 import { UserVault } from '~/types';

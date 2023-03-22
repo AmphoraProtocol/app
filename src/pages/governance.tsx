@@ -9,7 +9,7 @@ import { ProposalCard } from '../components/util/governance/ProposalCard';
 import { Spinner } from '../components/util/loading';
 import { getUserVotingPower, getUserDelegates } from '../contracts/IPTDelegate';
 import { getUserIPTBalance } from '../contracts/IPTDelegate/getUserIPTbalance';
-import { BNtoDec } from '../easy/bn';
+import { BNtoDec } from '../utils/bn';
 
 export const Governance = () => {
   const theme = useTheme();
