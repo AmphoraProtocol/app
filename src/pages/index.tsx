@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useVaultDataContext } from '../components/libs/vault-data-provider/VaultDataProvider';
 import Cookies from 'universal-cookie';
 import fetchVaultOf from '../contracts/Vault/fetchVaultOf';
-import { getTotalSupply, getReserveRatioPercentage } from '../contracts/USDI';
+import { getTotalSupply, getReserveRatioPercentage } from '../contracts/USDA';
 import { BN } from '../easy/bn';
 import { GweiBlockText, TitleText } from '../components/util/text';
 import { SingleStatCard } from '../components/util/cards';
@@ -22,7 +22,7 @@ import { useLight } from '../hooks/useLight';
 import { UserIPTVault } from '../components/util/UserStats/UserIPTVault';
 import SVGBox from '../components/icons/misc/SVGBox';
 import { RedirectTo } from '../components/util/redirect';
-import getAPRs from '../contracts/USDI/getAPRs';
+import getAPRs from '../contracts/USDA/getAPRs';
 import { useStableCoinsContext } from '~/components/libs/stable-coins-provider/StableCoinsProvider';
 
 const Dashboard = () => {
@@ -39,7 +39,7 @@ const Dashboard = () => {
   const { setVaultID, setVaultAddress, accountLiability, hasVault, borrowingPower } = useVaultDataContext();
 
   const [totalSupply, setTotalSupply] = useState<string>('');
-  const [totalUSDCDeposited, setTotalUSDCDeposited] = useState<string>('');
+  const [totalSUSDDeposited, setTotalSUSDDeposited] = useState<string>('');
   const { SUSD } = useStableCoinsContext();
   const [reserveRatio, setReserveRatio] = useState('0');
   const [borrowAPR, setBorrowAPR] = useState(0);
@@ -59,7 +59,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (rolodex && rolodex.SUSD && rolodex.addressUSDA) {
       rolodex.SUSD.balanceOf(rolodex.addressUSDA).then((val) => {
-        setTotalUSDCDeposited(val.div(BN(`1e${SUSD.decimals}`)).toLocaleString());
+        setTotalSUSDDeposited(val.div(BN(`1e${SUSD.decimals}`)).toLocaleString());
       });
 
       getTotalSupply(rolodex).then(setTotalSupply);
@@ -127,7 +127,7 @@ const Dashboard = () => {
             <>
               <SVGBox svg_name={`cube_${isLight ? 'light' : 'dark'}`} width={36} height={36} sx={{ mr: 3 }} />
 
-              <TitleText title='sUSD in Reserve' text={Math.round(Number(totalUSDCDeposited)).toLocaleString()} />
+              <TitleText title='sUSD in Reserve' text={Math.round(Number(totalSUSDDeposited)).toLocaleString()} />
             </>
           </SingleStatCard>
           <SingleStatCard>

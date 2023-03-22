@@ -18,7 +18,7 @@ export const SwapContainer = () => {
 
   const [token1, token2, swapTokenPositions] = useSwapTokenContext();
   const { setIsWalletModalOpen } = useWalletModalContext();
-  const { setType, updateUSDC } = useModalContext();
+  const { setType, updateSUSD } = useModalContext();
 
   const { connected } = useWeb3Context();
 
@@ -26,41 +26,41 @@ export const SwapContainer = () => {
 
   const swapTokens = () => {
     if (token1.ticker === 'sUSD') {
-      updateUSDC('amountToWithdraw', token1Amount);
+      updateSUSD('amountToWithdraw', token1Amount);
     } else {
-      updateUSDC('amountToDeposit', token1Amount);
+      updateSUSD('amountToDeposit', token1Amount);
     }
     swapTokenAmount();
     swapTokenPositions();
-    updateUSDC('maxDeposit', false);
-    updateUSDC('maxWithdraw', false);
+    updateSUSD('maxDeposit', false);
+    updateSUSD('maxWithdraw', false);
   };
 
   const token1MaxBalance = () => {
     if (token1.ticker === 'sUSD') {
-      updateUSDC('maxDeposit', true);
+      updateSUSD('maxDeposit', true);
     } else {
-      updateUSDC('maxWithdraw', true);
+      updateSUSD('maxWithdraw', true);
     }
   };
 
   const token1Input = (amount: string) => {
     setToken1Amount(amount);
-    updateUSDC('maxDeposit', false);
-    updateUSDC('maxWithdraw', false);
+    updateSUSD('maxDeposit', false);
+    updateSUSD('maxWithdraw', false);
   };
 
   const token2Input = (amount: string) => {
     setToken2Amount(amount);
-    updateUSDC('maxDeposit', false);
-    updateUSDC('maxWithdraw', false);
+    updateSUSD('maxDeposit', false);
+    updateSUSD('maxWithdraw', false);
   };
 
   useEffect(() => {
     if (token1.ticker === 'sUSD') {
-      updateUSDC('amountToDeposit', token1Amount);
+      updateSUSD('amountToDeposit', token1Amount);
     } else {
-      updateUSDC('amountToWithdraw', token1Amount);
+      updateSUSD('amountToWithdraw', token1Amount);
     }
   }, [token1Amount]);
 

@@ -1,61 +1,52 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
-
 import { formatColor, neutral } from '../../../../theme';
 import { DecimalInput } from '../../textFields';
 import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
-
 import { ModalType, useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
 import { useStableCoinsContext } from '../../../libs/stable-coins-provider/StableCoinsProvider';
 import { useLight } from '../../../../hooks/useLight';
 import { round } from '../../../../easy/bn';
 
-export const WithdrawUSDCContent = () => {
-  const { setType, USDC, updateUSDC } = useModalContext();
+export const DepositSUSDContent = () => {
   const { SUSD: SUSDToken } = useStableCoinsContext();
-  const isLight = useLight();
-
-  const setMax = () => {
-    if (SUSDToken && SUSDToken.vault_amount) {
-      updateUSDC('amountToWithdraw', SUSDToken.vault_amount.toString());
-    } else {
-      updateUSDC('amountToWithdraw', '0');
-    }
-  };
-
-  const [focus, setFocus] = useState(false);
-  const toggle = () => setFocus(!focus);
-
+  const { setType, updateSUSD, SUSD } = useModalContext();
   const [disabled, setDisabled] = useState(true);
-
-  const numAmountFrom = Number(USDC.amountToWithdraw);
-
+  const [focus, setFocus] = useState(false);
+  const [isMoneyValue, setIsMoneyValue] = useState(false);
+  const toggle = () => setFocus(!focus);
+  const setMax = () => updateSUSD('amountToDeposit', SUSDToken.wallet_amount!.toString());
+  const numAmountToDeposit = Number(SUSD.amountToDeposit);
+  const isLight = useLight();
   useEffect(() => {
-    setDisabled(numAmountFrom <= 0);
-  }, [USDC.amountToWithdraw]);
+    setDisabled(numAmountToDeposit <= 0);
+  }, [SUSD.amountToDeposit]);
 
   return (
     <Box>
-      <Typography variant='body2' color={formatColor(neutral.gray10)} textAlign='right'>
-        {' '}
-        Vault Balance: {round(SUSDToken.vault_amount || 0, 2)} {SUSDToken.ticker}
-      </Typography>
+      <Box textAlign='right' mb={2}>
+        <Typography variant='label_semi' color={formatColor(neutral.gray3)}>
+          {' '}
+          Wallet Balance: {round(SUSDToken.wallet_balance || 0, 2)} sUSD
+        </Typography>
+      </Box>
 
       <ModalInputContainer focus={focus}>
         <DecimalInput
-          onBlur={toggle}
           onFocus={toggle}
-          onChange={(amount) => updateUSDC('amountToWithdraw', amount)}
-          placeholder={`0 ${SUSDToken.ticker}`}
-          value={USDC.amountToWithdraw}
+          onBlur={toggle}
+          onChange={(amount) => updateSUSD('amountToDeposit', amount)}
+          placeholder={`0 ${isMoneyValue ? 'USD' : SUSDToken.ticker}`}
+          value={SUSD.amountToDeposit}
+          isMoneyValue={isMoneyValue}
         />
+
         <Box sx={{ display: 'flex', paddingBottom: 0.5, alignItems: 'center' }}>
           <Button
             onClick={setMax}
             sx={{
               minWidth: 'auto',
-
               height: 30,
               paddingY: 2,
               paddingX: 1,
@@ -84,9 +75,9 @@ export const WithdrawUSDCContent = () => {
 
       <Box marginTop={2}>
         <DisableableModalButton
-          text='Withdraw'
-          onClick={() => setType(ModalType.WithdrawSUSDConfirmation)}
+          text='Deposit'
           disabled={disabled}
+          onClick={() => setType(ModalType.DepositSUSDConfirmation)}
         />
       </Box>
 
@@ -99,16 +90,7 @@ export const WithdrawUSDCContent = () => {
         }}
       >
         <Typography variant='caption'>Borrowing Power</Typography>
-        <Box
-          component='img'
-          src='images/up_arrow_blue.png'
-          width={10}
-          height={12}
-          marginX={1}
-          sx={{
-            transform: 'rotate(180deg)',
-          }}
-        />
+        <Box component='img' src='images/up_arrow_blue.png' width={10} height={12} marginX={1} />
         <Typography variant='caption'>$0</Typography>
       </Box>
     </Box>

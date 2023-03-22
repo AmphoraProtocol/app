@@ -32,7 +32,7 @@ export const Highlights: React.FC = () => {
           }}
         >
           <Typography display={{ xs: 'inline', md: 'inline' }} variant='h4' color={formatColor(neutral.gray2)}>
-            Interest Protocol's stablecoin USDi{' '}
+            Amphora Protocol's stablecoin USDA{' '}
             <Typography display={{ xs: 'inline', md: 'inline-block' }} variant='h4' color={formatColor(neutral.black)}>
               is scalable, over-collateralized, and accrues yield without staking.
             </Typography>
@@ -55,7 +55,7 @@ export const Highlights: React.FC = () => {
             <HighlightBox
               icon={'stability'}
               header={'Stable'}
-              copy={'USDi maintains peg under adverse conditions, without any intervention.'}
+              copy={'USDA maintains peg under adverse conditions, without any intervention.'}
             />
           </Box>
           <Box sx={{ flexBasis: '33%' }}>

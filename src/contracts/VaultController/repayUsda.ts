@@ -10,9 +10,9 @@ export const repayUsda = (
   rolodex: Rolodex,
   signer: JsonRpcSigner,
 ): Promise<ContractTransaction> => {
-  const formattedUSDIAmount = utils.parseUnits(amount, USDA_DECIMALS);
+  const formattedUSDAAmount = utils.parseUnits(amount, USDA_DECIMALS);
   try {
-    return rolodex.VC!.connect(signer).repayUSDA(vaultID, formattedUSDIAmount);
+    return rolodex.VC!.connect(signer).repayUSDA(vaultID, formattedUSDAAmount);
   } catch (err) {
     throw new Error('Could not repay:' + err);
   }

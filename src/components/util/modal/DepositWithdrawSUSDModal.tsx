@@ -4,10 +4,10 @@ import SVGBox from '../../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { BaseSwitch } from '../switch';
 import { BaseModal } from './BaseModal';
-import { DepositUSDCContent } from './ModalContent/DepositUSDCContent';
-import { WithdrawUSDCContent } from './ModalContent/WithdrawUSDCContent';
+import { DepositSUSDContent } from './ModalContent/DepositSUSDContent';
+import { WithdrawSUSDContent } from './ModalContent/WithdrawSUSDContent';
 
-export const DepositWithdrawUSDCModal = () => {
+export const DepositWithdrawSUSDModal = () => {
   const { type, setType } = useModalContext();
 
   const isDepositType = type === ModalType.DepositSUSD;
@@ -31,10 +31,10 @@ export const DepositWithdrawUSDCModal = () => {
           columnGap: 2,
         }}
       >
-        <SVGBox width={80} height={80} svg_name='USDC' alt='USDC' />
+        <SVGBox width={80} height={80} svg_name='sUSD' alt='sUSD' />
         <Box>
           <Typography variant='body1' color={formatColor(neutral.gray3)}>
-            1 USDC
+            1 SUSD
           </Typography>
           <Typography variant='h3' color='text.primary' mb={1}>
             $1
@@ -42,7 +42,7 @@ export const DepositWithdrawUSDCModal = () => {
         </Box>
       </Box>
 
-      {isDepositType ? <DepositUSDCContent /> : <WithdrawUSDCContent />}
+      {isDepositType ? <DepositSUSDContent /> : <WithdrawSUSDContent />}
     </BaseModal>
   );
 };

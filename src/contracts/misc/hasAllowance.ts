@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { Rolodex } from '../../chain/rolodex/rolodex';
 import { BN } from '../../easy/bn';
 import { getAllowance } from '../ERC20/getAllowance';
-import { getUSDCAllowanceWithRolodex } from './getAllowance';
+import { getSUSDAllowanceWithRolodex } from './getAllowance';
 
 export const hasSUSDAllowance = async (
   owner: string,
@@ -12,17 +12,17 @@ export const hasSUSDAllowance = async (
   rolodex: Rolodex,
   decimals: number,
 ) => {
-  const allowance = await getUSDCAllowanceWithRolodex(owner, spender, rolodex);
+  const allowance = await getSUSDAllowanceWithRolodex(owner, spender, rolodex);
 
   if (allowance !== undefined) {
-    let usdcBN: BigNumber;
+    let susdBN: BigNumber;
     if (typeof amount === 'string') {
-      usdcBN = BN(amount).mul(BN('1e' + decimals));
+      susdBN = BN(amount).mul(BN('1e' + decimals));
     } else {
-      usdcBN = amount;
+      susdBN = amount;
     }
 
-    return allowance.gte(usdcBN);
+    return allowance.gte(susdBN);
   }
   return false;
 };
