@@ -21,7 +21,6 @@ import {
   DepositUSDCConfirmationModal,
   WithdrawCollateralConfirmationModal,
   DepositCollateralConfirmationModal,
-  DelegateModal,
   DelegateIPTModal,
   TransactionStatusModal,
 } from './components/util/modal';
@@ -33,7 +32,6 @@ import { StableCoinsProvider } from './components/libs/stable-coins-provider/Sta
 import { AppGovernanceProvider } from './components/libs/app-governance-provider/AppGovernanceProvider';
 import { TestingPage } from './pages/playground';
 import { Governance } from './pages/governance';
-import { EnableCappedTokenModal } from './components/util/modal/EnableCappedTokenModal';
 import { RedirectTo } from './components/util/redirect';
 
 import { mainnet } from 'viem/chains';
@@ -69,7 +67,6 @@ const DashboardContext = (props: { children: any }) => {
                   <WalletModalProvider>
                     <>
                       <SwapTokenProvider>{props.children}</SwapTokenProvider>
-                      <DelegateModal />
                       <DelegateIPTModal />
                       <DepositWithdrawCollateralModal />
                       <DepositCollateralConfirmationModal />
@@ -78,7 +75,6 @@ const DashboardContext = (props: { children: any }) => {
                       <BorrowRepayModal />
                       <DepositUSDCConfirmationModal />
                       <WithdrawUSDCConfirmationModal />
-                      <EnableCappedTokenModal />
                       <ClaimModal />
                       <TransactionStatusModal />
                     </>

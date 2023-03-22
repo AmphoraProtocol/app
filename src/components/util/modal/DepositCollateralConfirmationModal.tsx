@@ -1,20 +1,17 @@
-import { Box, Typography } from '@mui/material';
-import { formatColor, neutral } from '../../../theme';
 import { useState, useEffect } from 'react';
+import { BigNumber, ContractReceipt, ContractTransaction } from 'ethers';
+import { Box, Typography } from '@mui/material';
+
+import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { BaseModal } from './BaseModal';
-import { useLight } from '../../../hooks/useLight';
+import { useLight } from '~/hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
-import { locale } from '../../../locale';
-import { BigNumber, ContractReceipt, ContractTransaction, utils } from 'ethers';
+import { locale } from '~/locale';
 import { depositCollateral } from '~/contracts/Vault';
-import depositToVotingVault from '../../../contracts/VotingVault/depositToVotingVault';
-import { IERC20Metadata__factory } from '~/chain/newContracts';
-
-import { hasTokenAllowance } from '../../../contracts/misc/hasAllowance';
-import { DEFAULT_APPROVE_AMOUNT } from '../../../constants';
+import { hasTokenAllowance } from '~/contracts/misc/hasAllowance';
 import { useRolodexContext } from '~/components/libs/rolodex-data-provider/RolodexDataProvider';
 import { getAllowance } from '~/contracts/ERC20/getAllowance';
 import { approveCollateral } from '~/contracts/ERC20/approveCollateral';
@@ -33,15 +30,13 @@ export const DepositCollateralConfirmationModal = () => {
   const { provider, currentAccount, currentSigner } = useWeb3Context();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
-  const { vaultAddress, vaultID, hasVotingVault } = useVaultDataContext();
+  const { vaultAddress } = useVaultDataContext();
   const [hasAllowance, setHasAllowance] = useState(false);
   const rolodex = useRolodexContext();
   const [hasCollateralAllowance, setHasCollateralAllowance] = useState(false);
   const [allowance, setAllowance] = useState<string>('0');
 
   const amount = collateralDepositAmountMax ? collateralToken.wallet_amount : collateralDepositAmount;
-
-  const contract = IERC20Metadata__factory.connect(collateralToken.address, currentSigner!);
 
   useEffect(() => {
     if (rolodex && type === 'DEPOSIT_COLLATERAL_CONFIRMATION') {
@@ -74,50 +69,13 @@ export const DepositCollateralConfirmationModal = () => {
   const handleDepositConfirmationRequest = async () => {
     try {
       let attempt: ContractTransaction;
-      if (collateralToken.capped_token && collateralToken.capped_address) {
-        if (!hasVotingVault) {
-          setLoading(false);
-          setType(ModalType.EnableCappedToken);
-          return;
-        }
-        setLoading(true);
-        setLoadmsg(locale('CheckWallet'));
 
-        const ha = await hasTokenAllowance(
-          currentAccount,
-          collateralToken.capped_address,
-          amount!,
-          collateralToken.address,
-          collateralToken.decimals,
-          currentSigner!,
-        );
-        console.log(ha);
-        setHasAllowance(ha);
-
-        if (!ha) {
-          const approveAmount = utils.parseUnits(DEFAULT_APPROVE_AMOUNT, collateralToken.decimals);
-
-          const txn = await contract.approve(collateralToken.capped_address!, approveAmount);
-          setLoadmsg(locale('TransactionPending'));
-
-          await txn?.wait();
-
-          setLoading(false);
-          setLoadmsg('');
-          setHasAllowance(true);
-
-          return;
-        }
-
-        attempt = await depositToVotingVault(vaultID!, currentSigner!, collateralToken, amount!);
-      } else {
-        attempt = await depositCollateral(
-          amount!,
-          collateralToken.address,
-          provider?.getSigner(currentAccount)!,
-          vaultAddress!,
-        );
-      }
+      attempt = await depositCollateral(
+        amount!,
+        collateralToken.address,
+        provider?.getSigner(currentAccount)!,
+        vaultAddress!,
+      );
       updateTransactionState(attempt!);
 
       setLoadmsg(locale('TransactionPending'));
@@ -208,7 +166,7 @@ export const DepositCollateralConfirmationModal = () => {
       <DisableableModalButton
         text={
           !collateralToken.capped_token ||
-          (collateralToken.capped_token && collateralToken.capped_address && !hasVotingVault) ||
+          (collateralToken.capped_token && collateralToken.capped_address) ||
           hasAllowance
             ? hasCollateralAllowance
               ? 'Confirm Deposit'

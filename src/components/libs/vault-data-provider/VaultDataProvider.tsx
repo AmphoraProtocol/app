@@ -4,7 +4,6 @@ import { getTokensListOnCurrentChain } from '~/chain/tokens';
 import { BNtoDec, BNtoDecSpecific } from '~/easy/bn';
 import { Logp } from '~/logger';
 import { getBalanceOf } from '~/contracts/ERC20/getBalanceOf';
-import { getVotingVaultAddress, hasVotingVaultAddress } from '~/contracts/VotingVault/hasVotingVault';
 import { CollateralTokens } from '~/types/token';
 import { useRolodexContext } from '../rolodex-data-provider/RolodexDataProvider';
 import { useWeb3Context } from '../web3-data-provider/Web3Provider';
@@ -26,9 +25,6 @@ export type VaultDataContextType = {
   totalBaseLiability: number;
   tokens: CollateralTokens | undefined;
   setTokens: Dispatch<SetStateAction<CollateralTokens | undefined>>;
-  votingVaultAddress: string | undefined;
-  hasVotingVault: boolean;
-  setHasVotingVault: Dispatch<SetStateAction<boolean>>;
 };
 
 export const VaultDataContext = React.createContext({} as VaultDataContextType);
@@ -45,8 +41,6 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
   const [borrowingPower, setBorrowingPower] = useState(0);
   const [tokens, setTokens] = useState<VaultDataContextType['tokens']>(undefined);
   const [totalBaseLiability, setTotalBaseLiability] = useState(0);
-  const [votingVaultAddress, setVotingVaultAddress] = useState<string | undefined>(undefined);
-  const [hasVotingVault, setHasVotingVault] = useState(false);
 
   const update = async () => {
     const px: Array<Promise<any>> = [];
@@ -146,24 +140,6 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
   }, [chainId]);
 
   useEffect(() => {
-    if (currentAccount && rolodex) {
-      rolodex?.VC?.vaultIDs(currentAccount).then((vaultIDs) => {
-        if (vaultIDs && vaultIDs?.length > 0) {
-          const id = vaultIDs.toString();
-          setVaultID(id);
-
-          getVotingVaultAddress(id, signerOrProvider!).then((address) => {
-            setVotingVaultAddress(address);
-            setHasVotingVault(hasVotingVaultAddress(address));
-          });
-        } else {
-          setVaultID(null);
-        }
-      });
-    }
-  }, [currentAccount, rolodex]);
-
-  useEffect(() => {
     setHasVault(!!vaultID);
     if (!!vaultID && rolodex) {
       rolodex?.VC?.vaultAddress(vaultID)
@@ -191,9 +167,6 @@ export const VaultDataProvider = ({ children }: { children: React.ReactElement }
         setTokens,
         accountLiability,
         totalBaseLiability,
-        hasVotingVault,
-        setHasVotingVault,
-        votingVaultAddress,
       }}
     >
       {children}
