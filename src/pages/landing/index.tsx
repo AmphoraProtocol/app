@@ -9,7 +9,7 @@ import { Fractional } from './fractional';
 import { Highlights } from './highlights';
 import { Splash } from './splash';
 import { Values } from './values';
-import { Footer } from '../../components/partials/footer';
+import { Footer } from '../../partials/footer';
 import { LandingDesktopToolbar } from './desktopToolbar';
 import { LandingMobileToolbar } from './mobileToolbar';
 

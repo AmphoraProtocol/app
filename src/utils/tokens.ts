@@ -1,4 +1,4 @@
-import initializeToken from '../components/util/tokens/initializeToken';
+import initializeToken from '../components/tokens/initializeToken';
 import { CollateralTokens, Token } from '../types/token';
 import { ChainIDs } from './chains';
 import { tokensToChains } from './tokensToChains';

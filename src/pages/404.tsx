@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 
-import { AppLayout } from '../components/partials/app-layout';
-import { PageContainer } from '../components/util/pageContainer';
-import { TitleTextCard } from '../components/util/cards';
+import { AppLayout } from '../partials/app-layout';
+import { PageContainer } from '../components/pageContainer';
+import { TitleTextCard } from '../components/cards';
 
 const NotFound404Page = () => (
   <PageContainer
