@@ -5,7 +5,9 @@ import { viemClient } from '~/App';
 import { IERC20Metadata__factory, IOracleRelay__factory, IVaultController } from '~/chain/newContracts';
 import { BN } from '~/utils/bn';
 import { formatBigInt, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
-import { Token } from '~/types/token';
+import { OracleType, Token } from '~/types/token';
+import { ZERO_ADDRESS } from '~/constants';
+import { getOracleType } from './getOracleType';
 
 export const getVaultTokenBalanceAndPrice = async (
   oracleAddress: string,
@@ -16,6 +18,7 @@ export const getVaultTokenBalanceAndPrice = async (
   livePrice: number;
   unformattedBalance: string;
   balanceBN: BigNumber;
+  oracle_type: OracleType;
 }> => {
   try {
     const erc20Contract = {
@@ -28,20 +31,24 @@ export const getVaultTokenBalanceAndPrice = async (
       abi: IOracleRelay__factory.abi,
     } as const;
 
-    const [decimals, balanceOf, currentValue] = await viemClient.multicall({
+    const [decimals, currentValue, oracleType, balanceOf] = await viemClient.multicall({
       contracts: [
         {
           ...erc20Contract,
           functionName: 'decimals',
         },
         {
-          ...erc20Contract,
-          functionName: 'balanceOf',
-          args: [getAddress(vaultAddress || '')],
+          ...oracleContract,
+          functionName: 'currentValue',
         },
         {
           ...oracleContract,
-          functionName: 'currentValue',
+          functionName: 'oracleType',
+        },
+        {
+          ...erc20Contract,
+          functionName: 'balanceOf',
+          args: [getAddress(vaultAddress || ZERO_ADDRESS)],
         },
       ],
     });
@@ -49,16 +56,18 @@ export const getVaultTokenBalanceAndPrice = async (
     let balance = 0;
     let unformattedBalance = '0';
     let balanceBN = BigNumber.from(0);
-    if (balanceOf.result) {
-      const formattedBalanceOf = formatBigInt(balanceOf.result!, decimals.result!);
+
+    if (vaultAddress && balanceOf.result && decimals.result) {
+      const formattedBalanceOf = formatBigInt(balanceOf.result, decimals.result);
       balance = formattedBalanceOf.num;
       unformattedBalance = formattedBalanceOf.str;
       balanceBN = formattedBalanceOf.bn;
     }
 
+    const oracle_type = getOracleType(oracleType.result);
     const livePrice = formatBNWithDecimals(BN(currentValue.result?.toString())!, 18 + (18 - decimals.result!));
 
-    return { balance, livePrice, unformattedBalance, balanceBN };
+    return { balance, livePrice, unformattedBalance, balanceBN, oracle_type };
   } catch (e) {
     console.log(e);
     return {
@@ -66,6 +75,7 @@ export const getVaultTokenBalanceAndPrice = async (
       livePrice: 0,
       unformattedBalance: '0',
       balanceBN: BigNumber.from(0),
+      oracle_type: '',
     };
   }
 };

@@ -40,6 +40,8 @@ export const UserStats = () => {
             cappedToken={val.capped_token}
             tokenAddress={val.address}
             cappedPercent={val.capped_percent}
+            oracleType={val.oracle_type}
+            oracleAddress={val.oracle_address}
           />,
         );
       }

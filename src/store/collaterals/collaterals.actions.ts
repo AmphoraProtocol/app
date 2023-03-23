@@ -38,6 +38,7 @@ const getCollateralData = createAsyncThunk<
     token.capped_token = tokenMetadata.capped;
     token.capped_percent = tokenMetadata.cappedPercent;
     token.oracle_address = tokenMetadata.oracle;
+    token.oracle_type = vaultData.oracle_type;
     token.price = Math.round(100 * vaultData.livePrice) / 100;
     token.vault_amount_str = vaultData.unformattedBalance;
     token.vault_amount = vaultData.balanceBN.toString();

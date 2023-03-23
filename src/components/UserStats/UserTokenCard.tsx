@@ -12,6 +12,7 @@ import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModal
 import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { ToolTip } from '../tooltip/ToolTip';
 import { useAppSelector } from '~/hooks/store';
+import { OracleType } from '~/types';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -30,6 +31,8 @@ interface UserTokenCardProps extends BoxProps {
   cappedToken: boolean | undefined;
   tokenAddress: string | undefined;
   cappedPercent: number | undefined;
+  oracleAddress: string | undefined;
+  oracleType: OracleType | undefined;
 }
 
 export const UserTokenCard = (props: UserTokenCardProps) => {
@@ -57,6 +60,8 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     cappedToken,
     tokenAddress,
     cappedPercent,
+    oracleAddress,
+    oracleType,
   } = props;
 
   const openVault = async () => {
@@ -122,9 +127,11 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             </Box>
           </Link>
         </Box>
-        <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
-          Chainlink
-        </Typography>
+        <Link href={`https://etherscan.io/address/${oracleAddress}`} target='_blank'>
+          <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
+            {oracleType}
+          </Typography>
+        </Link>
         <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
           {tokenPrice}
         </Typography>
