@@ -2,15 +2,19 @@
 /* tslint:disable */
 /* eslint-disable */
 export { IAMPH__factory } from './IAMPH__factory';
+export { IAMPHClaimer__factory } from './IAMPHClaimer__factory';
 export { IAccessControl__factory } from './IAccessControl__factory';
 export { IAmphoraProtocolToken__factory } from './IAmphoraProtocolToken__factory';
 export { IAnchoredViewRelay__factory } from './IAnchoredViewRelay__factory';
+export { IBaseRewardPool__factory } from './IBaseRewardPool__factory';
+export { IBooster__factory } from './IBooster__factory';
 export { ICurveMaster__factory } from './ICurveMaster__factory';
 export { ICurveSlave__factory } from './ICurveSlave__factory';
 export { IERC165__factory } from './IERC165__factory';
 export { IERC20__factory } from './IERC20__factory';
 export { IERC20Metadata__factory } from './IERC20Metadata__factory';
 export { IERC20Upgradeable__factory } from './IERC20Upgradeable__factory';
+export { IGovernorCharlie__factory } from './IGovernorCharlie__factory';
 export { IGovernorCharlieDelegate__factory } from './IGovernorCharlieDelegate__factory';
 export { IGovernorCharlieDelegator__factory } from './IGovernorCharlieDelegator__factory';
 export { IGovernorCharlieEvents__factory } from './IGovernorCharlieEvents__factory';
@@ -35,5 +39,7 @@ export { IUniswapV3PoolState__factory } from './IUniswapV3PoolState__factory';
 export { IUniswapV3SwapCallback__factory } from './IUniswapV3SwapCallback__factory';
 export { IVault__factory } from './IVault__factory';
 export { IVaultController__factory } from './IVaultController__factory';
+export { IVaultDeployer__factory } from './IVaultDeployer__factory';
+export { IVirtualBalanceRewardPool__factory } from './IVirtualBalanceRewardPool__factory';
 export { IWUSDA__factory } from './IWUSDA__factory';
 export { Initializable__factory } from './Initializable__factory';

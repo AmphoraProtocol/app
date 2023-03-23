@@ -2,251 +2,342 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { IVault, IVaultInterface } from "../IVault";
+import { Contract, Signer, utils } from 'ethers';
+import type { Provider } from '@ethersproject/providers';
+import type { IVault, IVaultInterface } from '../IVault';
 
 const _abi = [
   {
     inputs: [],
-    name: "Vault_AmountZero",
-    type: "error",
+    name: 'Vault_AmountZero',
+    type: 'error',
   },
   {
     inputs: [],
-    name: "Vault_NotMinter",
-    type: "error",
+    name: 'Vault_DepositAndStakeOnConvexFailed',
+    type: 'error',
   },
   {
     inputs: [],
-    name: "Vault_NotVaultController",
-    type: "error",
+    name: 'Vault_NotMinter',
+    type: 'error',
   },
   {
     inputs: [],
-    name: "Vault_OverWithdrawal",
-    type: "error",
+    name: 'Vault_NotVaultController',
+    type: 'error',
   },
   {
     inputs: [],
-    name: "Vault_RepayTooMuch",
-    type: "error",
+    name: 'Vault_OverWithdrawal',
+    type: 'error',
   },
   {
     inputs: [],
-    name: "Vault_TokenNotRegistered",
-    type: "error",
+    name: 'Vault_RepayTooMuch',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'Vault_TokenNotCurveLP',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'Vault_TokenNotRegistered',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'Vault_WithdrawAndUnstakeOnConvexFailed',
+    type: 'error',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "_token",
-        type: "address",
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
       },
     ],
-    name: "Deposit",
-    type: "event",
+    name: 'ClaimedReward',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "_token",
-        type: "address",
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
       },
     ],
-    name: "Recover",
-    type: "event",
+    name: 'Deposit',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "_token",
-        type: "address",
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
       },
     ],
-    name: "Withdraw",
-    type: "event",
+    name: 'Recover',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'Withdraw',
+    type: 'event',
   },
   {
     inputs: [],
-    name: "baseLiability",
+    name: 'CONTROLLER',
     outputs: [
       {
-        internalType: "uint256",
-        name: "_liability",
-        type: "uint256",
+        internalType: 'contract IVaultController',
+        name: '_vaultController',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-    ],
-    name: "controllerTransfer",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-    ],
-    name: "depositERC20",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "id",
+    name: 'baseLiability',
     outputs: [
       {
-        internalType: "uint96",
-        name: "_id",
-        type: "uint96",
+        internalType: 'uint256',
+        name: '_liability',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_tokenAddress',
+        type: 'address',
+      },
+    ],
+    name: 'claimRewards',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_tokenAddress',
+        type: 'address',
+      },
+    ],
+    name: 'claimableRewards',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'contract IERC20',
+            name: 'token',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct IVault.Reward[]',
+        name: '_rewards',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'controllerTransfer',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'depositERC20',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "minter",
+    name: 'id',
     outputs: [
       {
-        internalType: "address",
-        name: "_minter",
-        type: "address",
+        internalType: 'uint96',
+        name: '_id',
+        type: 'uint96',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'minter',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '_minter',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "bool",
-        name: "_increase",
-        type: "bool",
+        internalType: 'bool',
+        name: '_increase',
+        type: 'bool',
       },
       {
-        internalType: "uint256",
-        name: "_baseAmount",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_baseAmount',
+        type: 'uint256',
       },
     ],
-    name: "modifyLiability",
+    name: 'modifyLiability',
     outputs: [
       {
-        internalType: "uint256",
-        name: "_liability",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_liability',
+        type: 'uint256',
       },
     ],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_tokenAddress",
-        type: "address",
+        internalType: 'address',
+        name: '_tokenAddress',
+        type: 'address',
       },
     ],
-    name: "recoverDust",
+    name: 'recoverDust',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_token",
-        type: "address",
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
       },
     ],
-    name: "tokenBalance",
+    name: 'tokenBalance',
     outputs: [
       {
-        internalType: "uint256",
-        name: "_balance",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_balance',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_token",
-        type: "address",
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
       },
       {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
       },
     ],
-    name: "withdrawERC20",
+    name: 'withdrawERC20',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
 ] as const;
 
