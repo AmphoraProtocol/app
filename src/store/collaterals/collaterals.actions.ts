@@ -1,12 +1,18 @@
 import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Address, getAddress } from 'viem';
+
+import { formatBigInt, formatBNtoPreciseStringAndNumber, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
+import { IERC20Metadata__factory, IOracleRelay__factory } from '~/chain/newContracts';
 import { IVaultController__factory } from '~/chain/newContracts';
-import { getVaultTokenBalanceAndPrice, getVaultTokenMetadata } from '~/utils/getVaultTokenBalanceAndPrice';
 import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
-import { getBalanceOf } from '~/contracts/ERC20/getBalanceOf';
+import { getOracleType } from '~/utils/getOracleType';
 import { BN, BNtoDecSpecific } from '~/utils/bn';
-import { ThunkAPI } from '~/store';
+import { BigNumber, constants } from 'ethers';
 import { CollateralTokens } from '~/types';
+import { ZERO_ADDRESS } from '~/constants';
+import { ThunkAPI } from '~/store';
+import { viemClient } from '~/App';
 
 const getCollateralData = createAsyncThunk<
   { tokens: CollateralTokens },
@@ -18,30 +24,95 @@ const getCollateralData = createAsyncThunk<
   },
   ThunkAPI
 >('collateral/getData', async ({ userAddress, vaultAddress, tokens, signerOrProvider }) => {
-  const newTokens = { ...tokens };
+  const newTokens: CollateralTokens = { ...tokens };
   const VCAddress = VAULT_CONTROLLER_ADDRESS;
   const VC = IVaultController__factory.connect(VCAddress, signerOrProvider);
 
   for (const [key, token] of Object.entries(newTokens!)) {
-    const tokenMetadata = await getVaultTokenMetadata(token.address, VC);
-    const vaultData = await getVaultTokenBalanceAndPrice(tokenMetadata.oracle, vaultAddress, token);
+    const { ltv, liquidationIncentive, cap, oracle, totalDeposited } = await VC.tokenCollateralInfo(token.address);
 
-    if (userAddress) {
-      const balances = await getBalanceOf(userAddress, token.address, signerOrProvider);
-      token.wallet_balance = balances.bn.toString();
+    token.token_LTV = ltv.div(BN('1e16')).toNumber();
+    token.token_penalty = liquidationIncentive.div(BN('1e16')).toNumber();
+    token.capped_token = !constants.MaxUint256.eq(cap);
+    token.oracle_address = oracle;
+
+    let cappedPercent = 0;
+
+    if (!constants.MaxUint256.eq(cap)) {
+      cappedPercent = totalDeposited!.div(cap).toNumber() * 100;
+      // show minimum 5%
+      if (cappedPercent <= 5) {
+        cappedPercent = 5;
+      } else if (cappedPercent >= 100) {
+        cappedPercent = 100;
+      }
+    }
+    token.capped_percent = cappedPercent;
+
+    const erc20Contract = {
+      address: token.address as Address,
+      abi: IERC20Metadata__factory.abi,
+    } as const;
+
+    const oracleContract = {
+      address: oracle as Address,
+      abi: IOracleRelay__factory.abi,
+    } as const;
+
+    const [decimals, currentValue, oracleType, balanceOf1, balanceOf2] = await viemClient.multicall({
+      contracts: [
+        {
+          ...erc20Contract,
+          functionName: 'decimals',
+        },
+        {
+          ...oracleContract,
+          functionName: 'currentValue',
+        },
+        {
+          ...oracleContract,
+          functionName: 'oracleType',
+        },
+        {
+          ...erc20Contract,
+          functionName: 'balanceOf',
+          args: [getAddress(vaultAddress || ZERO_ADDRESS)],
+        },
+        {
+          ...erc20Contract,
+          functionName: 'balanceOf',
+          args: [getAddress(userAddress || ZERO_ADDRESS)],
+        },
+      ],
+    });
+
+    let unformattedBalance = '0';
+    let balanceBN = BigNumber.from(0);
+    token.oracle_type = getOracleType(oracleType.result);
+    const livePrice = formatBNWithDecimals(BN(currentValue.result?.toString())!, 18 + (18 - decimals.result!));
+    token.price = Math.round(100 * livePrice) / 100;
+
+    if (vaultAddress && balanceOf1.result && decimals.result) {
+      const formattedBalanceOf = formatBigInt(balanceOf1.result, decimals.result);
+      unformattedBalance = formattedBalanceOf.str;
+      balanceBN = formattedBalanceOf.bn;
     }
 
-    // setting values
-    token.price = Math.round(100 * vaultData.livePrice) / 100;
-    token.token_penalty = tokenMetadata.penalty;
-    token.token_LTV = tokenMetadata.ltv;
-    token.capped_token = tokenMetadata.capped;
-    token.capped_percent = tokenMetadata.cappedPercent;
-    token.oracle_address = tokenMetadata.oracle;
-    token.oracle_type = vaultData.oracle_type;
-    token.price = Math.round(100 * vaultData.livePrice) / 100;
-    token.vault_amount_str = vaultData.unformattedBalance;
-    token.vault_amount = vaultData.balanceBN.toString();
+    if (userAddress && balanceOf2.result && decimals.result) {
+      const formattedBalance = formatBNtoPreciseStringAndNumber(BN(balanceOf2.result), decimals.result);
+      token.wallet_amount = formattedBalance.bn.toString();
+      token.wallet_amount_str = formattedBalance.str;
+
+      if (formattedBalance.bn.isZero()) {
+        token.wallet_balance = '0';
+      } else {
+        const walletBalance = BNtoDecSpecific(formattedBalance.bn, token.decimals) * token.price;
+        token.wallet_balance = walletBalance.toFixed(2);
+      }
+    }
+
+    token.vault_amount_str = unformattedBalance;
+    token.vault_amount = balanceBN.toString();
     if (BN(token.vault_amount).isZero()) {
       token.vault_balance = '0';
     } else {

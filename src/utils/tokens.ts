@@ -1,5 +1,6 @@
-import initializeToken from '../components/tokens/initializeToken';
-import { CollateralTokens, Token } from '../types/token';
+import { SUSD_ADDRESS, USDA_ADDRESS, USDA_DECIMALS } from '~/constants';
+import initializeToken from '~/components/tokens/initializeToken';
+import { CollateralTokens, Token } from '~/types/token';
 import { ChainIDs } from './chains';
 import { tokensToChains } from './tokensToChains';
 
@@ -10,13 +11,13 @@ export const getStablecoins = (): {
   return {
     USDA: initializeToken({
       name: 'Amphora USD',
-      address: '0x40A633EeF249F21D95C8803b7144f19AAfeEF7ae',
+      address: USDA_ADDRESS,
       ticker: 'USDA',
-      decimals: 18,
+      decimals: USDA_DECIMALS,
     }),
     SUSD: initializeToken({
       name: 'Synth sUSD',
-      address: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
+      address: SUSD_ADDRESS,
       ticker: 'sUSD',
       decimals: 18,
     }),
