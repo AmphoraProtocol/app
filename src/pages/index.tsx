@@ -30,7 +30,6 @@ const Dashboard = () => {
   // const cookies = new Cookies();
   // const firstVisitExists = cookies.get('first-visit');
   // if (!firstVisitExists) return <RedirectTo url='#/landing' />;
-
   const isLight = useLight();
   const { setType } = useModalContext();
   const theme = useTheme();
