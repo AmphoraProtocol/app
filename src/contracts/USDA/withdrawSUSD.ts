@@ -1,7 +1,7 @@
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumber, utils } from 'ethers';
 import { Rolodex } from '../../chain/rolodex/rolodex';
-import { BN } from '../../easy/bn';
+import { BN } from '../../utils/bn';
 
 export const withdrawSUSD = async (susd_amount: string | BigNumber, rolodex: Rolodex, signer: JsonRpcSigner) => {
   let formattedSUSDAmount: BigNumber;

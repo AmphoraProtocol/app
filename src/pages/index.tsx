@@ -1,26 +1,26 @@
 import { formatColor, neutral } from '../theme';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useWeb3Context } from '../components/libs/web3-data-provider/Web3Provider';
-import { ProtocolStatsCard } from '../components/util/cards';
-import { StatsMeter } from '../components/util/statsMeter';
-import { UserStats } from '../components/util/UserStats';
+import { ProtocolStatsCard } from '../components/cards';
+import { StatsMeter } from '../components/statsMeter';
+import { UserStats } from '../components/UserStats';
 import { useRolodexContext } from '../components/libs/rolodex-data-provider/RolodexDataProvider';
 import Cookies from 'universal-cookie';
-import { GweiBlockText, TitleText } from '../components/util/text';
-import { SingleStatCard } from '../components/util/cards';
-import { InverseButton } from '../components/util/button';
-import { TitleTextToolTip } from '../components/util/text/TitleTextToolTip';
+import { GweiBlockText, TitleText } from '../components/text';
+import { SingleStatCard } from '../components/cards';
+import { InverseButton } from '../components/button';
+import { TitleTextToolTip } from '../components/text/TitleTextToolTip';
 import { useModalContext, ModalType } from '../components/libs/modal-content-provider/ModalContentProvider';
-import { OpenVaultButton } from '../components/util/button/OpenVaultButton';
-import { Substat } from '../components/util/text/Substat';
+import { OpenVaultButton } from '../components/button/OpenVaultButton';
+import { Substat } from '../components/text/Substat';
 import { useLight } from '../hooks/useLight';
-import { UserIPTVault } from '../components/util/UserStats/UserIPTVault';
+import { UserIPTVault } from '../components/UserStats/UserIPTVault';
 import SVGBox from '../components/icons/misc/SVGBox';
-import { RedirectTo } from '../components/util/redirect';
+import { RedirectTo } from '../components/redirect';
 import { useAppDispatch, useAppSelector } from '~/hooks/store';
 import { useEffect } from 'react';
-import { CollateralActions, VCActions } from '~/store';
-import { getTokensListOnCurrentChain } from '~/chain/tokens';
+import { CollateralActions, StablecoinActions, VCActions } from '~/store';
+import { getTokensListOnCurrentChain } from '~/utils/tokens';
 
 const Dashboard = () => {
   // temporary
@@ -37,9 +37,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(VCActions.getVCData({ userAddress: currentAccount }));
-  }, [currentAccount, dataBlock, chainId]);
-
-  useEffect(() => {
     dispatch(
       CollateralActions.getCollateralData({
         userAddress: currentAccount,
@@ -48,7 +45,11 @@ const Dashboard = () => {
         signerOrProvider,
       }),
     );
-  }, [currentAccount, vaultControllerData.userVault.vaultAddress]);
+
+    if (currentAccount) {
+      dispatch(StablecoinActions.getStablesData({ userAddress: currentAccount }));
+    }
+  }, [currentAccount, vaultControllerData.userVault.vaultAddress, dataBlock, chainId]);
 
   return (
     <Box

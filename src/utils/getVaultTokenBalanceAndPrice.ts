@@ -3,7 +3,7 @@ import { BigNumber, constants } from 'ethers';
 
 import { viemClient } from '~/App';
 import { IERC20Metadata__factory, IOracleRelay__factory, IVaultController } from '~/chain/newContracts';
-import { BN } from '~/easy/bn';
+import { BN } from '~/utils/bn';
 import { formatBigInt, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
 import { Token } from '~/types/token';
 

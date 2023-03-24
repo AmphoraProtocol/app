@@ -5,7 +5,7 @@ import './theme/fonts.css';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
-import { AppLayout } from './components/partials/app-layout';
+import { AppLayout } from './partials/app-layout';
 import { Web3ContextProvider } from './components/libs/web3-data-provider/Web3Provider';
 import { WalletModalProvider } from './components/libs/wallet-modal-provider/WalletModalProvider';
 import { ModalContentProvider } from './components/libs/modal-content-provider/ModalContentProvider';
@@ -23,15 +23,14 @@ import {
   DepositCollateralConfirmationModal,
   DelegateIPTModal,
   TransactionStatusModal,
-} from './components/util/modal';
-import { ClaimModal } from './components/util/modal/ClaimModal';
+} from './components/modal';
+import { ClaimModal } from './components/modal/ClaimModal';
 import { RolodexContentProvider } from './components/libs/rolodex-data-provider/RolodexDataProvider';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
-import { StableCoinsProvider } from './components/libs/stable-coins-provider/StableCoinsProvider';
 import { AppGovernanceProvider } from './components/libs/app-governance-provider/AppGovernanceProvider';
 import { TestingPage } from './pages/playground';
 import { Governance } from './pages/governance';
-import { RedirectTo } from './components/util/redirect';
+import { RedirectTo } from './components/redirect';
 
 import { mainnet } from 'viem/chains';
 import { createPublicClient, http } from 'viem';
@@ -58,29 +57,27 @@ const DashboardContext = (props: { children: any }) => {
   return (
     <Web3ContextProvider>
       <RolodexContentProvider>
-        <StableCoinsProvider>
-          <ModalContentProvider>
-            <AppGovernanceProvider>
-              <>
-                <WalletModalProvider>
-                  <>
-                    <SwapTokenProvider>{props.children}</SwapTokenProvider>
-                    <DelegateIPTModal />
-                    <DepositWithdrawCollateralModal />
-                    <DepositCollateralConfirmationModal />
-                    <WithdrawCollateralConfirmationModal />
-                    <DepositWithdrawSUSDModal />
-                    <BorrowRepayModal />
-                    <DepositSUSDConfirmationModal />
-                    <WithdrawSUSDConfirmationModal />
-                    <ClaimModal />
-                    <TransactionStatusModal />
-                  </>
-                </WalletModalProvider>
-              </>
-            </AppGovernanceProvider>
-          </ModalContentProvider>
-        </StableCoinsProvider>
+        <ModalContentProvider>
+          <AppGovernanceProvider>
+            <>
+              <WalletModalProvider>
+                <>
+                  <SwapTokenProvider>{props.children}</SwapTokenProvider>
+                  <DelegateIPTModal />
+                  <DepositWithdrawCollateralModal />
+                  <DepositCollateralConfirmationModal />
+                  <WithdrawCollateralConfirmationModal />
+                  <DepositWithdrawSUSDModal />
+                  <BorrowRepayModal />
+                  <DepositSUSDConfirmationModal />
+                  <WithdrawSUSDConfirmationModal />
+                  <ClaimModal />
+                  <TransactionStatusModal />
+                </>
+              </WalletModalProvider>
+            </>
+          </AppGovernanceProvider>
+        </ModalContentProvider>
       </RolodexContentProvider>
     </Web3ContextProvider>
   );
