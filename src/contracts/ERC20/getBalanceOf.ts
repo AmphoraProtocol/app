@@ -1,6 +1,6 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import getDecimals from '../misc/getDecimals';
-import { useFormatBNtoPreciseStringAndNumber } from '../../hooks/useFormatBNWithDecimals';
+import { formatBNtoPreciseStringAndNumber } from '../../hooks/formatBNWithDecimals';
 import { IERC20Metadata__factory } from '~/chain/newContracts';
 import { BigNumber } from 'ethers';
 
@@ -12,6 +12,6 @@ export const getBalanceOf = async (
   const contract = IERC20Metadata__factory.connect(contract_address, providerOrSigner);
   const balance = await contract.balanceOf(wallet_address);
   const decimals = await getDecimals(contract, providerOrSigner);
-  const formattedBalance = useFormatBNtoPreciseStringAndNumber(balance, decimals);
+  const formattedBalance = formatBNtoPreciseStringAndNumber(balance, decimals);
   return formattedBalance;
 };

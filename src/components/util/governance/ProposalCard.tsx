@@ -10,7 +10,7 @@ import { SpecialComponents } from 'react-markdown/lib/ast-to-react';
 import remarkGfm from 'remark-gfm';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import ProposalDetails from './proposal';
-import { useFormatBNWithDecimals } from '../../../hooks/useFormatBNWithDecimals';
+import { formatBNWithDecimals } from '../../../hooks/formatBNWithDecimals';
 import VoteButton from './VoteButton';
 import { getProposalInfo, ProposalInfo, getProposalState } from '../../../contracts/GovernorCharlieDelegate';
 import { useLight } from '../../../hooks/useLight';
@@ -327,11 +327,9 @@ export const ProposalCard = (props: ProposalCardProps) => {
                 Description
               </Typography>
               <Box fontWeight={400} sx={{ '& h1': { lineHeight: 1 } }}>
-                <ReactMarkdown
-                  children={expandedContent}
-                  components={markdownComponentConfig}
-                  remarkPlugins={[remarkGfm]}
-                />
+                <ReactMarkdown components={markdownComponentConfig} remarkPlugins={[remarkGfm]}>
+                  {expandedContent}
+                </ReactMarkdown>
               </Box>
               {status === 1 && (
                 <VoteButton
@@ -460,6 +458,7 @@ const markdownComponentConfig: Partial<Omit<NormalComponents, keyof SpecialCompo
   img: ({ node, ...props }) => {
     return (
       <img
+        alt=''
         {...props}
         style={{
           display: 'block',

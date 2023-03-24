@@ -8,13 +8,14 @@ import { ModalInputContainer } from './ModalInputContainer';
 import { SwapIcon } from '../../../icons/misc/SwapIcon';
 import { ModalType, useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
 import { useLight } from '../../../../hooks/useLight';
-import { useVaultDataContext } from '../../../libs/vault-data-provider/VaultDataProvider';
 import SVGBox from '../../../icons/misc/SVGBox';
+import { useAppSelector } from '~/hooks/store';
 
 export const DepositCollateralContent = () => {
   const { setType, setCollateralDepositAmount, collateralToken, setCollateralDepositAmountMax } = useModalContext();
 
-  const { borrowingPower, tokens } = useVaultDataContext();
+  const tokens = useAppSelector((state) => state.collaterals.elements);
+  const { borrowingPower } = useAppSelector((state) => state.VC.userVault);
 
   const [disabled, setDisabled] = useState(true);
   const [focus, setFocus] = useState(false);
@@ -64,7 +65,7 @@ export const DepositCollateralContent = () => {
       <Box textAlign='right' mb={1}>
         <Typography variant='label_semi' color={formatColor(neutral.gray3)}>
           {' '}
-          Wallet Balance: {Number(collateralToken?.wallet_amount_str!).toFixed(2)} {collateralToken?.ticker}
+          Wallet Balance: {Number(collateralToken?.wallet_amount_str).toFixed(2)} {collateralToken?.ticker}
         </Typography>
       </Box>
 

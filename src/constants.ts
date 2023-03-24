@@ -13,6 +13,7 @@ export const USDA_DECIMALS = 18;
 // temporary for use forks
 export const BACKUP_PROVIDER = import.meta.env.VITE_BACKUP_PROVIDER;
 export const VAULT_CONTROLLER_ADDRESS = '0x773330693cb7d5D233348E25809770A32483A940';
+export const CURVE_MASTER_ADDRESS = '0xd977422c9eE9B646f64A4C4389a6C98ad356d8C4';
 
 // remove all, dont apply:
 export const STAGING_ANALYTICS_URL = 'https://ip-stats-api.staging.gfx.town';

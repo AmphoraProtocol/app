@@ -8,13 +8,13 @@ import { BaseModal } from './BaseModal';
 import { useLight } from '~/hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
-import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { locale } from '~/locale';
 import { depositCollateral } from '~/contracts/Vault';
 import { hasTokenAllowance } from '~/contracts/misc/hasAllowance';
 import { useRolodexContext } from '~/components/libs/rolodex-data-provider/RolodexDataProvider';
 import { getAllowance } from '~/contracts/ERC20/getAllowance';
 import { approveCollateral } from '~/contracts/ERC20/approveCollateral';
+import { useAppSelector } from '~/hooks/store';
 
 export const DepositCollateralConfirmationModal = () => {
   const {
@@ -30,7 +30,7 @@ export const DepositCollateralConfirmationModal = () => {
   const { provider, currentAccount, currentSigner } = useWeb3Context();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
-  const { vaultAddress } = useVaultDataContext();
+  const { vaultAddress } = useAppSelector((state) => state.VC.userVault);
   const [hasAllowance, setHasAllowance] = useState(false);
   const rolodex = useRolodexContext();
   const [hasCollateralAllowance, setHasCollateralAllowance] = useState(false);
@@ -68,12 +68,10 @@ export const DepositCollateralConfirmationModal = () => {
 
   const handleDepositConfirmationRequest = async () => {
     try {
-      let attempt: ContractTransaction;
-
-      attempt = await depositCollateral(
+      const attempt = await depositCollateral(
         amount!,
         collateralToken.address,
-        provider?.getSigner(currentAccount)!,
+        provider?.getSigner(currentAccount),
         vaultAddress!,
       );
       updateTransactionState(attempt!);
@@ -100,10 +98,10 @@ export const DepositCollateralConfirmationModal = () => {
     setLoadmsg(locale('CheckWallet'));
     try {
       if (amount) {
-        let attempt = await approveCollateral(
+        const attempt = await approveCollateral(
           amount,
           collateralToken.address,
-          provider?.getSigner(currentAccount)!,
+          provider?.getSigner(currentAccount),
           vaultAddress!,
         );
 

@@ -8,10 +8,10 @@ import SVGBox from '../../icons/misc/SVGBox';
 import { useAppGovernanceContext } from '../../libs/app-governance-provider/AppGovernanceProvider';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
-import { useVaultDataContext } from '../../libs/vault-data-provider/VaultDataProvider';
 import { useWalletModalContext } from '../../libs/wallet-modal-provider/WalletModalProvider';
 import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { ToolTip } from '../tooltip/ToolTip';
+import { useAppSelector } from '~/hooks/store';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -37,10 +37,11 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   const rolodex = useRolodexContext();
   const { connected } = useWeb3Context();
   const { setIsWalletModalOpen } = useWalletModalContext();
-  const { tokens } = useVaultDataContext();
+  const tokens = useAppSelector((state) => state.collaterals.elements);
+
   const { setType, setCollateralToken, updateTransactionState } = useModalContext();
-  const { hasVault, vaultAddress } = useVaultDataContext();
   const { setDelegateToken } = useAppGovernanceContext();
+  const userVault = useAppSelector((state) => state.VC.userVault);
 
   const {
     tokenName,
@@ -74,7 +75,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   const handleDWClick = (modalType: ModalType) => {
     if (!connected) {
       setIsWalletModalOpen(true);
-    } else if (!hasVault && !vaultAddress) {
+    } else if (!userVault.vaultID && !userVault.vaultAddress) {
       openVault();
     } else {
       setCollateralToken((tokens as any)[tokenTicker]);

@@ -1,5 +1,3 @@
-import { BigNumber } from 'ethers';
-
 export interface Token {
   name: string;
   address: string;
@@ -8,11 +6,11 @@ export interface Token {
   decimals: number;
 
   wallet_balance?: string;
-  wallet_amount?: BigNumber;
+  wallet_amount?: string;
   wallet_amount_str?: string;
 
   vault_balance?: string;
-  vault_amount?: BigNumber;
+  vault_amount?: string;
   vault_amount_str?: string;
 
   token_LTV?: number;

@@ -49,7 +49,9 @@ export const DepositSUSDConfirmationModal = () => {
       setLoadmsg(locale('CheckWallet'));
       try {
         const depositTransaction = await depositUSDA(
-          SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`)),
+          SUSD.maxDeposit
+            ? BN(SUSD_TOKEN.wallet_amount!)
+            : BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`)),
           rolodex,
           currentSigner!,
         );

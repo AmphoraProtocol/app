@@ -8,8 +8,8 @@ import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
 import { SwapIcon } from '../../../icons/misc/SwapIcon';
 import { ModalType, useModalContext } from '../../../libs/modal-content-provider/ModalContentProvider';
-import { useVaultDataContext } from '../../../libs/vault-data-provider/VaultDataProvider';
 import { useLight } from '../../../../hooks/useLight';
+import { useAppSelector } from '~/hooks/store';
 
 export const WithdrawCollateralContent = () => {
   const {
@@ -21,8 +21,8 @@ export const WithdrawCollateralContent = () => {
   } = useModalContext();
 
   const isLight = useLight();
-  const { borrowingPower, accountLiability, tokens } = useVaultDataContext();
-
+  const { borrowingPower, accountLiability } = useAppSelector((state) => state.VC.userVault);
+  const tokens = useAppSelector((state) => state.collaterals.elements);
   const [inputAmount, setInputAmount] = useState('');
 
   const [focus, setFocus] = useState(false);

@@ -5,12 +5,7 @@ import { ProtocolStatsCard } from '../components/util/cards';
 import { StatsMeter } from '../components/util/statsMeter';
 import { UserStats } from '../components/util/UserStats';
 import { useRolodexContext } from '../components/libs/rolodex-data-provider/RolodexDataProvider';
-import { useEffect, useState } from 'react';
-import { useVaultDataContext } from '../components/libs/vault-data-provider/VaultDataProvider';
 import Cookies from 'universal-cookie';
-import fetchVaultOf from '../contracts/Vault/fetchVaultOf';
-import { getTotalSupply, getReserveRatioPercentage } from '../contracts/USDA';
-import { BN } from '../easy/bn';
 import { GweiBlockText, TitleText } from '../components/util/text';
 import { SingleStatCard } from '../components/util/cards';
 import { InverseButton } from '../components/util/button';
@@ -22,8 +17,10 @@ import { useLight } from '../hooks/useLight';
 import { UserIPTVault } from '../components/util/UserStats/UserIPTVault';
 import SVGBox from '../components/icons/misc/SVGBox';
 import { RedirectTo } from '../components/util/redirect';
-import getAPRs from '../contracts/USDA/getAPRs';
-import { useStableCoinsContext } from '~/components/libs/stable-coins-provider/StableCoinsProvider';
+import { useAppDispatch, useAppSelector } from '~/hooks/store';
+import { useEffect } from 'react';
+import { CollateralActions, VCActions } from '~/store';
+import { getTokensListOnCurrentChain } from '~/chain/tokens';
 
 const Dashboard = () => {
   // temporary
@@ -33,50 +30,25 @@ const Dashboard = () => {
   const isLight = useLight();
   const { setType } = useModalContext();
   const theme = useTheme();
-  const { currentAccount, dataBlock, chainId } = useWeb3Context();
   const rolodex = useRolodexContext();
-  const { setVaultID, setVaultAddress, accountLiability, hasVault, borrowingPower } = useVaultDataContext();
-
-  const [totalSupply, setTotalSupply] = useState<string>('');
-  const [totalSUSDDeposited, setTotalSUSDDeposited] = useState<string>('');
-  const { SUSD } = useStableCoinsContext();
-  const [reserveRatio, setReserveRatio] = useState('0');
-  const [borrowAPR, setBorrowAPR] = useState(0);
-  const [depositAPR, setDepositAPR] = useState(0);
+  const vaultControllerData = useAppSelector((state) => state.VC);
+  const dispatch = useAppDispatch();
+  const { dataBlock, currentAccount, chainId, signerOrProvider, connected } = useWeb3Context();
 
   useEffect(() => {
-    if (currentAccount && rolodex) {
-      fetchVaultOf(currentAccount, rolodex).then((res) => {
-        if (res !== null) {
-          setVaultID(res.vaultID);
-          setVaultAddress(res.vaultAddress);
-        }
-      });
-    }
-  }, [currentAccount, rolodex]);
+    dispatch(VCActions.getVCData({ userAddress: currentAccount }));
+  }, [currentAccount, dataBlock, chainId]);
 
   useEffect(() => {
-    if (rolodex && rolodex.SUSD && rolodex.addressUSDA) {
-      rolodex.SUSD.balanceOf(rolodex.addressUSDA).then((val) => {
-        setTotalSUSDDeposited(val.div(BN(`1e${SUSD.decimals}`)).toLocaleString());
-      });
-
-      getTotalSupply(rolodex).then(setTotalSupply);
-      getReserveRatioPercentage(rolodex).then(setReserveRatio);
-    }
-
-    if (rolodex) {
-      getAPRs(rolodex)
-        .then(({ borrow, deposit }) => {
-          setBorrowAPR(borrow);
-          setDepositAPR(deposit);
-        })
-        .catch(() => {
-          setBorrowAPR(0);
-          setDepositAPR(0);
-        });
-    }
-  }, [rolodex, dataBlock, chainId]);
+    dispatch(
+      CollateralActions.getCollateralData({
+        userAddress: currentAccount,
+        vaultAddress: vaultControllerData.userVault.vaultAddress,
+        tokens: getTokensListOnCurrentChain(chainId),
+        signerOrProvider,
+      }),
+    );
+  }, [currentAccount, vaultControllerData.userVault.vaultAddress]);
 
   return (
     <Box
@@ -118,7 +90,10 @@ const Dashboard = () => {
             <>
               <SVGBox svg_name={`globe_${isLight ? 'light' : 'dark'}`} width={36} height={36} sx={{ mr: 3 }} />
 
-              <TitleText title='USDA in Circulation' text={Math.round(Number(totalSupply)).toLocaleString()} />
+              <TitleText
+                title='USDA in Circulation'
+                text={Math.round(vaultControllerData.usdaSupply).toLocaleString()}
+              />
             </>
           </SingleStatCard>
 
@@ -126,14 +101,17 @@ const Dashboard = () => {
             <>
               <SVGBox svg_name={`cube_${isLight ? 'light' : 'dark'}`} width={36} height={36} sx={{ mr: 3 }} />
 
-              <TitleText title='sUSD in Reserve' text={Math.round(Number(totalSUSDDeposited)).toLocaleString()} />
+              <TitleText
+                title='sUSD in Reserve'
+                text={Math.round(Number(vaultControllerData.totalSUSDDeposited)).toLocaleString()}
+              />
             </>
           </SingleStatCard>
           <SingleStatCard>
             <>
               <SVGBox svg_name={`cylinder_${isLight ? 'light' : 'dark'}`} width={36} height={36} sx={{ mr: 3 }} />
 
-              <TitleText title='Reserve Ratio' text={`${reserveRatio}%`} />
+              <TitleText title='Reserve Ratio' text={`${vaultControllerData.reserveRatio}%`} />
             </>
           </SingleStatCard>
         </Box>
@@ -183,12 +161,12 @@ const Dashboard = () => {
                   title={`Borrowing Power`}
                   tooltipContent='Maximum amount that your vault can borrow, calculated by the sum of collateral values discounted by the LTV'
                   text={
-                    borrowingPower !== null
-                      ? borrowingPower?.toLocaleString('en-US', {
+                    vaultControllerData.userVault.borrowingPower
+                      ? vaultControllerData.userVault.borrowingPower.toLocaleString('en-US', {
                           style: 'currency',
                           currency: 'USD',
                         })
-                      : null
+                      : '0'
                   }
                 />
               </SingleStatCard>
@@ -196,14 +174,14 @@ const Dashboard = () => {
                 <TitleTextToolTip
                   title={`Deposit APR`}
                   tooltipContent='Current annualized rate paid to USDA holders'
-                  text={depositAPR !== null ? depositAPR.toFixed(2) + '%' : null}
+                  text={vaultControllerData.depositAPR ? vaultControllerData.depositAPR.toFixed(2) + '%' : null}
                 />
               </SingleStatCard>
               <SingleStatCard>
                 <TitleTextToolTip
                   title={`Borrow APR`}
                   tooltipContent='Current annualized rate paid by USDA borrowers'
-                  text={borrowAPR !== null ? borrowAPR.toFixed(2) + '%' : null}
+                  text={vaultControllerData.borrowAPR ? vaultControllerData.borrowAPR.toFixed(2) + '%' : null}
                 />
               </SingleStatCard>
             </Box>
@@ -226,10 +204,14 @@ const Dashboard = () => {
                 <TitleTextToolTip
                   title={`USDA Borrowed`}
                   tooltipContent='The amount of USDA your vault is currently borrowing. This increases as interest accrue.'
-                  text={accountLiability !== null ? '$' + Math.round(accountLiability).toLocaleString() : null}
+                  text={
+                    vaultControllerData.userVault.accountLiability
+                      ? '$' + Math.round(vaultControllerData.userVault.accountLiability).toLocaleString()
+                      : '0'
+                  }
                 />
 
-                {hasVault ? (
+                {vaultControllerData.userVault.vaultID ? (
                   <Box display='grid' alignItems='center' columnGap={2} width='100%' gridTemplateColumns='1fr 1fr'>
                     <InverseButton
                       sx={{ width: '100%', height: { xs: 37, md: 48 } }}

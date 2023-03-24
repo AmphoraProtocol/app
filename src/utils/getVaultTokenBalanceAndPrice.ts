@@ -2,15 +2,14 @@ import { Address, getAddress } from 'viem';
 import { BigNumber, constants } from 'ethers';
 
 import { viemClient } from '~/App';
-import { ZERO_ADDRESS } from '~/constants';
-import { IERC20Metadata__factory, IOracleRelay__factory } from '~/chain/newContracts';
-import { Rolodex } from '~/chain/rolodex/rolodex';
+import { IERC20Metadata__factory, IOracleRelay__factory, IVaultController } from '~/chain/newContracts';
 import { BN } from '~/easy/bn';
-import { useFormatBigInt, useFormatBNWithDecimals } from '~/hooks/useFormatBNWithDecimals';
+import { formatBigInt, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
 import { Token } from '~/types/token';
 
 export const getVaultTokenBalanceAndPrice = async (
-  vault_address: string | undefined,
+  oracleAddress: string,
+  vaultAddress: string | undefined,
   token: Token,
 ): Promise<{
   balance: number;
@@ -25,7 +24,7 @@ export const getVaultTokenBalanceAndPrice = async (
     } as const;
 
     const oracleContract = {
-      address: token.oracle_address as Address,
+      address: oracleAddress as Address,
       abi: IOracleRelay__factory.abi,
     } as const;
 
@@ -38,7 +37,7 @@ export const getVaultTokenBalanceAndPrice = async (
         {
           ...erc20Contract,
           functionName: 'balanceOf',
-          args: [getAddress(vault_address || ZERO_ADDRESS)],
+          args: [getAddress(vaultAddress || '')],
         },
         {
           ...oracleContract,
@@ -50,16 +49,14 @@ export const getVaultTokenBalanceAndPrice = async (
     let balance = 0;
     let unformattedBalance = '0';
     let balanceBN = BigNumber.from(0);
-
-    if (vault_address !== undefined) {
-      const formattedBalanceOf = useFormatBigInt(balanceOf.result!, decimals.result!);
-
+    if (balanceOf.result) {
+      const formattedBalanceOf = formatBigInt(balanceOf.result!, decimals.result!);
       balance = formattedBalanceOf.num;
       unformattedBalance = formattedBalanceOf.str;
       balanceBN = formattedBalanceOf.bn;
     }
 
-    const livePrice = useFormatBNWithDecimals(BN(currentValue.result?.toString())!, 18 + (18 - decimals.result!));
+    const livePrice = formatBNWithDecimals(BN(currentValue.result?.toString())!, 18 + (18 - decimals.result!));
 
     return { balance, livePrice, unformattedBalance, balanceBN };
   } catch (e) {
@@ -75,16 +72,16 @@ export const getVaultTokenBalanceAndPrice = async (
 
 export const getVaultTokenMetadata = async (
   token_address: string,
-  rolodex: Rolodex,
+  VC: IVaultController,
 ): Promise<{ ltv: number; penalty: number; capped: boolean; cappedPercent: number; oracle: string }> => {
-  const tokenData = await rolodex?.VC!.tokenCollateralInfo(token_address);
+  const tokenData = await VC.tokenCollateralInfo(token_address);
 
   const ltv = tokenData.ltv.div(BN('1e16')).toNumber();
   const penalty = tokenData.liquidationIncentive.div(BN('1e16')).toNumber();
   const capped = !constants.MaxUint256.eq(tokenData.cap);
   const oracle = tokenData.oracle;
 
-  let cappedPercent: number = 0;
+  let cappedPercent = 0;
   if (capped) {
     const totalDeposited = tokenData.totalDeposited;
     cappedPercent = totalDeposited!.div(tokenData.cap).toNumber() * 100;
