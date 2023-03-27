@@ -22,8 +22,10 @@ export interface Token {
   capped_address?: string;
   capped_percent?: number;
   oracle_address?: string;
-  oracle_type?: string;
+  oracle_type?: OracleType;
 }
+
+export type OracleType = '' | 'Chainlink' | 'Uniswap' | 'Price';
 
 export interface InitializeTokenProps {
   name: string;

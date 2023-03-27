@@ -2,23 +2,36 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { IOracleRelay, IOracleRelayInterface } from "../IOracleRelay";
+import { Contract, Signer, utils } from 'ethers';
+import type { Provider } from '@ethersproject/providers';
+import type { IOracleRelay, IOracleRelayInterface } from '../IOracleRelay';
 
 const _abi = [
   {
     inputs: [],
-    name: "currentValue",
+    name: 'currentValue',
     outputs: [
       {
-        internalType: "uint256",
-        name: "_currentValue",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_currentValue',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'oracleType',
+    outputs: [
+      {
+        internalType: 'enum IOracleRelay.OracleType',
+        name: '_type',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
 ] as const;
 
@@ -27,10 +40,7 @@ export class IOracleRelay__factory {
   static createInterface(): IOracleRelayInterface {
     return new utils.Interface(_abi) as IOracleRelayInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IOracleRelay {
+  static connect(address: string, signerOrProvider: Signer | Provider): IOracleRelay {
     return new Contract(address, _abi, signerOrProvider) as IOracleRelay;
   }
 }

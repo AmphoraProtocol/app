@@ -12,20 +12,10 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-  PromiseOrValue,
-} from "./common";
+} from 'ethers';
+import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent, PromiseOrValue } from './common';
 
 export declare namespace IVaultController {
   export type CollateralInfoStruct = {
@@ -35,6 +25,9 @@ export declare namespace IVaultController {
     totalDeposited: PromiseOrValue<BigNumberish>;
     liquidationIncentive: PromiseOrValue<BigNumberish>;
     oracle: PromiseOrValue<string>;
+    collateralType: PromiseOrValue<BigNumberish>;
+    crvRewardsContract: PromiseOrValue<string>;
+    poolId: PromiseOrValue<BigNumberish>;
   };
 
   export type CollateralInfoStructOutput = [
@@ -43,7 +36,10 @@ export declare namespace IVaultController {
     BigNumber,
     BigNumber,
     BigNumber,
-    string
+    string,
+    number,
+    string,
+    BigNumber,
   ] & {
     tokenId: BigNumber;
     ltv: BigNumber;
@@ -51,6 +47,9 @@ export declare namespace IVaultController {
     totalDeposited: BigNumber;
     liquidationIncentive: BigNumber;
     oracle: string;
+    collateralType: number;
+    crvRewardsContract: string;
+    poolId: BigNumber;
   };
 
   export type VaultSummaryStruct = {
@@ -61,13 +60,7 @@ export declare namespace IVaultController {
     tokenBalances: PromiseOrValue<BigNumberish>[];
   };
 
-  export type VaultSummaryStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    string[],
-    BigNumber[]
-  ] & {
+  export type VaultSummaryStructOutput = [BigNumber, BigNumber, BigNumber, string[], BigNumber[]] & {
     id: BigNumber;
     borrowingPower: BigNumber;
     vaultLiability: BigNumber;
@@ -78,412 +71,288 @@ export declare namespace IVaultController {
 
 export interface IVaultControllerInterface extends utils.Interface {
   functions: {
-    "amountToSolvency(uint96)": FunctionFragment;
-    "borrowUSDA(uint96,uint192)": FunctionFragment;
-    "borrowUSDAto(uint96,uint192,address)": FunctionFragment;
-    "borrowsUSDto(uint96,uint192,address)": FunctionFragment;
-    "calculateInterest()": FunctionFragment;
-    "changeProtocolFee(uint192)": FunctionFragment;
-    "checkVault(uint96)": FunctionFragment;
-    "curveMaster()": FunctionFragment;
-    "initialize(address,address[])": FunctionFragment;
-    "interestFactor()": FunctionFragment;
-    "lastInterestTime()": FunctionFragment;
-    "liquidateVault(uint96,address,uint256)": FunctionFragment;
-    "mintVault()": FunctionFragment;
-    "modifyTotalDeposited(uint96,uint256,address,bool)": FunctionFragment;
-    "pause()": FunctionFragment;
-    "protocolFee()": FunctionFragment;
-    "registerCurveMaster(address)": FunctionFragment;
-    "registerErc20(address,uint256,address,uint256,uint256)": FunctionFragment;
-    "registerUSDA(address)": FunctionFragment;
-    "repayAllUSDA(uint96)": FunctionFragment;
-    "repayUSDA(uint96,uint192)": FunctionFragment;
-    "tokenCap(address)": FunctionFragment;
-    "tokenCollateralInfo(address)": FunctionFragment;
-    "tokenId(address)": FunctionFragment;
-    "tokenLTV(address)": FunctionFragment;
-    "tokenLiquidationIncentive(address)": FunctionFragment;
-    "tokenTotalDeposited(address)": FunctionFragment;
-    "tokensOracle(address)": FunctionFragment;
-    "tokensRegistered()": FunctionFragment;
-    "tokensToLiquidate(uint96,address)": FunctionFragment;
-    "totalBaseLiability()": FunctionFragment;
-    "unpause()": FunctionFragment;
-    "updateRegisteredErc20(address,uint256,address,uint256,uint256)": FunctionFragment;
-    "vaultAddress(uint96)": FunctionFragment;
-    "vaultBorrowingPower(uint96)": FunctionFragment;
-    "vaultIDs(address)": FunctionFragment;
-    "vaultLiability(uint96)": FunctionFragment;
-    "vaultSummaries(uint96,uint96)": FunctionFragment;
-    "vaultsMinted()": FunctionFragment;
+    'VAULT_DEPLOYER()': FunctionFragment;
+    'amountToSolvency(uint96)': FunctionFragment;
+    'booster()': FunctionFragment;
+    'borrowUSDA(uint96,uint192)': FunctionFragment;
+    'borrowUSDAto(uint96,uint192,address)': FunctionFragment;
+    'borrowsUSDto(uint96,uint192,address)': FunctionFragment;
+    'calculateInterest()': FunctionFragment;
+    'changeClaimerContract(address)': FunctionFragment;
+    'changeCurveLpFee(uint256)': FunctionFragment;
+    'changeProtocolFee(uint192)': FunctionFragment;
+    'checkVault(uint96)': FunctionFragment;
+    'claimerContract()': FunctionFragment;
+    'curveLpRewardsFee()': FunctionFragment;
+    'curveMaster()': FunctionFragment;
+    'initialize(address,address[],address,uint256,address)': FunctionFragment;
+    'interestFactor()': FunctionFragment;
+    'lastInterestTime()': FunctionFragment;
+    'liquidateVault(uint96,address,uint256)': FunctionFragment;
+    'mintVault()': FunctionFragment;
+    'modifyTotalDeposited(uint96,uint256,address,bool)': FunctionFragment;
+    'pause()': FunctionFragment;
+    'protocolFee()': FunctionFragment;
+    'registerCurveMaster(address)': FunctionFragment;
+    'registerErc20(address,uint256,address,uint256,uint256,uint256)': FunctionFragment;
+    'registerUSDA(address)': FunctionFragment;
+    'repayAllUSDA(uint96)': FunctionFragment;
+    'repayUSDA(uint96,uint192)': FunctionFragment;
+    'tokenCap(address)': FunctionFragment;
+    'tokenCollateralInfo(address)': FunctionFragment;
+    'tokenCollateralType(address)': FunctionFragment;
+    'tokenCrvRewardsContract(address)': FunctionFragment;
+    'tokenId(address)': FunctionFragment;
+    'tokenLTV(address)': FunctionFragment;
+    'tokenLiquidationIncentive(address)': FunctionFragment;
+    'tokenPoolId(address)': FunctionFragment;
+    'tokenTotalDeposited(address)': FunctionFragment;
+    'tokensOracle(address)': FunctionFragment;
+    'tokensRegistered()': FunctionFragment;
+    'tokensToLiquidate(uint96,address)': FunctionFragment;
+    'totalBaseLiability()': FunctionFragment;
+    'unpause()': FunctionFragment;
+    'updateRegisteredErc20(address,uint256,address,uint256,uint256)': FunctionFragment;
+    'vaultAddress(uint96)': FunctionFragment;
+    'vaultBorrowingPower(uint96)': FunctionFragment;
+    'vaultIDs(address)': FunctionFragment;
+    'vaultLiability(uint96)': FunctionFragment;
+    'vaultSummaries(uint96,uint96)': FunctionFragment;
+    'vaultsMinted()': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "amountToSolvency"
-      | "borrowUSDA"
-      | "borrowUSDAto"
-      | "borrowsUSDto"
-      | "calculateInterest"
-      | "changeProtocolFee"
-      | "checkVault"
-      | "curveMaster"
-      | "initialize"
-      | "interestFactor"
-      | "lastInterestTime"
-      | "liquidateVault"
-      | "mintVault"
-      | "modifyTotalDeposited"
-      | "pause"
-      | "protocolFee"
-      | "registerCurveMaster"
-      | "registerErc20"
-      | "registerUSDA"
-      | "repayAllUSDA"
-      | "repayUSDA"
-      | "tokenCap"
-      | "tokenCollateralInfo"
-      | "tokenId"
-      | "tokenLTV"
-      | "tokenLiquidationIncentive"
-      | "tokenTotalDeposited"
-      | "tokensOracle"
-      | "tokensRegistered"
-      | "tokensToLiquidate"
-      | "totalBaseLiability"
-      | "unpause"
-      | "updateRegisteredErc20"
-      | "vaultAddress"
-      | "vaultBorrowingPower"
-      | "vaultIDs"
-      | "vaultLiability"
-      | "vaultSummaries"
-      | "vaultsMinted"
+      | 'VAULT_DEPLOYER'
+      | 'amountToSolvency'
+      | 'booster'
+      | 'borrowUSDA'
+      | 'borrowUSDAto'
+      | 'borrowsUSDto'
+      | 'calculateInterest'
+      | 'changeClaimerContract'
+      | 'changeCurveLpFee'
+      | 'changeProtocolFee'
+      | 'checkVault'
+      | 'claimerContract'
+      | 'curveLpRewardsFee'
+      | 'curveMaster'
+      | 'initialize'
+      | 'interestFactor'
+      | 'lastInterestTime'
+      | 'liquidateVault'
+      | 'mintVault'
+      | 'modifyTotalDeposited'
+      | 'pause'
+      | 'protocolFee'
+      | 'registerCurveMaster'
+      | 'registerErc20'
+      | 'registerUSDA'
+      | 'repayAllUSDA'
+      | 'repayUSDA'
+      | 'tokenCap'
+      | 'tokenCollateralInfo'
+      | 'tokenCollateralType'
+      | 'tokenCrvRewardsContract'
+      | 'tokenId'
+      | 'tokenLTV'
+      | 'tokenLiquidationIncentive'
+      | 'tokenPoolId'
+      | 'tokenTotalDeposited'
+      | 'tokensOracle'
+      | 'tokensRegistered'
+      | 'tokensToLiquidate'
+      | 'totalBaseLiability'
+      | 'unpause'
+      | 'updateRegisteredErc20'
+      | 'vaultAddress'
+      | 'vaultBorrowingPower'
+      | 'vaultIDs'
+      | 'vaultLiability'
+      | 'vaultSummaries'
+      | 'vaultsMinted',
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: 'VAULT_DEPLOYER', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'amountToSolvency', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'booster', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "amountToSolvency",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'borrowUSDA',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "borrowUSDA",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    functionFragment: 'borrowUSDAto',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
   ): string;
   encodeFunctionData(
-    functionFragment: "borrowUSDAto",
+    functionFragment: 'borrowsUSDto',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
+  ): string;
+  encodeFunctionData(functionFragment: 'calculateInterest', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'changeClaimerContract', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'changeCurveLpFee', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'changeProtocolFee', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'checkVault', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'claimerContract', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'curveLpRewardsFee', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'curveMaster', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'initialize',
     values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "borrowsUSDto",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "calculateInterest",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "changeProtocolFee",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "checkVault",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "curveMaster",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "initialize",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "interestFactor",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "lastInterestTime",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "liquidateVault",
-    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>[],
+      PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>
-    ]
+    ],
   ): string;
-  encodeFunctionData(functionFragment: "mintVault", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'interestFactor', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'lastInterestTime', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "modifyTotalDeposited",
+    functionFragment: 'liquidateVault',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
+  ): string;
+  encodeFunctionData(functionFragment: 'mintVault', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'modifyTotalDeposited',
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
-      PromiseOrValue<boolean>
-    ]
+      PromiseOrValue<boolean>,
+    ],
   ): string;
-  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'pause', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'protocolFee', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'registerCurveMaster', values: [PromiseOrValue<string>]): string;
   encodeFunctionData(
-    functionFragment: "protocolFee",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "registerCurveMaster",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "registerErc20",
+    functionFragment: 'registerErc20',
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+    ],
   ): string;
+  encodeFunctionData(functionFragment: 'registerUSDA', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'repayAllUSDA', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(
-    functionFragment: "registerUSDA",
-    values: [PromiseOrValue<string>]
+    functionFragment: 'repayUSDA',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
   ): string;
+  encodeFunctionData(functionFragment: 'tokenCap', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenCollateralInfo', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenCollateralType', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenCrvRewardsContract', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenId', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenLTV', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenLiquidationIncentive', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenPoolId', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenTotalDeposited', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokensOracle', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokensRegistered', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "repayAllUSDA",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'tokensToLiquidate',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>],
   ): string;
+  encodeFunctionData(functionFragment: 'totalBaseLiability', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'unpause', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "repayUSDA",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenCap",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenCollateralInfo",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenId",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenLTV",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenLiquidationIncentive",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenTotalDeposited",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokensOracle",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokensRegistered",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokensToLiquidate",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "totalBaseLiability",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "updateRegisteredErc20",
+    functionFragment: 'updateRegisteredErc20',
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+      PromiseOrValue<BigNumberish>,
+    ],
   ): string;
+  encodeFunctionData(functionFragment: 'vaultAddress', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'vaultBorrowingPower', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'vaultIDs', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'vaultLiability', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(
-    functionFragment: "vaultAddress",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'vaultSummaries',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
   ): string;
-  encodeFunctionData(
-    functionFragment: "vaultBorrowingPower",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "vaultIDs",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "vaultLiability",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "vaultSummaries",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "vaultsMinted",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: 'vaultsMinted', values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "amountToSolvency",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "borrowUSDA", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "borrowUSDAto",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "borrowsUSDto",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "calculateInterest",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "changeProtocolFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "checkVault", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "curveMaster",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "interestFactor",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "lastInterestTime",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "liquidateVault",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "mintVault", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "modifyTotalDeposited",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "protocolFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "registerCurveMaster",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "registerErc20",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "registerUSDA",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "repayAllUSDA",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "repayUSDA", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "tokenCap", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "tokenCollateralInfo",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "tokenId", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "tokenLTV", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "tokenLiquidationIncentive",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokenTotalDeposited",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensOracle",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensRegistered",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensToLiquidate",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "totalBaseLiability",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "updateRegisteredErc20",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "vaultAddress",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "vaultBorrowingPower",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "vaultIDs", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "vaultLiability",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "vaultSummaries",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "vaultsMinted",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'VAULT_DEPLOYER', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'amountToSolvency', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'booster', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'borrowUSDA', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'borrowUSDAto', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'borrowsUSDto', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'calculateInterest', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'changeClaimerContract', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'changeCurveLpFee', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'changeProtocolFee', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'checkVault', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimerContract', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'curveLpRewardsFee', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'curveMaster', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'interestFactor', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'lastInterestTime', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'liquidateVault', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'mintVault', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'modifyTotalDeposited', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'pause', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'protocolFee', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'registerCurveMaster', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'registerErc20', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'registerUSDA', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'repayAllUSDA', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'repayUSDA', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenCap', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenCollateralInfo', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenCollateralType', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenCrvRewardsContract', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenId', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenLTV', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenLiquidationIncentive', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenPoolId', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenTotalDeposited', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokensOracle', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokensRegistered', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokensToLiquidate', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'totalBaseLiability', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'unpause', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'updateRegisteredErc20', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'vaultAddress', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'vaultBorrowingPower', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'vaultIDs', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'vaultLiability', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'vaultSummaries', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'vaultsMinted', data: BytesLike): Result;
 
   events: {
-    "BorrowUSDA(uint256,address,uint256)": EventFragment;
-    "InterestEvent(uint64,uint192,uint256)": EventFragment;
-    "Liquidate(uint256,address,uint256,uint256)": EventFragment;
-    "NewProtocolFee(uint192)": EventFragment;
-    "NewVault(address,uint256,address)": EventFragment;
-    "RegisterCurveMaster(address)": EventFragment;
-    "RegisteredErc20(address,uint256,address,uint256,uint256)": EventFragment;
-    "RepayUSDA(uint256,address,uint256)": EventFragment;
-    "UpdateRegisteredErc20(address,uint256,address,uint256,uint256)": EventFragment;
+    'BorrowUSDA(uint256,address,uint256)': EventFragment;
+    'ChangedClaimerContract(address,address)': EventFragment;
+    'ChangedCurveLpFee(uint256,uint256)': EventFragment;
+    'InterestEvent(uint64,uint192,uint256)': EventFragment;
+    'Liquidate(uint256,address,uint256,uint256)': EventFragment;
+    'NewProtocolFee(uint192)': EventFragment;
+    'NewVault(address,uint256,address)': EventFragment;
+    'RegisterCurveMaster(address)': EventFragment;
+    'RegisteredErc20(address,uint256,address,uint256,uint256)': EventFragment;
+    'RepayUSDA(uint256,address,uint256)': EventFragment;
+    'UpdateRegisteredErc20(address,uint256,address,uint256,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "BorrowUSDA"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "InterestEvent"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Liquidate"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NewProtocolFee"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NewVault"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RegisterCurveMaster"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RegisteredErc20"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RepayUSDA"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateRegisteredErc20"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BorrowUSDA'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ChangedClaimerContract'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ChangedCurveLpFee'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'InterestEvent'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Liquidate'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'NewProtocolFee'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'NewVault'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'RegisterCurveMaster'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'RegisteredErc20'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'RepayUSDA'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'UpdateRegisteredErc20'): EventFragment;
 }
 
 export interface BorrowUSDAEventObject {
@@ -491,22 +360,32 @@ export interface BorrowUSDAEventObject {
   _vaultAddress: string;
   _borrowAmount: BigNumber;
 }
-export type BorrowUSDAEvent = TypedEvent<
-  [BigNumber, string, BigNumber],
-  BorrowUSDAEventObject
->;
+export type BorrowUSDAEvent = TypedEvent<[BigNumber, string, BigNumber], BorrowUSDAEventObject>;
 
 export type BorrowUSDAEventFilter = TypedEventFilter<BorrowUSDAEvent>;
+
+export interface ChangedClaimerContractEventObject {
+  _oldClaimerContract: string;
+  _newClaimerContract: string;
+}
+export type ChangedClaimerContractEvent = TypedEvent<[string, string], ChangedClaimerContractEventObject>;
+
+export type ChangedClaimerContractEventFilter = TypedEventFilter<ChangedClaimerContractEvent>;
+
+export interface ChangedCurveLpFeeEventObject {
+  _oldFee: BigNumber;
+  _newFee: BigNumber;
+}
+export type ChangedCurveLpFeeEvent = TypedEvent<[BigNumber, BigNumber], ChangedCurveLpFeeEventObject>;
+
+export type ChangedCurveLpFeeEventFilter = TypedEventFilter<ChangedCurveLpFeeEvent>;
 
 export interface InterestEventEventObject {
   _epoch: BigNumber;
   _amount: BigNumber;
   _curveVal: BigNumber;
 }
-export type InterestEventEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
-  InterestEventEventObject
->;
+export type InterestEventEvent = TypedEvent<[BigNumber, BigNumber, BigNumber], InterestEventEventObject>;
 
 export type InterestEventEventFilter = TypedEventFilter<InterestEventEvent>;
 
@@ -516,20 +395,14 @@ export interface LiquidateEventObject {
   _usdaToRepurchase: BigNumber;
   _tokensToLiquidate: BigNumber;
 }
-export type LiquidateEvent = TypedEvent<
-  [BigNumber, string, BigNumber, BigNumber],
-  LiquidateEventObject
->;
+export type LiquidateEvent = TypedEvent<[BigNumber, string, BigNumber, BigNumber], LiquidateEventObject>;
 
 export type LiquidateEventFilter = TypedEventFilter<LiquidateEvent>;
 
 export interface NewProtocolFeeEventObject {
   _protocolFee: BigNumber;
 }
-export type NewProtocolFeeEvent = TypedEvent<
-  [BigNumber],
-  NewProtocolFeeEventObject
->;
+export type NewProtocolFeeEvent = TypedEvent<[BigNumber], NewProtocolFeeEventObject>;
 
 export type NewProtocolFeeEventFilter = TypedEventFilter<NewProtocolFeeEvent>;
 
@@ -538,23 +411,16 @@ export interface NewVaultEventObject {
   _vaultId: BigNumber;
   _vaultOwner: string;
 }
-export type NewVaultEvent = TypedEvent<
-  [string, BigNumber, string],
-  NewVaultEventObject
->;
+export type NewVaultEvent = TypedEvent<[string, BigNumber, string], NewVaultEventObject>;
 
 export type NewVaultEventFilter = TypedEventFilter<NewVaultEvent>;
 
 export interface RegisterCurveMasterEventObject {
   _curveMasterAddress: string;
 }
-export type RegisterCurveMasterEvent = TypedEvent<
-  [string],
-  RegisterCurveMasterEventObject
->;
+export type RegisterCurveMasterEvent = TypedEvent<[string], RegisterCurveMasterEventObject>;
 
-export type RegisterCurveMasterEventFilter =
-  TypedEventFilter<RegisterCurveMasterEvent>;
+export type RegisterCurveMasterEventFilter = TypedEventFilter<RegisterCurveMasterEvent>;
 
 export interface RegisteredErc20EventObject {
   _tokenAddress: string;
@@ -575,10 +441,7 @@ export interface RepayUSDAEventObject {
   _vaultAddress: string;
   _repayAmount: BigNumber;
 }
-export type RepayUSDAEvent = TypedEvent<
-  [BigNumber, string, BigNumber],
-  RepayUSDAEventObject
->;
+export type RepayUSDAEvent = TypedEvent<[BigNumber, string, BigNumber], RepayUSDAEventObject>;
 
 export type RepayUSDAEventFilter = TypedEventFilter<RepayUSDAEvent>;
 
@@ -594,8 +457,7 @@ export type UpdateRegisteredErc20Event = TypedEvent<
   UpdateRegisteredErc20EventObject
 >;
 
-export type UpdateRegisteredErc20EventFilter =
-  TypedEventFilter<UpdateRegisteredErc20Event>;
+export type UpdateRegisteredErc20EventFilter = TypedEventFilter<UpdateRegisteredErc20Event>;
 
 export interface IVaultController extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -607,16 +469,12 @@ export interface IVaultController extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -624,93 +482,100 @@ export interface IVaultController extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    VAULT_DEPLOYER(overrides?: CallOverrides): Promise<[string] & { _vaultDeployer: string }>;
+
     amountToSolvency(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _amountToSolvency: BigNumber }>;
+
+    booster(overrides?: CallOverrides): Promise<[string] & { _booster: string }>;
 
     borrowUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     borrowUSDAto(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     borrowsUSDto(
       _id: PromiseOrValue<BigNumberish>,
       _susdAmount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    calculateInterest(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    calculateInterest(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
+
+    changeClaimerContract(
+      _newClaimerContract: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    changeCurveLpFee(
+      _newFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     changeProtocolFee(
       _newProtocolFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     checkVault(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean] & { _overCollateralized: boolean }>;
 
-    curveMaster(
-      overrides?: CallOverrides
-    ): Promise<[string] & { _curveMaster: string }>;
+    claimerContract(overrides?: CallOverrides): Promise<[string] & { _claimerContract: string }>;
+
+    curveLpRewardsFee(overrides?: CallOverrides): Promise<[BigNumber] & { _fee: BigNumber }>;
+
+    curveMaster(overrides?: CallOverrides): Promise<[string] & { _curveMaster: string }>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      _claimerContract: PromiseOrValue<string>,
+      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
+      _vaultDeployer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    interestFactor(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { _interestFactor: BigNumber }>;
+    interestFactor(overrides?: CallOverrides): Promise<[BigNumber] & { _interestFactor: BigNumber }>;
 
-    lastInterestTime(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { _lastInterestTime: BigNumber }>;
+    lastInterestTime(overrides?: CallOverrides): Promise<[BigNumber] & { _lastInterestTime: BigNumber }>;
 
     liquidateVault(
       _id: PromiseOrValue<BigNumberish>,
       _assetAddress: PromiseOrValue<string>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    mintVault(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    mintVault(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
     modifyTotalDeposited(
       _vaultID: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
       _increase: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    pause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    pause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
-    protocolFee(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { _protocolFee: BigNumber }>;
+    protocolFee(overrides?: CallOverrides): Promise<[BigNumber] & { _protocolFee: BigNumber }>;
 
     registerCurveMaster(
       _masterCurveAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     registerErc20(
@@ -719,81 +584,91 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      _poolId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     registerUSDA(
       _usdaAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     repayAllUSDA(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     repayUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     tokenCap(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _cap: BigNumber }>;
 
     tokenCollateralInfo(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [IVaultController.CollateralInfoStructOutput] & {
         _collateralInfo: IVaultController.CollateralInfoStructOutput;
       }
     >;
 
+    tokenCollateralType(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<[number] & { _type: number }>;
+
+    tokenCrvRewardsContract(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<[string] & { _crvRewardsContract: string }>;
+
     tokenId(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _tokenId: BigNumber }>;
 
     tokenLTV(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _ltv: BigNumber }>;
 
     tokenLiquidationIncentive(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _liquidationIncentive: BigNumber }>;
+
+    tokenPoolId(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber] & { _poolId: BigNumber }>;
 
     tokenTotalDeposited(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _totalDeposited: BigNumber }>;
 
     tokensOracle(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[string] & { _oracle: string }>;
 
-    tokensRegistered(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { _tokensRegistered: BigNumber }>;
+    tokensRegistered(overrides?: CallOverrides): Promise<[BigNumber] & { _tokensRegistered: BigNumber }>;
 
     tokensToLiquidate(
       _id: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _tokensToLiquidate: BigNumber }>;
 
-    totalBaseLiability(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { _totalBaseLiability: BigNumber }>;
+    totalBaseLiability(overrides?: CallOverrides): Promise<[BigNumber] & { _totalBaseLiability: BigNumber }>;
 
-    unpause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    unpause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
     updateRegisteredErc20(
       _tokenAddress: PromiseOrValue<string>,
@@ -801,89 +676,100 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     vaultAddress(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[string] & { _vaultAddress: string }>;
 
     vaultBorrowingPower(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _vaultBorrowingPower: BigNumber }>;
 
     vaultIDs(
       _wallet: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]] & { _vaultIDs: BigNumber[] }>;
 
     vaultLiability(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _vaultLiability: BigNumber }>;
 
     vaultSummaries(
       _start: PromiseOrValue<BigNumberish>,
       _stop: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [IVaultController.VaultSummaryStructOutput[]] & {
         _vaultSummaries: IVaultController.VaultSummaryStructOutput[];
       }
     >;
 
-    vaultsMinted(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { _vaultsMinted: BigNumber }>;
+    vaultsMinted(overrides?: CallOverrides): Promise<[BigNumber] & { _vaultsMinted: BigNumber }>;
   };
 
-  amountToSolvency(
-    _id: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  VAULT_DEPLOYER(overrides?: CallOverrides): Promise<string>;
+
+  amountToSolvency(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  booster(overrides?: CallOverrides): Promise<string>;
 
   borrowUSDA(
     _id: PromiseOrValue<BigNumberish>,
     _amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   borrowUSDAto(
     _id: PromiseOrValue<BigNumberish>,
     _amount: PromiseOrValue<BigNumberish>,
     _target: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   borrowsUSDto(
     _id: PromiseOrValue<BigNumberish>,
     _susdAmount: PromiseOrValue<BigNumberish>,
     _target: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  calculateInterest(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  calculateInterest(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
+
+  changeClaimerContract(
+    _newClaimerContract: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  changeCurveLpFee(
+    _newFee: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   changeProtocolFee(
     _newProtocolFee: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  checkVault(
-    _id: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  checkVault(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<boolean>;
+
+  claimerContract(overrides?: CallOverrides): Promise<string>;
+
+  curveLpRewardsFee(overrides?: CallOverrides): Promise<BigNumber>;
 
   curveMaster(overrides?: CallOverrides): Promise<string>;
 
   initialize(
     _oldVaultController: PromiseOrValue<string>,
     _tokenAddresses: PromiseOrValue<string>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    _claimerContract: PromiseOrValue<string>,
+    _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
+    _vaultDeployer: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   interestFactor(overrides?: CallOverrides): Promise<BigNumber>;
@@ -894,30 +780,26 @@ export interface IVaultController extends BaseContract {
     _id: PromiseOrValue<BigNumberish>,
     _assetAddress: PromiseOrValue<string>,
     _tokenAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  mintVault(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  mintVault(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
   modifyTotalDeposited(
     _vaultID: PromiseOrValue<BigNumberish>,
     _amount: PromiseOrValue<BigNumberish>,
     _token: PromiseOrValue<string>,
     _increase: PromiseOrValue<boolean>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  pause(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  pause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
   protocolFee(overrides?: CallOverrides): Promise<BigNumber>;
 
   registerCurveMaster(
     _masterCurveAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   registerErc20(
@@ -926,73 +808,60 @@ export interface IVaultController extends BaseContract {
     _oracleAddress: PromiseOrValue<string>,
     _liquidationIncentive: PromiseOrValue<BigNumberish>,
     _cap: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    _poolId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   registerUSDA(
     _usdaAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   repayAllUSDA(
     _id: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   repayUSDA(
     _id: PromiseOrValue<BigNumberish>,
     _amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  tokenCap(
-    _tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  tokenCap(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
   tokenCollateralInfo(
     _tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVaultController.CollateralInfoStructOutput>;
 
-  tokenId(
-    _tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  tokenCollateralType(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<number>;
 
-  tokenLTV(
-    _tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  tokenCrvRewardsContract(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<string>;
 
-  tokenLiquidationIncentive(
-    _tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  tokenId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-  tokenTotalDeposited(
-    _tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  tokenLTV(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-  tokensOracle(
-    _tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  tokenLiquidationIncentive(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  tokenPoolId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  tokenTotalDeposited(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+  tokensOracle(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<string>;
 
   tokensRegistered(overrides?: CallOverrides): Promise<BigNumber>;
 
   tokensToLiquidate(
     _id: PromiseOrValue<BigNumberish>,
     _token: PromiseOrValue<string>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   totalBaseLiability(overrides?: CallOverrides): Promise<BigNumber>;
 
-  unpause(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  unpause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
   updateRegisteredErc20(
     _tokenAddress: PromiseOrValue<string>,
@@ -1000,81 +869,75 @@ export interface IVaultController extends BaseContract {
     _oracleAddress: PromiseOrValue<string>,
     _liquidationIncentive: PromiseOrValue<BigNumberish>,
     _cap: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  vaultAddress(
-    _id: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  vaultAddress(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<string>;
 
-  vaultBorrowingPower(
-    _id: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  vaultBorrowingPower(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
 
-  vaultIDs(
-    _wallet: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
+  vaultIDs(_wallet: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber[]>;
 
-  vaultLiability(
-    _id: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  vaultLiability(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
 
   vaultSummaries(
     _start: PromiseOrValue<BigNumberish>,
     _stop: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVaultController.VaultSummaryStructOutput[]>;
 
   vaultsMinted(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    amountToSolvency(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    VAULT_DEPLOYER(overrides?: CallOverrides): Promise<string>;
+
+    amountToSolvency(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    booster(overrides?: CallOverrides): Promise<string>;
 
     borrowUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     borrowUSDAto(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     borrowsUSDto(
       _id: PromiseOrValue<BigNumberish>,
       _susdAmount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     calculateInterest(overrides?: CallOverrides): Promise<BigNumber>;
 
-    changeProtocolFee(
-      _newProtocolFee: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    changeClaimerContract(_newClaimerContract: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
-    checkVault(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    changeCurveLpFee(_newFee: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
+
+    changeProtocolFee(_newProtocolFee: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
+
+    checkVault(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<boolean>;
+
+    claimerContract(overrides?: CallOverrides): Promise<string>;
+
+    curveLpRewardsFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     curveMaster(overrides?: CallOverrides): Promise<string>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
-      overrides?: CallOverrides
+      _claimerContract: PromiseOrValue<string>,
+      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
+      _vaultDeployer: PromiseOrValue<string>,
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     interestFactor(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1085,7 +948,7 @@ export interface IVaultController extends BaseContract {
       _id: PromiseOrValue<BigNumberish>,
       _assetAddress: PromiseOrValue<string>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     mintVault(overrides?: CallOverrides): Promise<string>;
@@ -1095,17 +958,14 @@ export interface IVaultController extends BaseContract {
       _amount: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
       _increase: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     pause(overrides?: CallOverrides): Promise<void>;
 
     protocolFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    registerCurveMaster(
-      _masterCurveAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    registerCurveMaster(_masterCurveAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
     registerErc20(
       _tokenAddress: PromiseOrValue<string>,
@@ -1113,66 +973,49 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      _poolId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    registerUSDA(
-      _usdaAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    registerUSDA(_usdaAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
-    repayAllUSDA(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    repayAllUSDA(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
 
     repayUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    tokenCap(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenCap(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     tokenCollateralInfo(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVaultController.CollateralInfoStructOutput>;
 
-    tokenId(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenCollateralType(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<number>;
 
-    tokenLTV(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenCrvRewardsContract(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<string>;
 
-    tokenLiquidationIncentive(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenTotalDeposited(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenLTV(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokensOracle(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    tokenLiquidationIncentive(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokenPoolId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokenTotalDeposited(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokensOracle(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<string>;
 
     tokensRegistered(overrides?: CallOverrides): Promise<BigNumber>;
 
     tokensToLiquidate(
       _id: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     totalBaseLiability(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1185,183 +1028,165 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    vaultAddress(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    vaultAddress(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<string>;
 
-    vaultBorrowingPower(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    vaultBorrowingPower(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    vaultIDs(
-      _wallet: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
+    vaultIDs(_wallet: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber[]>;
 
-    vaultLiability(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    vaultLiability(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
 
     vaultSummaries(
       _start: PromiseOrValue<BigNumberish>,
       _stop: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVaultController.VaultSummaryStructOutput[]>;
 
     vaultsMinted(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {
-    "BorrowUSDA(uint256,address,uint256)"(
+    'BorrowUSDA(uint256,address,uint256)'(
       _vaultId?: null,
       _vaultAddress?: null,
-      _borrowAmount?: null
+      _borrowAmount?: null,
     ): BorrowUSDAEventFilter;
-    BorrowUSDA(
-      _vaultId?: null,
-      _vaultAddress?: null,
-      _borrowAmount?: null
-    ): BorrowUSDAEventFilter;
+    BorrowUSDA(_vaultId?: null, _vaultAddress?: null, _borrowAmount?: null): BorrowUSDAEventFilter;
 
-    "InterestEvent(uint64,uint192,uint256)"(
-      _epoch?: null,
-      _amount?: null,
-      _curveVal?: null
-    ): InterestEventEventFilter;
-    InterestEvent(
-      _epoch?: null,
-      _amount?: null,
-      _curveVal?: null
-    ): InterestEventEventFilter;
+    'ChangedClaimerContract(address,address)'(
+      _oldClaimerContract?: null,
+      _newClaimerContract?: null,
+    ): ChangedClaimerContractEventFilter;
+    ChangedClaimerContract(_oldClaimerContract?: null, _newClaimerContract?: null): ChangedClaimerContractEventFilter;
 
-    "Liquidate(uint256,address,uint256,uint256)"(
+    'ChangedCurveLpFee(uint256,uint256)'(_oldFee?: null, _newFee?: null): ChangedCurveLpFeeEventFilter;
+    ChangedCurveLpFee(_oldFee?: null, _newFee?: null): ChangedCurveLpFeeEventFilter;
+
+    'InterestEvent(uint64,uint192,uint256)'(_epoch?: null, _amount?: null, _curveVal?: null): InterestEventEventFilter;
+    InterestEvent(_epoch?: null, _amount?: null, _curveVal?: null): InterestEventEventFilter;
+
+    'Liquidate(uint256,address,uint256,uint256)'(
       _vaultId?: null,
       _assetAddress?: null,
       _usdaToRepurchase?: null,
-      _tokensToLiquidate?: null
+      _tokensToLiquidate?: null,
     ): LiquidateEventFilter;
     Liquidate(
       _vaultId?: null,
       _assetAddress?: null,
       _usdaToRepurchase?: null,
-      _tokensToLiquidate?: null
+      _tokensToLiquidate?: null,
     ): LiquidateEventFilter;
 
-    "NewProtocolFee(uint192)"(_protocolFee?: null): NewProtocolFeeEventFilter;
+    'NewProtocolFee(uint192)'(_protocolFee?: null): NewProtocolFeeEventFilter;
     NewProtocolFee(_protocolFee?: null): NewProtocolFeeEventFilter;
 
-    "NewVault(address,uint256,address)"(
-      _vaultAddress?: null,
-      _vaultId?: null,
-      _vaultOwner?: null
-    ): NewVaultEventFilter;
-    NewVault(
-      _vaultAddress?: null,
-      _vaultId?: null,
-      _vaultOwner?: null
-    ): NewVaultEventFilter;
+    'NewVault(address,uint256,address)'(_vaultAddress?: null, _vaultId?: null, _vaultOwner?: null): NewVaultEventFilter;
+    NewVault(_vaultAddress?: null, _vaultId?: null, _vaultOwner?: null): NewVaultEventFilter;
 
-    "RegisterCurveMaster(address)"(
-      _curveMasterAddress?: null
-    ): RegisterCurveMasterEventFilter;
-    RegisterCurveMaster(
-      _curveMasterAddress?: null
-    ): RegisterCurveMasterEventFilter;
+    'RegisterCurveMaster(address)'(_curveMasterAddress?: null): RegisterCurveMasterEventFilter;
+    RegisterCurveMaster(_curveMasterAddress?: null): RegisterCurveMasterEventFilter;
 
-    "RegisteredErc20(address,uint256,address,uint256,uint256)"(
+    'RegisteredErc20(address,uint256,address,uint256,uint256)'(
       _tokenAddress?: null,
       _ltv?: null,
       _oracleAddress?: null,
       _liquidationIncentive?: null,
-      _cap?: null
+      _cap?: null,
     ): RegisteredErc20EventFilter;
     RegisteredErc20(
       _tokenAddress?: null,
       _ltv?: null,
       _oracleAddress?: null,
       _liquidationIncentive?: null,
-      _cap?: null
+      _cap?: null,
     ): RegisteredErc20EventFilter;
 
-    "RepayUSDA(uint256,address,uint256)"(
+    'RepayUSDA(uint256,address,uint256)'(
       _vaultId?: null,
       _vaultAddress?: null,
-      _repayAmount?: null
+      _repayAmount?: null,
     ): RepayUSDAEventFilter;
-    RepayUSDA(
-      _vaultId?: null,
-      _vaultAddress?: null,
-      _repayAmount?: null
-    ): RepayUSDAEventFilter;
+    RepayUSDA(_vaultId?: null, _vaultAddress?: null, _repayAmount?: null): RepayUSDAEventFilter;
 
-    "UpdateRegisteredErc20(address,uint256,address,uint256,uint256)"(
+    'UpdateRegisteredErc20(address,uint256,address,uint256,uint256)'(
       _tokenAddress?: null,
       _ltv?: null,
       _oracleAddress?: null,
       _liquidationIncentive?: null,
-      _cap?: null
+      _cap?: null,
     ): UpdateRegisteredErc20EventFilter;
     UpdateRegisteredErc20(
       _tokenAddress?: null,
       _ltv?: null,
       _oracleAddress?: null,
       _liquidationIncentive?: null,
-      _cap?: null
+      _cap?: null,
     ): UpdateRegisteredErc20EventFilter;
   };
 
   estimateGas: {
-    amountToSolvency(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    VAULT_DEPLOYER(overrides?: CallOverrides): Promise<BigNumber>;
+
+    amountToSolvency(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    booster(overrides?: CallOverrides): Promise<BigNumber>;
 
     borrowUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     borrowUSDAto(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     borrowsUSDto(
       _id: PromiseOrValue<BigNumberish>,
       _susdAmount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    calculateInterest(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    calculateInterest(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<BigNumber>;
+
+    changeClaimerContract(
+      _newClaimerContract: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    changeCurveLpFee(
+      _newFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     changeProtocolFee(
       _newProtocolFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    checkVault(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    checkVault(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    claimerContract(overrides?: CallOverrides): Promise<BigNumber>;
+
+    curveLpRewardsFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     curveMaster(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      _claimerContract: PromiseOrValue<string>,
+      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
+      _vaultDeployer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     interestFactor(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1372,30 +1197,26 @@ export interface IVaultController extends BaseContract {
       _id: PromiseOrValue<BigNumberish>,
       _assetAddress: PromiseOrValue<string>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    mintVault(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    mintVault(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<BigNumber>;
 
     modifyTotalDeposited(
       _vaultID: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
       _increase: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    pause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    pause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<BigNumber>;
 
     protocolFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     registerCurveMaster(
       _masterCurveAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     registerErc20(
@@ -1404,73 +1225,57 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      _poolId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     registerUSDA(
       _usdaAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     repayAllUSDA(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     repayUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    tokenCap(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenCap(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenCollateralInfo(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenCollateralInfo(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenId(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenCollateralType(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenLTV(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenCrvRewardsContract(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenLiquidationIncentive(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenTotalDeposited(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenLTV(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokensOracle(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenLiquidationIncentive(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokenPoolId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokenTotalDeposited(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokensOracle(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     tokensRegistered(overrides?: CallOverrides): Promise<BigNumber>;
 
     tokensToLiquidate(
       _id: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     totalBaseLiability(overrides?: CallOverrides): Promise<BigNumber>;
 
-    unpause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    unpause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<BigNumber>;
 
     updateRegisteredErc20(
       _tokenAddress: PromiseOrValue<string>,
@@ -1478,84 +1283,85 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    vaultAddress(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    vaultAddress(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    vaultBorrowingPower(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    vaultBorrowingPower(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    vaultIDs(
-      _wallet: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    vaultIDs(_wallet: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    vaultLiability(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    vaultLiability(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
 
     vaultSummaries(
       _start: PromiseOrValue<BigNumberish>,
       _stop: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     vaultsMinted(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    amountToSolvency(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    VAULT_DEPLOYER(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    amountToSolvency(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    booster(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     borrowUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     borrowUSDAto(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     borrowsUSDto(
       _id: PromiseOrValue<BigNumberish>,
       _susdAmount: PromiseOrValue<BigNumberish>,
       _target: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    calculateInterest(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    calculateInterest(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<PopulatedTransaction>;
+
+    changeClaimerContract(
+      _newClaimerContract: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    changeCurveLpFee(
+      _newFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     changeProtocolFee(
       _newProtocolFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    checkVault(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    checkVault(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    claimerContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    curveLpRewardsFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     curveMaster(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      _claimerContract: PromiseOrValue<string>,
+      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
+      _vaultDeployer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     interestFactor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1566,30 +1372,26 @@ export interface IVaultController extends BaseContract {
       _id: PromiseOrValue<BigNumberish>,
       _assetAddress: PromiseOrValue<string>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    mintVault(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    mintVault(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<PopulatedTransaction>;
 
     modifyTotalDeposited(
       _vaultID: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
       _increase: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    pause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    pause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<PopulatedTransaction>;
 
     protocolFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     registerCurveMaster(
       _masterCurveAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     registerErc20(
@@ -1598,75 +1400,72 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      _poolId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     registerUSDA(
       _usdaAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     repayAllUSDA(
       _id: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     repayUSDA(
       _id: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    tokenCap(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    tokenCap(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     tokenCollateralInfo(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    tokenId(
+    tokenCollateralType(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    tokenLTV(
+    tokenCrvRewardsContract(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
+
+    tokenId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tokenLTV(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     tokenLiquidationIncentive(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
+
+    tokenPoolId(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     tokenTotalDeposited(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    tokensOracle(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    tokensOracle(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     tokensRegistered(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     tokensToLiquidate(
       _id: PromiseOrValue<BigNumberish>,
       _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    totalBaseLiability(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    totalBaseLiability(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    unpause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    unpause(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<PopulatedTransaction>;
 
     updateRegisteredErc20(
       _tokenAddress: PromiseOrValue<string>,
@@ -1674,33 +1473,21 @@ export interface IVaultController extends BaseContract {
       _oracleAddress: PromiseOrValue<string>,
       _liquidationIncentive: PromiseOrValue<BigNumberish>,
       _cap: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    vaultAddress(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    vaultAddress(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    vaultBorrowingPower(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    vaultBorrowingPower(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    vaultIDs(
-      _wallet: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    vaultIDs(_wallet: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    vaultLiability(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    vaultLiability(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     vaultSummaries(
       _start: PromiseOrValue<BigNumberish>,
       _stop: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     vaultsMinted(overrides?: CallOverrides): Promise<PopulatedTransaction>;

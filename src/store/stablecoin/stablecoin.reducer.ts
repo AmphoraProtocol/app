@@ -1,8 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { getStablecoins } from '~/utils/tokens';
-import { initialStatus, StablecoinState } from '~/types';
 
 import { StablecoinActions } from './stablecoin.actions';
+import { initialStatus, StablecoinState } from '~/types';
+import { getStablecoins } from '~/utils/tokens';
 
 export const stablecoinInitialState: StablecoinState = {
   USDA: getStablecoins().USDA,

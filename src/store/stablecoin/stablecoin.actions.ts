@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Address, getAddress } from 'viem';
-import { viemClient } from '~/App';
+
 import { IERC20Metadata__factory } from '~/chain/newContracts';
-import { getStablecoins } from '~/utils/tokens';
 import { formatBigInt } from '~/hooks/formatBNWithDecimals';
+import { getStablecoins } from '~/utils/tokens';
+import { viemClient } from '~/App';
 import { ThunkAPI } from '~/store';
 import { Token } from '~/types';
 

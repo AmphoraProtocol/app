@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { CollateralState } from '~/types';
 
+import { CollateralState } from '~/types';
 import { CollateralActions } from './collaterals.actions';
 
 export const collateralInitialState: CollateralState = {

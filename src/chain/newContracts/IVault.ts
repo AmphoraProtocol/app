@@ -12,123 +12,113 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-  PromiseOrValue,
-} from "./common";
+} from 'ethers';
+import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent, PromiseOrValue } from './common';
+
+export declare namespace IVault {
+  export type RewardStruct = {
+    token: PromiseOrValue<string>;
+    amount: PromiseOrValue<BigNumberish>;
+  };
+
+  export type RewardStructOutput = [string, BigNumber] & {
+    token: string;
+    amount: BigNumber;
+  };
+}
 
 export interface IVaultInterface extends utils.Interface {
   functions: {
-    "baseLiability()": FunctionFragment;
-    "controllerTransfer(address,address,uint256)": FunctionFragment;
-    "depositERC20(address,uint256)": FunctionFragment;
-    "id()": FunctionFragment;
-    "minter()": FunctionFragment;
-    "modifyLiability(bool,uint256)": FunctionFragment;
-    "recoverDust(address)": FunctionFragment;
-    "tokenBalance(address)": FunctionFragment;
-    "withdrawERC20(address,uint256)": FunctionFragment;
+    'CONTROLLER()': FunctionFragment;
+    'baseLiability()': FunctionFragment;
+    'claimRewards(address)': FunctionFragment;
+    'claimableRewards(address)': FunctionFragment;
+    'controllerTransfer(address,address,uint256)': FunctionFragment;
+    'depositERC20(address,uint256)': FunctionFragment;
+    'id()': FunctionFragment;
+    'minter()': FunctionFragment;
+    'modifyLiability(bool,uint256)': FunctionFragment;
+    'recoverDust(address)': FunctionFragment;
+    'tokenBalance(address)': FunctionFragment;
+    'withdrawERC20(address,uint256)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "baseLiability"
-      | "controllerTransfer"
-      | "depositERC20"
-      | "id"
-      | "minter"
-      | "modifyLiability"
-      | "recoverDust"
-      | "tokenBalance"
-      | "withdrawERC20"
+      | 'CONTROLLER'
+      | 'baseLiability'
+      | 'claimRewards'
+      | 'claimableRewards'
+      | 'controllerTransfer'
+      | 'depositERC20'
+      | 'id'
+      | 'minter'
+      | 'modifyLiability'
+      | 'recoverDust'
+      | 'tokenBalance'
+      | 'withdrawERC20',
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: 'CONTROLLER', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'baseLiability', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'claimRewards', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'claimableRewards', values: [PromiseOrValue<string>]): string;
   encodeFunctionData(
-    functionFragment: "baseLiability",
-    values?: undefined
+    functionFragment: 'controllerTransfer',
+    values: [PromiseOrValue<string>, PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "controllerTransfer",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>
-    ]
+    functionFragment: 'depositERC20',
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
   ): string;
+  encodeFunctionData(functionFragment: 'id', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'minter', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "depositERC20",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    functionFragment: 'modifyLiability',
+    values: [PromiseOrValue<boolean>, PromiseOrValue<BigNumberish>],
   ): string;
-  encodeFunctionData(functionFragment: "id", values?: undefined): string;
-  encodeFunctionData(functionFragment: "minter", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'recoverDust', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'tokenBalance', values: [PromiseOrValue<string>]): string;
   encodeFunctionData(
-    functionFragment: "modifyLiability",
-    values: [PromiseOrValue<boolean>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "recoverDust",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenBalance",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawERC20",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    functionFragment: 'withdrawERC20',
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "baseLiability",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "controllerTransfer",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "depositERC20",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "id", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "minter", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "modifyLiability",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "recoverDust",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokenBalance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawERC20",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'CONTROLLER', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'baseLiability', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimRewards', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimableRewards', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'controllerTransfer', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'depositERC20', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'id', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'minter', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'modifyLiability', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'recoverDust', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'tokenBalance', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'withdrawERC20', data: BytesLike): Result;
 
   events: {
-    "Deposit(address,uint256)": EventFragment;
-    "Recover(address,uint256)": EventFragment;
-    "Withdraw(address,uint256)": EventFragment;
+    'ClaimedReward(address,uint256)': EventFragment;
+    'Deposit(address,uint256)': EventFragment;
+    'Recover(address,uint256)': EventFragment;
+    'Withdraw(address,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Recover"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ClaimedReward'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Deposit'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Recover'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Withdraw'): EventFragment;
 }
+
+export interface ClaimedRewardEventObject {
+  _token: string;
+  _amount: BigNumber;
+}
+export type ClaimedRewardEvent = TypedEvent<[string, BigNumber], ClaimedRewardEventObject>;
+
+export type ClaimedRewardEventFilter = TypedEventFilter<ClaimedRewardEvent>;
 
 export interface DepositEventObject {
   _token: string;
@@ -150,10 +140,7 @@ export interface WithdrawEventObject {
   _token: string;
   _amount: BigNumber;
 }
-export type WithdrawEvent = TypedEvent<
-  [string, BigNumber],
-  WithdrawEventObject
->;
+export type WithdrawEvent = TypedEvent<[string, BigNumber], WithdrawEventObject>;
 
 export type WithdrawEventFilter = TypedEventFilter<WithdrawEvent>;
 
@@ -167,16 +154,12 @@ export interface IVault extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -184,21 +167,31 @@ export interface IVault extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    baseLiability(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { _liability: BigNumber }>;
+    CONTROLLER(overrides?: CallOverrides): Promise<[string] & { _vaultController: string }>;
+
+    baseLiability(overrides?: CallOverrides): Promise<[BigNumber] & { _liability: BigNumber }>;
+
+    claimRewards(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    claimableRewards(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<[IVault.RewardStructOutput[]] & { _rewards: IVault.RewardStructOutput[] }>;
 
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     depositERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     id(overrides?: CallOverrides): Promise<[BigNumber] & { _id: BigNumber }>;
@@ -208,39 +201,51 @@ export interface IVault extends BaseContract {
     modifyLiability(
       _increase: PromiseOrValue<boolean>,
       _baseAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     recoverDust(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     tokenBalance(
       _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { _balance: BigNumber }>;
 
     withdrawERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
   };
 
+  CONTROLLER(overrides?: CallOverrides): Promise<string>;
+
   baseLiability(overrides?: CallOverrides): Promise<BigNumber>;
+
+  claimRewards(
+    _tokenAddress: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  claimableRewards(
+    _tokenAddress: PromiseOrValue<string>,
+    overrides?: CallOverrides,
+  ): Promise<IVault.RewardStructOutput[]>;
 
   controllerTransfer(
     _token: PromiseOrValue<string>,
     _to: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   depositERC20(
     _token: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   id(overrides?: CallOverrides): Promise<BigNumber>;
@@ -250,39 +255,45 @@ export interface IVault extends BaseContract {
   modifyLiability(
     _increase: PromiseOrValue<boolean>,
     _baseAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   recoverDust(
     _tokenAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  tokenBalance(
-    _token: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  tokenBalance(_token: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
   withdrawERC20(
     _token: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    CONTROLLER(overrides?: CallOverrides): Promise<string>;
+
     baseLiability(overrides?: CallOverrides): Promise<BigNumber>;
+
+    claimRewards(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
+
+    claimableRewards(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides,
+    ): Promise<IVault.RewardStructOutput[]>;
 
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     depositERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     id(overrides?: CallOverrides): Promise<BigNumber>;
@@ -292,60 +303,57 @@ export interface IVault extends BaseContract {
     modifyLiability(
       _increase: PromiseOrValue<boolean>,
       _baseAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    recoverDust(
-      _tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    recoverDust(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
-    tokenBalance(
-      _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenBalance(_token: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     withdrawERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
   };
 
   filters: {
-    "Deposit(address,uint256)"(
-      _token?: null,
-      _amount?: null
-    ): DepositEventFilter;
+    'ClaimedReward(address,uint256)'(_token?: null, _amount?: null): ClaimedRewardEventFilter;
+    ClaimedReward(_token?: null, _amount?: null): ClaimedRewardEventFilter;
+
+    'Deposit(address,uint256)'(_token?: null, _amount?: null): DepositEventFilter;
     Deposit(_token?: null, _amount?: null): DepositEventFilter;
 
-    "Recover(address,uint256)"(
-      _token?: null,
-      _amount?: null
-    ): RecoverEventFilter;
+    'Recover(address,uint256)'(_token?: null, _amount?: null): RecoverEventFilter;
     Recover(_token?: null, _amount?: null): RecoverEventFilter;
 
-    "Withdraw(address,uint256)"(
-      _token?: null,
-      _amount?: null
-    ): WithdrawEventFilter;
+    'Withdraw(address,uint256)'(_token?: null, _amount?: null): WithdrawEventFilter;
     Withdraw(_token?: null, _amount?: null): WithdrawEventFilter;
   };
 
   estimateGas: {
+    CONTROLLER(overrides?: CallOverrides): Promise<BigNumber>;
+
     baseLiability(overrides?: CallOverrides): Promise<BigNumber>;
+
+    claimRewards(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    claimableRewards(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     depositERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     id(overrides?: CallOverrides): Promise<BigNumber>;
@@ -355,40 +363,46 @@ export interface IVault extends BaseContract {
     modifyLiability(
       _increase: PromiseOrValue<boolean>,
       _baseAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     recoverDust(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    tokenBalance(
-      _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    tokenBalance(_token: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     withdrawERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    CONTROLLER(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     baseLiability(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    claimRewards(
+      _tokenAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    claimableRewards(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     depositERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -398,23 +412,20 @@ export interface IVault extends BaseContract {
     modifyLiability(
       _increase: PromiseOrValue<boolean>,
       _baseAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     recoverDust(
       _tokenAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    tokenBalance(
-      _token: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    tokenBalance(_token: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     withdrawERC20(
       _token: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
   };
 }
