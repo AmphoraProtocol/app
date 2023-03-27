@@ -5,7 +5,6 @@ import { formatColor, neutral } from '~/theme';
 import { useLight } from '~/hooks/useLight';
 import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
 import SVGBox from '../icons/misc/SVGBox';
-import { useAppGovernanceContext } from '../libs/app-governance-provider/AppGovernanceProvider';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { useRolodexContext } from '../libs/rolodex-data-provider/RolodexDataProvider';
 import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
@@ -43,7 +42,6 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   const tokens = useAppSelector((state) => state.collaterals.elements);
 
   const { setType, setCollateralToken, updateTransactionState } = useModalContext();
-  const { setDelegateToken } = useAppGovernanceContext();
   const userVault = useAppSelector((state) => state.VC.userVault);
 
   const {
@@ -89,8 +87,8 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   };
 
   const setAndOpenDelegate = () => {
-    setDelegateToken((tokens as any)[tokenTicker]);
-    setType(ModalType.Delegate);
+    // setDelegateToken((tokens as any)[tokenTicker]);
+    // setType(ModalType.Delegate);
   };
 
   return (

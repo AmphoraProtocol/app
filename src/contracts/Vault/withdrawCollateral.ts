@@ -1,6 +1,6 @@
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumber, utils } from 'ethers';
-import { IERC20Metadata__factory, IVault__factory } from '~/chain/newContracts';
+import { IERC20Metadata__factory, IVault__factory } from '~/chain/contracts';
 
 const withdrawCollateral = async (
   amount: string | BigNumber,

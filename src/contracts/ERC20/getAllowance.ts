@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 
 import getDecimals from '../misc/getDecimals';
 import { formatBNtoPreciseStringAndNumber } from '~/hooks/formatBNWithDecimals';
-import { IERC20Metadata__factory } from '~/chain/newContracts';
+import { IERC20Metadata__factory } from '~/chain/contracts';
 
 export const getAllowance = async (
   wallet_address: string,

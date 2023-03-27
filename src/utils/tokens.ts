@@ -1,5 +1,5 @@
 import { SUSD_ADDRESS, USDA_ADDRESS, USDA_DECIMALS } from '~/constants';
-import initializeToken from '~/components/tokens/initializeToken';
+import initializeToken from '~/utils/tokens/initializeToken';
 import { CollateralTokens, Token } from '~/types/token';
 import { ChainIDs } from './chains';
 import { tokensToChains } from './tokensToChains';

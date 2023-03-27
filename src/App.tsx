@@ -21,15 +21,12 @@ import {
   DepositSUSDConfirmationModal,
   WithdrawCollateralConfirmationModal,
   DepositCollateralConfirmationModal,
-  DelegateIPTModal,
   TransactionStatusModal,
 } from './components/modal';
 import { ClaimModal } from './components/modal/ClaimModal';
 import { RolodexContentProvider } from './components/libs/rolodex-data-provider/RolodexDataProvider';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
-import { AppGovernanceProvider } from './components/libs/app-governance-provider/AppGovernanceProvider';
 import { TestingPage } from './pages/playground';
-import { Governance } from './pages/governance';
 import { RedirectTo } from './components/redirect';
 
 import { mainnet } from 'viem/chains';
@@ -58,25 +55,22 @@ const DashboardContext = (props: { children: any }) => {
     <Web3ContextProvider>
       <RolodexContentProvider>
         <ModalContentProvider>
-          <AppGovernanceProvider>
-            <>
-              <WalletModalProvider>
-                <>
-                  <SwapTokenProvider>{props.children}</SwapTokenProvider>
-                  <DelegateIPTModal />
-                  <DepositWithdrawCollateralModal />
-                  <DepositCollateralConfirmationModal />
-                  <WithdrawCollateralConfirmationModal />
-                  <DepositWithdrawSUSDModal />
-                  <BorrowRepayModal />
-                  <DepositSUSDConfirmationModal />
-                  <WithdrawSUSDConfirmationModal />
-                  <ClaimModal />
-                  <TransactionStatusModal />
-                </>
-              </WalletModalProvider>
-            </>
-          </AppGovernanceProvider>
+          <>
+            <WalletModalProvider>
+              <>
+                <SwapTokenProvider>{props.children}</SwapTokenProvider>
+                <DepositWithdrawCollateralModal />
+                <DepositCollateralConfirmationModal />
+                <WithdrawCollateralConfirmationModal />
+                <DepositWithdrawSUSDModal />
+                <BorrowRepayModal />
+                <DepositSUSDConfirmationModal />
+                <WithdrawSUSDConfirmationModal />
+                <ClaimModal />
+                <TransactionStatusModal />
+              </>
+            </WalletModalProvider>
+          </>
         </ModalContentProvider>
       </RolodexContentProvider>
     </Web3ContextProvider>
@@ -99,28 +93,6 @@ const AppRouter = () => {
             <DashboardContext>
               <AppLayout>
                 <Dashboard />
-              </AppLayout>
-            </DashboardContext>
-          }
-        />
-
-        <Route
-          path={`/proposal`}
-          element={
-            <DashboardContext>
-              <AppLayout>
-                <Governance />
-              </AppLayout>
-            </DashboardContext>
-          }
-        />
-
-        <Route
-          path={`/proposal/:id`}
-          element={
-            <DashboardContext>
-              <AppLayout>
-                <Governance />
               </AppLayout>
             </DashboardContext>
           }

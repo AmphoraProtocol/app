@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SwitchProps, Box, Typography } from '@mui/material';
+import { SwitchProps, Box, Typography, Link } from '@mui/material';
 interface BaseSwitchProps extends SwitchProps {
   option1: string | React.ReactElement;
   option2: string | React.ReactElement;
@@ -61,9 +61,8 @@ export const BaseSwitch = (props: BaseSwitchProps) => {
   );
 
   const toggleHandler = () => {
-    setIsOption1(!isOption1);
-
-    onOptionChange(!isOption1);
+    // setIsOption1(!isOption1);
+    // onOptionChange(!isOption1);
   };
 
   return (
@@ -85,7 +84,17 @@ export const BaseSwitch = (props: BaseSwitchProps) => {
       onClick={toggleHandler}
     >
       <OptionBox option={option1} isSelected={isOption1} />
-      <OptionBox option={option2} isSelected={!isOption1} />
+      <Link
+        href='https://www.tally.xyz/'
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        target='_blank'
+      >
+        <OptionBox option={option2} isSelected={!isOption1} />
+      </Link>
 
       <Box
         className={isOption1 ? 'option1' : 'option2'}

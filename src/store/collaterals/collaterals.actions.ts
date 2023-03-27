@@ -3,8 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Address, getAddress } from 'viem';
 
 import { formatBigInt, formatBNtoPreciseStringAndNumber, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
-import { IERC20Metadata__factory, IOracleRelay__factory } from '~/chain/newContracts';
-import { IVaultController__factory } from '~/chain/newContracts';
+import { IERC20Metadata__factory, IOracleRelay__factory } from '~/chain/contracts';
+import { IVaultController__factory } from '~/chain/contracts';
 import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { getOracleType } from '~/utils/getOracleType';
 import { BN, BNtoDecSpecific } from '~/utils/bn';
