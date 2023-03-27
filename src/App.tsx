@@ -26,7 +26,6 @@ import {
 import { ClaimModal } from './components/modal/ClaimModal';
 import { RolodexContentProvider } from './components/libs/rolodex-data-provider/RolodexDataProvider';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
-import { TestingPage } from './pages/playground';
 import { RedirectTo } from './components/redirect';
 
 import { mainnet } from 'viem/chains';
@@ -84,7 +83,6 @@ const AppRouter = () => {
         <Route path={`/landing`} element={<LandingPage />} />
         <Route path={`/docs`} element={<RedirectTo url='book/docs/intro/index.html' />} />
         <Route path={`/book`} element={<RedirectTo url='book/docs/intro/index.html' />} />
-        <Route path={`/testing`} element={<TestingPage />} />
         <Route path={`*`} element={<NotFound404Page />} />
 
         <Route

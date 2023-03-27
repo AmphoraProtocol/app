@@ -5,18 +5,18 @@ import { ToolTip } from '../tooltip/ToolTip';
 export interface TitleTextProps extends BoxProps {
   title: string;
   text: string | null;
-  tooltipContent: string;
+  tooltipcontent: string;
   substat?: ReactElement;
 }
 
 export const TitleTextToolTip = (props: TitleTextProps) => {
-  const { title, text, tooltipContent, substat } = props;
+  const { title, text, tooltipcontent, substat } = props;
 
   return (
     <Box {...props}>
       <Box mb={0.5}>
         <ToolTip
-          content={<Typography variant='body3'>{tooltipContent}</Typography>}
+          content={<Typography variant='body3'>{tooltipcontent}</Typography>}
           text={title}
           text_variant='label_semi'
         />
