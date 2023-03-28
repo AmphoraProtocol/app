@@ -1,4 +1,3 @@
-import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Address, getAddress } from 'viem';
 
@@ -20,26 +19,29 @@ const getCollateralData = createAsyncThunk<
     userAddress?: string;
     vaultAddress?: string;
     tokens: CollateralTokens;
-    signerOrProvider: JsonRpcProvider | JsonRpcSigner;
   },
   ThunkAPI
->('collateral/getData', async ({ userAddress, vaultAddress, tokens, signerOrProvider }) => {
+>('collateral/getData', async ({ userAddress, vaultAddress, tokens }) => {
   const newTokens: CollateralTokens = { ...tokens };
   const VCAddress = VAULT_CONTROLLER_ADDRESS;
-  const VC = IVaultController__factory.connect(VCAddress, signerOrProvider);
 
   for (const [key, token] of Object.entries(newTokens!)) {
-    const { ltv, liquidationIncentive, cap, oracle, totalDeposited } = await VC.tokenCollateralInfo(token.address);
+    const data = await viemClient.readContract({
+      address: VCAddress,
+      abi: IVaultController__factory.abi,
+      functionName: 'tokenCollateralInfo',
+      args: [getAddress(token.address)],
+    });
 
-    token.token_LTV = ltv.div(BN('1e16')).toNumber();
-    token.token_penalty = liquidationIncentive.div(BN('1e16')).toNumber();
-    token.capped_token = !constants.MaxUint256.eq(cap);
-    token.oracle_address = oracle;
+    token.token_LTV = BN(data.ltv).div(BN('1e16')).toNumber();
+    token.token_penalty = BN(data.liquidationIncentive).div(BN('1e16')).toNumber();
+    token.capped_token = !constants.MaxUint256.eq(BN(data.cap));
+    token.oracle_address = data.oracle;
 
     let cappedPercent = 0;
 
-    if (!constants.MaxUint256.eq(cap)) {
-      cappedPercent = totalDeposited!.div(cap).toNumber() * 100;
+    if (!constants.MaxUint256.eq(BN(data.cap))) {
+      cappedPercent = BN(data.totalDeposited).div(BN(data.cap)).toNumber() * 100;
       // show minimum 5%
       if (cappedPercent <= 5) {
         cappedPercent = 5;
@@ -55,7 +57,7 @@ const getCollateralData = createAsyncThunk<
     } as const;
 
     const oracleContract = {
-      address: oracle as Address,
+      address: data.oracle as Address,
       abi: IOracleRelay__factory.abi,
     } as const;
 

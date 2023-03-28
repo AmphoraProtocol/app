@@ -3,12 +3,13 @@ import { Box, Button, Link as MuiLink, SwipeableDrawer, Toolbar } from '@mui/mat
 
 import { MenuIcon } from '~/components/icons/misc/menuIcon';
 import { Link } from '~/components/link';
-import { ConnectWalletButton, SelectedChainButton } from '~/components/button';
+import { SelectedChainButton } from '~/components/button';
 import { ForwardIcon } from '~/components/icons/misc/ForwardIcon';
 import { useLight } from '~/hooks/useLight';
 import { formatColor, neutral } from '~/theme';
 import { PaletteModeContext } from '~/components/libs/palette-mode-provider/palette-mode-provider';
 import { MobileIconButton } from './MobileIconButton';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
@@ -40,8 +41,8 @@ export const MobileToolBar = () => {
       <Box display='flex'>
         <SelectedChainButton />
 
-        <Box marginLeft={2} marginRight={1}>
-          <ConnectWalletButton />
+        <Box display='flex' marginLeft={2} marginRight={1}>
+          <ConnectButton chainStatus='none' showBalance={false} accountStatus='address' />
         </Box>
 
         <Button
