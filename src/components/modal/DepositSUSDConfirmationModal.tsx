@@ -7,54 +7,64 @@ import { ModalType, useModalContext } from '../libs/modal-content-provider/Modal
 import { BaseModal } from './BaseModal';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
-import { useRolodexContext } from '../libs/rolodex-data-provider/RolodexDataProvider';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { BN } from '~/utils/bn';
 import { ContractTransaction } from 'ethers';
 import { locale } from '~/utils/locale';
 import { Chains } from '~/utils/chains';
-import { depositUSDA } from '~/contracts/USDA/depositUSDA';
 import SVGBox from '../icons/misc/SVGBox';
 import { hasSUSDAllowance } from '~/contracts/misc/hasAllowance';
-import { DEFAULT_APPROVE_AMOUNT } from '~/constants';
+import { DEFAULT_APPROVE_AMOUNT, SUSD_ADDRESS, USDA_ADDRESS } from '~/constants';
 import { useAppSelector } from '~/hooks/store';
+import { useSigner, useContract, useAccount, useNetwork } from 'wagmi';
+import { IUSDA__factory } from '~/chain/contracts';
+import { getAddress } from 'viem';
 
 export const DepositSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
-  const { currentAccount, dataBlock, currentSigner, chainId } = useWeb3Context();
   const { SUSD: SUSD_TOKEN } = useAppSelector((state) => state.stablecoins);
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
-  const rolodex = useRolodexContext();
 
   const [hasAllowance, setHasAllowance] = useState(false);
   const [approvalTxn, setApprovalTxn] = useState<ContractTransaction>();
+  const { chain: currentChain } = useNetwork();
+  const chain = Chains.getInfo(currentChain?.id || 1);
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
 
-  const chain = Chains.getInfo(chainId);
+  const SUSDContract = useContract({
+    address: SUSD_ADDRESS,
+    abi: IUSDA__factory.abi,
+    signerOrProvider: signer,
+  });
+
+  const USDAContract = useContract({
+    address: USDA_ADDRESS,
+    abi: IUSDA__factory.abi,
+    signerOrProvider: signer,
+  });
 
   useEffect(() => {
-    if (rolodex && SUSD.amountToDeposit) {
-      hasSUSDAllowance(
-        currentAccount,
-        rolodex.addressUSDA,
-        SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : SUSD.amountToDeposit,
-        rolodex,
-        SUSD_TOKEN.decimals,
-      ).then(setHasAllowance);
+    if (SUSD.amountToDeposit && address && SUSDContract) {
+      SUSDContract.allowance(getAddress(address), getAddress(USDA_ADDRESS)).then((allowance) => {
+        hasSUSDAllowance(
+          SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : SUSD.amountToDeposit,
+          allowance,
+          SUSD_TOKEN.decimals,
+        ).then(setHasAllowance);
+      });
     }
-  }, [rolodex, dataBlock, chainId, SUSD.amountToDeposit, loadmsg]);
+  }, [address, SUSD.amountToDeposit, loadmsg]);
 
   const handleDepositConfirmationRequest = async () => {
-    if (rolodex && SUSD.amountToDeposit && currentSigner) {
+    if (SUSD.amountToDeposit && USDAContract) {
       setLoading(true);
       setLoadmsg(locale('CheckWallet'));
       try {
-        const depositTransaction = await depositUSDA(
+        const depositTransaction = await USDAContract.deposit(
           SUSD.maxDeposit
             ? BN(SUSD_TOKEN.wallet_amount!)
             : BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`)),
-          rolodex,
-          currentSigner!,
         );
 
         updateTransactionState(depositTransaction);
@@ -71,14 +81,15 @@ export const DepositSUSDConfirmationModal = () => {
       setLoading(false);
     }
   };
+
   const handleApprovalRequest = async () => {
-    if (rolodex && SUSD.amountToDeposit) {
+    if (SUSDContract && SUSD.amountToDeposit) {
       const depositAmount = BN(DEFAULT_APPROVE_AMOUNT).mul(BN(`1e${SUSD_TOKEN.decimals}`));
 
       setLoading(true);
       try {
         setLoadmsg(locale('CheckWallet'));
-        const txn = await rolodex.SUSD?.connect(currentSigner!).approve(rolodex.addressUSDA, depositAmount);
+        const txn = await SUSDContract.approve(USDA_ADDRESS, depositAmount);
 
         setApprovalTxn(txn);
 

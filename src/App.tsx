@@ -1,6 +1,6 @@
 import { StrictMode, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import './theme/fonts.css';
+import './theme/styles.css';
 
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { Web3ReactProvider } from '@web3-react/core';

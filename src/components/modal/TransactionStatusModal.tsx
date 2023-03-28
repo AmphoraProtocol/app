@@ -9,36 +9,36 @@ import { ModalType, useModalContext } from '../libs/modal-content-provider/Modal
 import { Spinner } from '../loading';
 import { BaseModal } from './BaseModal';
 import { Chains } from '~/utils/chains';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import SVGBox from '../icons/misc/SVGBox';
 import { VCActions, CollateralActions } from '~/store';
 import { getTokensListOnCurrentChain } from '~/utils/tokens';
 import { useAppSelector, useAppDispatch } from '~/hooks/store';
+import { useAccount, useNetwork } from 'wagmi';
 
 export const TransactionStatusModal = () => {
   const { type, setType, transactionState, transaction } = useModalContext();
-  const { chainId, currentAccount, signerOrProvider } = useWeb3Context();
   const vaultControllerData = useAppSelector((state) => state.VC);
   const dispatch = useAppDispatch();
   const isLight = useLight();
+  const { address } = useAccount();
+  const { chain: currentChain } = useNetwork();
 
   // temporary
   useEffect(() => {
     if (transactionState === 'SUCCESS') {
-      dispatch(VCActions.getVCData({ userAddress: currentAccount }));
+      dispatch(VCActions.getVCData({ userAddress: address }));
       dispatch(
         CollateralActions.getCollateralData({
-          userAddress: currentAccount,
+          userAddress: address,
           vaultAddress: vaultControllerData.userVault.vaultAddress,
-          tokens: getTokensListOnCurrentChain(chainId),
-          signerOrProvider,
+          tokens: getTokensListOnCurrentChain(currentChain?.id || 1),
         }),
       );
     }
   }, [transactionState]);
 
   const renderTransitionState = () => {
-    const chain = Chains.getInfo(chainId);
+    const chain = Chains.getInfo(currentChain?.id || 1);
 
     switch (transactionState) {
       case 'PENDING':

@@ -1,19 +1,9 @@
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
-import { Rolodex } from '../../chain/rolodex/rolodex';
 import { BN } from '../../utils/bn';
 import { getAllowance } from '../ERC20/getAllowance';
-import { getSUSDAllowanceWithRolodex } from './getAllowance';
 
-export const hasSUSDAllowance = async (
-  owner: string,
-  spender: string,
-  amount: string | BigNumber,
-  rolodex: Rolodex,
-  decimals: number,
-) => {
-  const allowance = await getSUSDAllowanceWithRolodex(owner, spender, rolodex);
-
+export const hasSUSDAllowance = async (amount: string | BigNumber, allowance: BigNumber, decimals: number) => {
   if (allowance !== undefined) {
     let susdBN: BigNumber;
     if (typeof amount === 'string') {

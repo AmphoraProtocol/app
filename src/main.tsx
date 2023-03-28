@@ -10,7 +10,6 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 import store from '~/store';
 import App from './App';
-import './global.css';
 
 const { chains, provider } = configureChains(
   [mainnet, localhost],
