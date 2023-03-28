@@ -1,19 +1,22 @@
 import { Box, Typography } from '@mui/material';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
+import { useBlockNumber, useFeeData } from 'wagmi';
+import { utils } from 'ethers';
 
 export const GweiBlockText = () => {
-  const { gasPrice, dataBlock } = useWeb3Context();
-
+  const { data } = useBlockNumber();
+  const { data: feeData } = useFeeData();
   return (
     <Box px={{ xs: 3, md: 10 }} mb={2} display='flex' columnGap={2} justifyContent='flex-end'>
       <Box>
         <Typography variant='label'>Gwei: </Typography>
-        <Typography variant='label2_medium'>{gasPrice}</Typography>
+        <Typography variant='label2_medium'>
+          {Number.parseFloat(utils.formatUnits(feeData?.formatted.gasPrice || '0', 9)).toFixed(2)}
+        </Typography>
       </Box>
 
       <Box>
         <Typography variant='label'>Block: </Typography>
-        <Typography variant='label2_medium'>{dataBlock}</Typography>
+        <Typography variant='label2_medium'>{data}</Typography>
       </Box>
     </Box>
   );
