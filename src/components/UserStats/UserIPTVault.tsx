@@ -1,17 +1,16 @@
 import { Box, Typography } from '@mui/material';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
-import { ConnectWalletButton, CopyButton } from '../button';
+import { CopyButton } from '../button';
 import { addressShortener } from '../text';
-
 import { ToolTip } from '../tooltip/ToolTip';
 import { CardContainer } from '../cards/CardContainer';
 import { ClaimsCard } from '../cards/ClaimsCard';
 import { useAppSelector } from '~/hooks/store';
 
 export const UserIPTVault = () => {
-  const { connected } = useWeb3Context();
-
+  const { isConnected } = useAccount();
   const { vaultAddress } = useAppSelector((state) => state.VC.userVault);
 
   return (
@@ -49,15 +48,15 @@ export const UserIPTVault = () => {
             </Typography>
           </Box>
 
-          {connected ? (
+          {isConnected ? (
             vaultAddress ? (
               <CopyButton copy={vaultAddress} />
             ) : (
               <CopyButton copy={`0x0000000000000000000000000000000000000000`} />
             )
           ) : (
-            <Box maxWidth={150}>
-              <ConnectWalletButton />
+            <Box display='flex' height='48px'>
+              <ConnectButton chainStatus='none' showBalance={false} accountStatus='address' />
             </Box>
           )}
         </Box>
