@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 import { Box, Typography, useTheme } from '@mui/material';
 import Cookies from 'universal-cookie';
 
 import { formatColor, neutral } from '../theme';
-import { useWeb3Context } from '../components/libs/web3-data-provider/Web3Provider';
 import { ProtocolStatsCard } from '../components/cards';
 import { StatsMeter } from '../components/statsMeter';
 import { UserStats } from '../components/UserStats';
@@ -33,8 +32,8 @@ const Dashboard = () => {
   const theme = useTheme();
   const vaultControllerData = useAppSelector((state) => state.VC);
   const dispatch = useAppDispatch();
-  const { dataBlock, chainId } = useWeb3Context();
   const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
 
   useEffect(() => {
     dispatch(VCActions.getVCData({ userAddress: address }));
@@ -42,14 +41,14 @@ const Dashboard = () => {
       CollateralActions.getCollateralData({
         userAddress: address,
         vaultAddress: vaultControllerData.userVault.vaultAddress,
-        tokens: getTokensListOnCurrentChain(chainId),
+        tokens: getTokensListOnCurrentChain(chain?.id || 1),
       }),
     );
 
     if (address) {
       dispatch(StablecoinActions.getStablesData({ userAddress: address }));
     }
-  }, [vaultControllerData.userVault.vaultAddress, dataBlock, chainId, address, isConnected]);
+  }, [vaultControllerData.userVault.vaultAddress, chain?.id, address]);
 
   return (
     <Box

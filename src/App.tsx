@@ -24,7 +24,6 @@ import {
   TransactionStatusModal,
 } from './components/modal';
 import { ClaimModal } from './components/modal/ClaimModal';
-import { RolodexContentProvider } from './components/libs/rolodex-data-provider/RolodexDataProvider';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
 import { RedirectTo } from './components/redirect';
 
@@ -52,26 +51,24 @@ const WalletContext = (props: { children: any }) => {
 const DashboardContext = (props: { children: any }) => {
   return (
     <Web3ContextProvider>
-      <RolodexContentProvider>
-        <ModalContentProvider>
-          <>
-            <WalletModalProvider>
-              <>
-                <SwapTokenProvider>{props.children}</SwapTokenProvider>
-                <DepositWithdrawCollateralModal />
-                <DepositCollateralConfirmationModal />
-                <WithdrawCollateralConfirmationModal />
-                <DepositWithdrawSUSDModal />
-                <BorrowRepayModal />
-                <DepositSUSDConfirmationModal />
-                <WithdrawSUSDConfirmationModal />
-                <ClaimModal />
-                <TransactionStatusModal />
-              </>
-            </WalletModalProvider>
-          </>
-        </ModalContentProvider>
-      </RolodexContentProvider>
+      <ModalContentProvider>
+        <>
+          <WalletModalProvider>
+            <>
+              <SwapTokenProvider>{props.children}</SwapTokenProvider>
+              <DepositWithdrawCollateralModal />
+              <DepositCollateralConfirmationModal />
+              <WithdrawCollateralConfirmationModal />
+              <DepositWithdrawSUSDModal />
+              <BorrowRepayModal />
+              <DepositSUSDConfirmationModal />
+              <WithdrawSUSDConfirmationModal />
+              <ClaimModal />
+              <TransactionStatusModal />
+            </>
+          </WalletModalProvider>
+        </>
+      </ModalContentProvider>
     </Web3ContextProvider>
   );
 };
