@@ -119,7 +119,7 @@ export const MobileToolBar = () => {
             target="_blank"
           >
             <Button variant="outlined">
-              <Typography variant="label">ETH-USDi Rewards</Typography>
+              <Typography variant="label">ETH-USDA Rewards</Typography>
             </Button>
           </MuiLink>
         </Box> */}

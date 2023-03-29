@@ -1,13 +1,11 @@
 import { StrictMode, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import './theme/styles.css';
-
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
-import { Web3ReactProvider } from '@web3-react/core';
-import { providers } from 'ethers';
+import './theme/styles.css';
+import { mainnet } from 'viem/chains';
+import { createPublicClient, http } from 'viem';
+
 import { AppLayout } from './partials/app-layout';
-import { Web3ContextProvider } from './components/libs/web3-data-provider/Web3Provider';
-import { WalletModalProvider } from './components/libs/wallet-modal-provider/WalletModalProvider';
 import { ModalContentProvider } from './components/libs/modal-content-provider/ModalContentProvider';
 import { PaletteModeContextProvider } from './components/libs/palette-mode-provider/palette-mode-provider';
 import Dashboard from './pages';
@@ -26,9 +24,6 @@ import {
 import { ClaimModal } from './components/modal/ClaimModal';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
 import { RedirectTo } from './components/redirect';
-
-import { mainnet } from 'viem/chains';
-import { createPublicClient, http } from 'viem';
 import { BACKUP_PROVIDER } from './constants';
 
 export const viemClient = createPublicClient({
@@ -36,64 +31,44 @@ export const viemClient = createPublicClient({
   transport: http(BACKUP_PROVIDER),
 });
 
-// https://github.com/NoahZinsmeister/web3-react/tree/v6/docs
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getWeb3Library(provider: any): providers.Web3Provider {
-  const library = new providers.Web3Provider(provider);
-  library.pollingInterval = 12000;
-  return library;
-}
-
-const WalletContext = (props: { children: any }) => {
-  return <Web3ReactProvider getLibrary={getWeb3Library}>{props.children}</Web3ReactProvider>;
-};
-
 const DashboardContext = (props: { children: any }) => {
   return (
-    <Web3ContextProvider>
-      <ModalContentProvider>
-        <>
-          <WalletModalProvider>
-            <>
-              <SwapTokenProvider>{props.children}</SwapTokenProvider>
-              <DepositWithdrawCollateralModal />
-              <DepositCollateralConfirmationModal />
-              <WithdrawCollateralConfirmationModal />
-              <DepositWithdrawSUSDModal />
-              <BorrowRepayModal />
-              <DepositSUSDConfirmationModal />
-              <WithdrawSUSDConfirmationModal />
-              <ClaimModal />
-              <TransactionStatusModal />
-            </>
-          </WalletModalProvider>
-        </>
-      </ModalContentProvider>
-    </Web3ContextProvider>
+    <ModalContentProvider>
+      <>
+        <SwapTokenProvider>{props.children}</SwapTokenProvider>
+        <DepositWithdrawCollateralModal />
+        <DepositCollateralConfirmationModal />
+        <WithdrawCollateralConfirmationModal />
+        <DepositWithdrawSUSDModal />
+        <BorrowRepayModal />
+        <DepositSUSDConfirmationModal />
+        <WithdrawSUSDConfirmationModal />
+        <ClaimModal />
+        <TransactionStatusModal />
+      </>
+    </ModalContentProvider>
   );
 };
 
 const AppRouter = () => {
   return (
-    <WalletContext>
-      <Routes>
-        <Route path={`/landing`} element={<LandingPage />} />
-        <Route path={`/docs`} element={<RedirectTo url='book/docs/intro/index.html' />} />
-        <Route path={`/book`} element={<RedirectTo url='book/docs/intro/index.html' />} />
-        <Route path={`*`} element={<NotFound404Page />} />
+    <Routes>
+      <Route path={`/landing`} element={<LandingPage />} />
+      <Route path={`/docs`} element={<RedirectTo url='book/docs/intro/index.html' />} />
+      <Route path={`/book`} element={<RedirectTo url='book/docs/intro/index.html' />} />
+      <Route path={`*`} element={<NotFound404Page />} />
 
-        <Route
-          path={`/`}
-          element={
-            <DashboardContext>
-              <AppLayout>
-                <Dashboard />
-              </AppLayout>
-            </DashboardContext>
-          }
-        />
-      </Routes>
-    </WalletContext>
+      <Route
+        path={`/`}
+        element={
+          <DashboardContext>
+            <AppLayout>
+              <Dashboard />
+            </AppLayout>
+          </DashboardContext>
+        }
+      />
+    </Routes>
   );
 };
 

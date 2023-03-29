@@ -7,7 +7,6 @@ import { ForwardIcon } from '../icons/misc/ForwardIcon';
 import { useSwapTokenContext } from '../libs/swap-token-provider/SwapTokenProvider';
 import { TokenSelect } from './TokenSelect';
 import { useTokenAmountInput } from './useTokenAmountInput';
-import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
 import { useModalContext, ModalType } from '../libs/modal-content-provider/ModalContentProvider';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
@@ -20,7 +19,6 @@ export const SwapContainer = () => {
   const [token1, token2, swapTokenPositions] = useSwapTokenContext();
   const { openConnectModal } = useConnectModal();
 
-  const { setIsWalletModalOpen } = useWalletModalContext();
   const { setType, updateSUSD } = useModalContext();
 
   const { isConnected } = useAccount();
