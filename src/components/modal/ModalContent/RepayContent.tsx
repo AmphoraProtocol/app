@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
+import { useContract, useSigner } from 'wagmi';
+import { utils } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
 import { DecimalInput } from '../../textFields';
@@ -8,11 +10,9 @@ import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
 import { locale } from '~/utils/locale';
 import { useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { useContract, useSigner } from 'wagmi';
 import { IVaultController__factory } from '~/chain/contracts';
-import { USDA_DECIMALS, VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { BN } from '~/utils/bn';
-import { utils } from 'ethers';
+import { getConfig } from '~/config';
 
 interface RepayContent {
   tokenName: string;
@@ -34,6 +34,10 @@ export const RepayContent = (props: RepayContent) => {
   const [focus, setFocus] = useState(false);
   const toggle = () => setFocus(!focus);
   const { data: signer } = useSigner();
+  const {
+    USDA_DECIMALS,
+    ADDRESSES: { VAULT_CONTROLLER_ADDRESS },
+  } = getConfig();
 
   const VC = useContract({
     address: VAULT_CONTROLLER_ADDRESS,

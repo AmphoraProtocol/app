@@ -11,8 +11,8 @@ import { ModalType, useModalContext } from '../libs/modal-content-provider/Modal
 import { ToolTip } from '../tooltip/ToolTip';
 import { useAppSelector } from '~/hooks/store';
 import { OracleType } from '~/types';
-import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { IVaultController__factory } from '~/chain/contracts';
+import { getConfig } from '~/config';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -61,7 +61,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   const { data: signer } = useSigner();
 
   const VC = useContract({
-    address: VAULT_CONTROLLER_ADDRESS,
+    address: getConfig().ADDRESSES.VAULT_CONTROLLER_ADDRESS,
     abi: IVaultController__factory.abi,
     signerOrProvider: signer,
   });

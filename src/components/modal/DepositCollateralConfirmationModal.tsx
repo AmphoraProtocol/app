@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { ContractReceipt, utils } from 'ethers';
 import { Box, Typography } from '@mui/material';
 import { useSigner, useContract, useAccount } from 'wagmi';
-import { getAddress } from 'viem';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
@@ -55,7 +54,7 @@ export const DepositCollateralConfirmationModal = () => {
         const formattedERC20Amount =
           typeof amount === 'string' ? utils.parseUnits(amount, collateralToken.decimals) : amount;
 
-        const attempt = await vaultContract.depositERC20(getAddress(collateralToken.address), formattedERC20Amount);
+        const attempt = await vaultContract.depositERC20(collateralToken.address, formattedERC20Amount);
 
         updateTransactionState(attempt!);
 
@@ -85,7 +84,7 @@ export const DepositCollateralConfirmationModal = () => {
         const formattedERC20Amount =
           typeof amount === 'string' ? utils.parseUnits(amount, collateralToken.decimals) : amount;
 
-        const attempt = await collateralContract.approve(getAddress(vaultAddress), formattedERC20Amount);
+        const attempt = await collateralContract.approve(vaultAddress, formattedERC20Amount);
 
         await attempt.wait();
         setHasCollateralAllowance(true);
@@ -102,7 +101,7 @@ export const DepositCollateralConfirmationModal = () => {
 
   useEffect(() => {
     if (type === 'DEPOSIT_COLLATERAL_CONFIRMATION' && collateralContract && address && vaultAddress) {
-      collateralContract.allowance(getAddress(address), getAddress(vaultAddress)).then((allowance) => {
+      collateralContract.allowance(address, vaultAddress).then((allowance) => {
         const formattedBalance = formatBNtoPreciseStringAndNumber(allowance, collateralToken.decimals);
         if (formattedBalance.num >= Number.parseFloat(collateralDepositAmount)) {
           setHasCollateralAllowance(true);

@@ -24,11 +24,11 @@ import {
 import { ClaimModal } from './components/modal/ClaimModal';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
 import { RedirectTo } from './components/redirect';
-import { BACKUP_PROVIDER } from './constants';
+import { getConfig } from './config';
 
 export const viemClient = createPublicClient({
   chain: mainnet,
-  transport: http(BACKUP_PROVIDER),
+  transport: http(getConfig().VITE_CUSTOM_LOCAL_RPC),
 });
 
 const DashboardContext = (props: { children: any }) => {

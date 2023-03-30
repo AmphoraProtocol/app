@@ -1,6 +1,13 @@
+import { Address } from 'wagmi';
 import { ChainIDs } from './chains';
 
-export const tokensToChains = {
+interface TokenToChains {
+  [key: string]: {
+    [key: number]: Address;
+  };
+}
+
+export const tokensToChains: TokenToChains = {
   WBTC: {
     [ChainIDs.MAINNET]: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
     [ChainIDs.ROPSTEN]: '0x442Be68395613bDCD19778e761f03261ec46C06D',

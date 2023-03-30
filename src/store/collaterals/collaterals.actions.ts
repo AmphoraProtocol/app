@@ -1,36 +1,35 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Address, getAddress } from 'viem';
+import { Address } from 'wagmi';
 
 import { formatBigInt, formatBNtoPreciseStringAndNumber, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
 import { IERC20Metadata__factory, IOracleRelay__factory } from '~/chain/contracts';
 import { IVaultController__factory } from '~/chain/contracts';
-import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { getOracleType } from '~/utils/getOracleType';
 import { BN, BNtoDecSpecific } from '~/utils/bn';
 import { BigNumber, constants } from 'ethers';
 import { CollateralTokens } from '~/types';
-import { ZERO_ADDRESS } from '~/constants';
 import { ThunkAPI } from '~/store';
 import { viemClient } from '~/App';
+import { getConfig } from '~/config';
 
 const getCollateralData = createAsyncThunk<
   { tokens: CollateralTokens },
   {
-    userAddress?: string;
-    vaultAddress?: string;
+    userAddress?: Address;
+    vaultAddress?: Address;
     tokens: CollateralTokens;
   },
   ThunkAPI
 >('collateral/getData', async ({ userAddress, vaultAddress, tokens }) => {
   const newTokens: CollateralTokens = { ...tokens };
-  const VCAddress = VAULT_CONTROLLER_ADDRESS;
+  const { VAULT_CONTROLLER_ADDRESS, ZERO_ADDRESS } = getConfig().ADDRESSES;
 
   for (const [key, token] of Object.entries(newTokens!)) {
     const data = await viemClient.readContract({
-      address: VCAddress,
+      address: VAULT_CONTROLLER_ADDRESS,
       abi: IVaultController__factory.abi,
       functionName: 'tokenCollateralInfo',
-      args: [getAddress(token.address)],
+      args: [token.address],
     });
 
     token.token_LTV = BN(data.ltv).div(BN('1e16')).toNumber();
@@ -78,12 +77,12 @@ const getCollateralData = createAsyncThunk<
         {
           ...erc20Contract,
           functionName: 'balanceOf',
-          args: [getAddress(vaultAddress || ZERO_ADDRESS)],
+          args: [vaultAddress || ZERO_ADDRESS],
         },
         {
           ...erc20Contract,
           functionName: 'balanceOf',
-          args: [getAddress(userAddress || ZERO_ADDRESS)],
+          args: [userAddress || ZERO_ADDRESS],
         },
       ],
     });

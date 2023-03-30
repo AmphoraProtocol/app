@@ -1,13 +1,17 @@
-import { SUSD_ADDRESS, USDA_ADDRESS, USDA_DECIMALS } from '~/constants';
 import initializeToken from '~/utils/tokens/initializeToken';
 import { CollateralTokens, Token } from '~/types/token';
 import { ChainIDs } from './chains';
 import { tokensToChains } from './tokensToChains';
+import { getConfig } from '~/config';
 
 export const getStablecoins = (): {
   USDA: Token;
   SUSD: Token;
 } => {
+  const {
+    USDA_DECIMALS,
+    ADDRESSES: { USDA_ADDRESS, SUSD_ADDRESS },
+  } = getConfig();
   return {
     USDA: initializeToken({
       name: 'Amphora USD',

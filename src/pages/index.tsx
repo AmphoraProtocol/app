@@ -32,7 +32,7 @@ const Dashboard = () => {
   const theme = useTheme();
   const vaultControllerData = useAppSelector((state) => state.VC);
   const dispatch = useAppDispatch();
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const { chain } = useNetwork();
 
   useEffect(() => {

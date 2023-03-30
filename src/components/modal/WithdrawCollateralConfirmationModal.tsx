@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
 import { useSigner, useContract } from 'wagmi';
-import { getAddress } from 'viem';
 import { utils } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
@@ -47,7 +46,7 @@ export const WithdrawCollateralConfirmationModal = () => {
     try {
       if (vaultContract && amount) {
         const formattedAmount = utils.parseUnits(amount, collateralToken.decimals);
-        const attempt = await vaultContract.withdrawERC20(getAddress(collateralToken.address), formattedAmount);
+        const attempt = await vaultContract.withdrawERC20(collateralToken.address, formattedAmount);
 
         updateTransactionState(attempt);
 
