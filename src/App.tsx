@@ -1,9 +1,9 @@
 import { StrictMode, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
-import './theme/styles.css';
-import { mainnet } from 'viem/chains';
 import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
+import './theme/styles.css';
 
 import { AppLayout } from './partials/app-layout';
 import { ModalContentProvider } from './components/libs/modal-content-provider/ModalContentProvider';

@@ -12,7 +12,7 @@ import { ContractTransaction } from 'ethers';
 import { locale } from '~/utils/locale';
 import { Chains } from '~/utils/chains';
 import SVGBox from '../icons/misc/SVGBox';
-import { hasSUSDAllowance } from '~/contracts/misc/hasAllowance';
+import { hasSUSDAllowance } from '~/utils/hasAllowance';
 import { DEFAULT_APPROVE_AMOUNT, SUSD_ADDRESS, USDA_ADDRESS } from '~/constants';
 import { useAppSelector } from '~/hooks/store';
 import { useSigner, useContract, useAccount, useNetwork } from 'wagmi';

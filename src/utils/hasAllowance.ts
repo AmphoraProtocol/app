@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { BN } from '../../utils/bn';
+import { BN } from './bn';
 
 export const hasSUSDAllowance = async (amount: string | BigNumber, allowance: BigNumber, decimals: number) => {
   if (allowance !== undefined) {
