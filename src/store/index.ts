@@ -20,6 +20,7 @@ import { StablecoinActions } from './stablecoin/stablecoin.actions';
 // VaultController state
 import { VCReducer, VCInitialState } from './vaultController/vc.reducer';
 import { VCActions } from './vaultController/vc.actions';
+import { getEnv } from '~/config/env';
 
 export const rootReducer: Reducer<RootState> = combineReducers({
   theme: themeReducer,
@@ -35,7 +36,7 @@ export { ThemeActions, CollateralActions, StablecoinActions, VCActions };
 export { themeInitialState, collateralInitialState, stablecoinInitialState, VCInitialState };
 
 export function getStore() {
-  const isDev = true; //import.meta.env.ALLOW_DEV_MODE === 'true';
+  const isDev = getEnv().VITE_ALLOW_DEV_MODE;
 
   const initialState = {
     theme: cloneDeep(themeInitialState),
