@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ButtonProps,
   Button,
@@ -7,19 +8,17 @@ import {
   AccordionDetails,
   ClickAwayListener,
 } from '@mui/material';
-import { useState } from 'react';
+import { useAccount } from 'wagmi';
 import { useLight } from '~/hooks/useLight';
-import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 
+import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
 import { WalletModal } from '../modal';
 import { addressShortener } from '../text';
 
 export const ConnectWalletButton = () => {
   const { setIsWalletModalOpen } = useWalletModalContext();
 
-  const { connected, disconnectWallet, currentAccount } = useWeb3Context();
-
+  const { isConnected } = useAccount();
   const [expanded, setExpanded] = useState(false);
 
   const StyledConnectButton = (props: ButtonProps) => {
@@ -55,7 +54,7 @@ export const ConnectWalletButton = () => {
 
   return (
     <>
-      {connected ? (
+      {isConnected ? (
         <ClickAwayListener onClickAway={() => setExpanded(false)}>
           <Accordion
             sx={{ borderRadius: '10px !important', boxShadow: 'none' }}
@@ -74,10 +73,13 @@ export const ConnectWalletButton = () => {
               aria-controls='panel1a-content'
               id='panel1a-header'
             >
-              <StyledConnectButton>{addressShortener(currentAccount)}</StyledConnectButton>
+              <StyledConnectButton>{addressShortener('test')}</StyledConnectButton>
             </AccordionSummary>
             <AccordionDetails sx={{ position: 'absolute', px: 0, width: '100%' }}>
-              <StyledConnectButton onClick={disconnectWallet} sx={{ width: '100%', justifyContent: 'center' }}>
+              <StyledConnectButton
+                onClick={() => console.log('Disconnect account')}
+                sx={{ width: '100%', justifyContent: 'center' }}
+              >
                 Disconnect
               </StyledConnectButton>
             </AccordionDetails>

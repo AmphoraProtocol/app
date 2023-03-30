@@ -6,11 +6,13 @@ import { formatColor, neutral } from '~/theme';
 import { DecimalInput } from '../../textFields';
 import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
-import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { locale } from '~/utils/locale';
 import { useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { repayAllUsda, repayUsda } from '~/contracts/VaultController';
+import { useContract, useSigner } from 'wagmi';
+import { IVaultController__factory } from '~/chain/contracts';
+import { USDA_DECIMALS, VAULT_CONTROLLER_ADDRESS } from '~/constants';
+import { BN } from '~/utils/bn';
+import { utils } from 'ethers';
 
 interface RepayContent {
   tokenName: string;
@@ -23,31 +25,25 @@ interface RepayContent {
 
 export const RepayContent = (props: RepayContent) => {
   const { tokenName, vaultBorrowPower, setRepayAmount, repayAmount, accountLiability, vaultID } = props;
-  const rolodex = useRolodexContext();
-  const { currentSigner } = useWeb3Context();
   const { updateTransactionState } = useModalContext();
-
   const [newHealth, setNewHealth] = useState(100 * (accountLiability / Number(vaultBorrowPower)));
-
   const [loadmsg, setLoadmsg] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [focus, setFocus] = useState(false);
   const toggle = () => setFocus(!focus);
+  const { data: signer } = useSigner();
+
+  const VC = useContract({
+    address: VAULT_CONTROLLER_ADDRESS,
+    abi: IVaultController__factory.abi,
+    signerOrProvider: signer,
+  });
 
   useEffect(() => {
     setDisabled(Number(repayAmount) <= 0 || accountLiability === 0);
   }, [repayAmount]);
-
-  const onInputChange = (e: string) => {
-    const newLib = accountLiability - Number(e);
-    if (newLib < 0) {
-      setRepayAmount(accountLiability.toString());
-    } else {
-      setRepayAmount(e);
-    }
-  };
 
   useEffect(() => {
     const newHealth = (100 * (accountLiability - Number(repayAmount))) / Number(vaultBorrowPower);
@@ -59,22 +55,33 @@ export const RepayContent = (props: RepayContent) => {
     }
   }, [repayAmount]);
 
+  const onInputChange = (e: string) => {
+    const newLib = accountLiability - Number(e);
+    if (newLib < 0) {
+      setRepayAmount(accountLiability.toString());
+    } else {
+      setRepayAmount(e);
+    }
+  };
+
   const handleRepayAllRequest = async () => {
     const accountLiabilityString = accountLiability.toString();
 
     setRepayAmount(accountLiabilityString);
 
     try {
-      const repayAllTransaction = await repayAllUsda(vaultID, rolodex!, currentSigner!);
+      if (VC) {
+        const repayAllTransaction = await VC.repayAllUSDA(BN(vaultID));
 
-      updateTransactionState(repayAllTransaction);
+        updateTransactionState(repayAllTransaction);
 
-      const repayAllReceipt = await repayAllTransaction.wait();
+        const repayAllReceipt = await repayAllTransaction.wait();
 
-      updateTransactionState(repayAllReceipt);
-      setRepayAmount('');
-      setLoadmsg('');
-      setLoading(false);
+        updateTransactionState(repayAllReceipt);
+        setRepayAmount('');
+        setLoadmsg('');
+        setLoading(false);
+      }
     } catch (err) {
       setLoading(false);
       setShaking(true);
@@ -87,16 +94,19 @@ export const RepayContent = (props: RepayContent) => {
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
     try {
-      const repayTransaction = await repayUsda(vaultID, repayAmount, rolodex!, currentSigner!);
+      if (VC) {
+        const formattedUSDAAmount = utils.parseUnits(repayAmount, USDA_DECIMALS);
+        const repayTransaction = await VC.repayUSDA(BN(vaultID), formattedUSDAAmount);
 
-      updateTransactionState(repayTransaction);
+        updateTransactionState(repayTransaction);
 
-      const repayReceipt = await repayTransaction.wait();
+        const repayReceipt = await repayTransaction.wait();
 
-      updateTransactionState(repayReceipt);
-      setRepayAmount('');
-      setLoadmsg('');
-      setLoading(false);
+        updateTransactionState(repayReceipt);
+        setRepayAmount('');
+        setLoadmsg('');
+        setLoading(false);
+      }
     } catch (err) {
       setLoading(false);
       setShaking(true);

@@ -1,17 +1,18 @@
 import { ContractReceipt } from 'ethers';
 import { Box, BoxProps, Button, LinearProgress, Link, Typography } from '@mui/material';
+import { useAccount, useContract, useSigner } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { formatColor, neutral } from '~/theme';
 import { useLight } from '~/hooks/useLight';
 import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
 import SVGBox from '../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
-import { useRolodexContext } from '../libs/rolodex-data-provider/RolodexDataProvider';
-import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { ToolTip } from '../tooltip/ToolTip';
 import { useAppSelector } from '~/hooks/store';
 import { OracleType } from '~/types';
+import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
+import { IVaultController__factory } from '~/chain/contracts';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -25,7 +26,6 @@ interface UserTokenCardProps extends BoxProps {
   };
   LTVPercent: string;
   penaltyPercent: string;
-  canDelegate: boolean | undefined;
   index: number;
   cappedToken: boolean | undefined;
   tokenAddress: string | undefined;
@@ -36,13 +36,11 @@ interface UserTokenCardProps extends BoxProps {
 
 export const UserTokenCard = (props: UserTokenCardProps) => {
   const isLight = useLight();
-  const rolodex = useRolodexContext();
-  const { connected } = useWeb3Context();
-  const { setIsWalletModalOpen } = useWalletModalContext();
-  const tokens = useAppSelector((state) => state.collaterals.elements);
-
   const { setType, setCollateralToken, updateTransactionState } = useModalContext();
   const userVault = useAppSelector((state) => state.VC.userVault);
+  const { isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const tokens = useAppSelector((state) => state.collaterals.elements);
 
   const {
     tokenName,
@@ -53,7 +51,6 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     image,
     LTVPercent,
     penaltyPercent,
-    canDelegate = false,
     index,
     cappedToken,
     tokenAddress,
@@ -61,14 +58,23 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     oracleAddress,
     oracleType,
   } = props;
+  const { data: signer } = useSigner();
+
+  const VC = useContract({
+    address: VAULT_CONTROLLER_ADDRESS,
+    abi: IVaultController__factory.abi,
+    signerOrProvider: signer,
+  });
 
   const openVault = async () => {
     try {
-      const mintVaultRes = await rolodex!.VC!.mintVault();
-      updateTransactionState(mintVaultRes);
-      const mintVaultReceipt = await mintVaultRes.wait();
-      updateTransactionState(mintVaultReceipt);
-      return mintVaultRes;
+      if (VC) {
+        const mintVaultRes = await VC?.mintVault();
+        updateTransactionState(mintVaultRes);
+        const mintVaultReceipt = await mintVaultRes.wait();
+        updateTransactionState(mintVaultReceipt);
+        return mintVaultRes;
+      }
     } catch (err) {
       updateTransactionState(err as ContractReceipt);
       throw new Error('Error creating vault');
@@ -76,19 +82,14 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   };
 
   const handleDWClick = (modalType: ModalType) => {
-    if (!connected) {
-      setIsWalletModalOpen(true);
+    if (!isConnected && openConnectModal) {
+      openConnectModal();
     } else if (!userVault.vaultID && !userVault.vaultAddress) {
       openVault();
     } else {
       setCollateralToken((tokens as any)[tokenTicker]);
       setType(modalType);
     }
-  };
-
-  const setAndOpenDelegate = () => {
-    // setDelegateToken((tokens as any)[tokenTicker]);
-    // setType(ModalType.Delegate);
   };
 
   return (
@@ -215,8 +216,6 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
           <UserTokenMobileDropdown
             onClickDeposit={() => handleDWClick(ModalType.DepositCollateral)}
             onClickWithdraw={() => handleDWClick(ModalType.WithdrawCollateral)}
-            canDelegate={canDelegate}
-            onClickDelegate={setAndOpenDelegate}
           />
         </Box>
       </Box>

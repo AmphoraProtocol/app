@@ -5,15 +5,12 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Box,
-  Link,
   ClickAwayListener,
 } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLight } from '~/hooks/useLight';
 import { EllipsisIcon } from '../icons/misc/EllipsisIcon';
 import SVGBox from '../icons/misc/SVGBox';
-import { PaletteModeContext } from '../libs/palette-mode-provider/palette-mode-provider';
 
 interface StyledDropdownButton extends ButtonProps {
   text: string;
@@ -68,13 +65,11 @@ const StyledDropdownButton = (props: StyledDropdownButton) => {
 interface UserTokenMobileDropdownProps {
   onClickDeposit: () => void;
   onClickWithdraw: () => void;
-  canDelegate: boolean;
-  onClickDelegate?: () => void;
 }
 
 export const UserTokenMobileDropdown = (props: UserTokenMobileDropdownProps) => {
   const isLight = useLight();
-  const { onClickDeposit, onClickWithdraw, canDelegate, onClickDelegate } = props;
+  const { onClickDeposit, onClickWithdraw } = props;
 
   const [expanded, setExpanded] = useState(false);
 
@@ -134,7 +129,6 @@ export const UserTokenMobileDropdown = (props: UserTokenMobileDropdownProps) => 
         >
           <StyledDropdownButton img='plus_circle' text={`Deposit`} onClick={onClickDeposit} />
           <StyledDropdownButton img='minus_circle' text={`Withdraw`} onClick={onClickWithdraw} />
-          {canDelegate && <StyledDropdownButton img='arrow_gray' text={`Delegate`} onClick={onClickDelegate} />}
         </AccordionDetails>
       </Accordion>
     </ClickAwayListener>

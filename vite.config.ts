@@ -14,9 +14,6 @@ export default defineConfig({
     },
   },
   plugins: [react()],
-  define: {
-    global: 'globalThis',
-  },
   publicDir: './res',
   build: {
     rollupOptions: {

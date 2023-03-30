@@ -36,7 +36,6 @@ export const UserStats = () => {
             }}
             LTVPercent={val.token_LTV!.toLocaleString()}
             penaltyPercent={val.token_penalty!.toLocaleString()}
-            canDelegate={val.can_delegate ? true : false}
             cappedToken={val.capped_token}
             tokenAddress={val.address}
             cappedPercent={val.capped_percent}

@@ -1,10 +1,11 @@
 import { Box, Toolbar, Link } from '@mui/material';
 
-import { ConnectWalletButton, SelectedChainButton } from '~/components/button';
+import { SelectedChainButton } from '~/components/button';
 import { useLight } from '~/hooks/useLight';
-// import { useAppGovernanceContext } from '~/components/libs/app-governance-provider/AppGovernanceProvider';
 import { AppGovSwitch } from '~/components/switch';
 import { DesktopMenu } from './DesktopMenu';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+// import { useAppGovernanceContext } from '~/components/libs/app-governance-provider/AppGovernanceProvider';
 
 export const DesktopToolBar = () => {
   //desktop menu config
@@ -26,14 +27,11 @@ export const DesktopToolBar = () => {
       </Box>
 
       <Box sx={{ gap: 2 }} display='flex' mr={-1} ml='auto'>
-        {/* temporary */}
-        {/* {window.location.hash !== '#/sale' && (
-          <Box mx={2} maxWidth={200} width='100%'>
-            <TokenSaleButton />
-          </Box>
-        )} */}
         <SelectedChainButton />
-        <ConnectWalletButton />
+        <Box display='flex'>
+          <ConnectButton chainStatus='none' showBalance={false} accountStatus='address' />
+        </Box>
+
         <DesktopMenu />
       </Box>
     </Toolbar>

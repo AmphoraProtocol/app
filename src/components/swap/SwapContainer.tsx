@@ -8,8 +8,9 @@ import { useSwapTokenContext } from '../libs/swap-token-provider/SwapTokenProvid
 import { TokenSelect } from './TokenSelect';
 import { useTokenAmountInput } from './useTokenAmountInput';
 import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { useModalContext, ModalType } from '../libs/modal-content-provider/ModalContentProvider';
+import { useAccount } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 export const SwapContainer = () => {
   const isLight = useLight();
@@ -17,11 +18,12 @@ export const SwapContainer = () => {
   const theme = useTheme();
 
   const [token1, token2, swapTokenPositions] = useSwapTokenContext();
+  const { openConnectModal } = useConnectModal();
+
   const { setIsWalletModalOpen } = useWalletModalContext();
   const { setType, updateSUSD } = useModalContext();
 
-  const { connected } = useWeb3Context();
-
+  const { isConnected } = useAccount();
   const [token1Amount, setToken1Amount, token2Amount, setToken2Amount, swapTokenAmount] = useTokenAmountInput();
 
   const swapTokens = () => {
@@ -123,7 +125,7 @@ export const SwapContainer = () => {
         <TokenSelect token={token2} tokenAmount={token2Amount} setTokenAmount={token2Input} disableSetMax={true} />
       </Box>
 
-      {connected ? (
+      {isConnected ? (
         token1.ticker === 'sUSD' ? (
           <Button
             variant='contained'
@@ -158,7 +160,7 @@ export const SwapContainer = () => {
       ) : (
         <Button
           variant='contained'
-          onClick={() => setIsWalletModalOpen(true)}
+          onClick={() => openConnectModal && openConnectModal()}
           sx={{
             backgroundColor: 'button.mintRedeem',
             color: formatColor(neutral.white),

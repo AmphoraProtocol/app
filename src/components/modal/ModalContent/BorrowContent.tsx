@@ -6,11 +6,13 @@ import { formatColor, neutral } from '~/theme';
 import { DecimalInput } from '../../textFields';
 import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
-import { useRolodexContext } from '../../libs/rolodex-data-provider/RolodexDataProvider';
-import { useWeb3Context } from '../../libs/web3-data-provider/Web3Provider';
 import { locale } from '~/utils/locale';
 import { useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { borrowUsda } from '~/contracts/VaultController';
+import { useContract, useSigner } from 'wagmi';
+import { IVaultController__factory } from '~/chain/contracts';
+import { USDA_DECIMALS, VAULT_CONTROLLER_ADDRESS } from '~/constants';
+import { BN } from '~/utils/bn';
+import { utils } from 'ethers';
 
 interface BorrowContent {
   tokenName: string;
@@ -24,17 +26,19 @@ interface BorrowContent {
 export const BorrowContent = (props: BorrowContent) => {
   const { tokenName, vaultBorrowPower, borrowAmount, setBorrowAmount, vaultID, accountLiability } = props;
   const { updateTransactionState } = useModalContext();
-  const rolodex = useRolodexContext();
-
-  const { currentSigner } = useWeb3Context();
   const [disabled, setDisabled] = useState(true);
   const [focus, setFocus] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
-
   const [newHealth, setNewHealth] = useState(100 * (accountLiability / Number(vaultBorrowPower)));
+  const { data: signer } = useSigner();
+
+  const VC = useContract({
+    address: VAULT_CONTROLLER_ADDRESS,
+    abi: IVaultController__factory.abi,
+    signerOrProvider: signer,
+  });
 
   const toggle = () => setFocus(!focus);
   useEffect(() => {
@@ -63,16 +67,19 @@ export const BorrowContent = (props: BorrowContent) => {
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
     try {
-      const borrowTransaction = await borrowUsda(vaultID, borrowAmount, rolodex!, currentSigner!);
+      if (VC) {
+        const formattedUSDAAmount = utils.parseUnits(borrowAmount, USDA_DECIMALS);
+        const borrowTransaction = await VC.borrowUSDA(BN(vaultID), formattedUSDAAmount);
 
-      updateTransactionState(borrowTransaction);
+        updateTransactionState(borrowTransaction);
 
-      const borrowReceipt = await borrowTransaction.wait();
+        const borrowReceipt = await borrowTransaction.wait();
 
-      updateTransactionState(borrowReceipt);
+        updateTransactionState(borrowReceipt);
 
-      setLoadmsg('');
-      setLoading(false);
+        setLoadmsg('');
+        setLoading(false);
+      }
     } catch (e) {
       setLoading(false);
       setShaking(true);

@@ -61,8 +61,8 @@ export const BaseSwitch = (props: BaseSwitchProps) => {
   );
 
   const toggleHandler = () => {
-    // setIsOption1(!isOption1);
-    // onOptionChange(!isOption1);
+    setIsOption1(!isOption1);
+    onOptionChange(!isOption1);
   };
 
   return (
@@ -84,17 +84,8 @@ export const BaseSwitch = (props: BaseSwitchProps) => {
       onClick={toggleHandler}
     >
       <OptionBox option={option1} isSelected={isOption1} />
-      <Link
-        href='https://www.tally.xyz/'
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        target='_blank'
-      >
-        <OptionBox option={option2} isSelected={!isOption1} />
-      </Link>
+
+      <OptionBox option={option2} isSelected={!isOption1} />
 
       <Box
         className={isOption1 ? 'option1' : 'option2'}

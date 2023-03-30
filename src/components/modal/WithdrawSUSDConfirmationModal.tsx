@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { ContractReceipt } from 'ethers';
+import { BigNumber, ContractReceipt, utils } from 'ethers';
+import { useAccount, useContract, useSigner } from 'wagmi';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
@@ -8,34 +9,43 @@ import { BaseModal } from './BaseModal';
 import { useLight } from '~/hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
-import { useRolodexContext } from '../libs/rolodex-data-provider/RolodexDataProvider';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { locale } from '~/utils/locale';
-import { withdrawSUSD } from '~/contracts/USDA/withdrawSUSD';
 import SVGBox from '../icons/misc/SVGBox';
 import { useAppSelector } from '~/hooks/store';
+import { IUSDA__factory } from '~/chain/contracts';
+import { USDA_ADDRESS } from '~/constants';
 
 export const WithdrawSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
-  const rolodex = useRolodexContext();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
-  const { currentSigner } = useWeb3Context();
   const isLight = useLight();
 
   const { USDA } = useAppSelector((state) => state.stablecoins);
 
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
+
+  const USDAContract = useContract({
+    address: USDA_ADDRESS,
+    abi: IUSDA__factory.abi,
+    signerOrProvider: signer,
+  });
+
   const handleWithdrawSUSD = async () => {
-    if (rolodex && currentSigner) {
+    if (address && USDAContract) {
       setLoading(true);
       try {
         setLoadmsg(locale('CheckWallet'));
 
-        const withdrawTxn = await withdrawSUSD(
-          SUSD.maxWithdraw ? USDA.wallet_amount! : SUSD.amountToWithdraw,
-          rolodex,
-          currentSigner,
-        );
+        const susd_amount = SUSD.maxWithdraw ? USDA.wallet_amount! : SUSD.amountToWithdraw;
+        let formattedSUSDAmount: BigNumber;
+        if (typeof susd_amount === 'string') {
+          formattedSUSDAmount = utils.parseUnits(susd_amount, 18);
+        } else {
+          formattedSUSDAmount = susd_amount;
+        }
+        const withdrawTxn = await USDAContract.withdraw(formattedSUSDAmount);
 
         setLoadmsg(locale('TransactionPending'));
         updateTransactionState(withdrawTxn);

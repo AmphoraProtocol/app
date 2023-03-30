@@ -1,33 +1,45 @@
-import { Typography, Button, Box } from '@mui/material';
-import { ContractReceipt } from 'ethers';
 import { useState } from 'react';
+import { Typography, Button } from '@mui/material';
+import { ContractReceipt } from 'ethers';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount, useContract, useSigner } from 'wagmi';
+
 import { useLight } from '~/hooks/useLight';
 import SVGBox from '../icons/misc/SVGBox';
 import { useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { useRolodexContext } from '../libs/rolodex-data-provider/RolodexDataProvider';
-import { useWalletModalContext } from '../libs/wallet-modal-provider/WalletModalProvider';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
+import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
+import { IVaultController__factory } from '~/chain/contracts';
 
 export const OpenVaultButton = () => {
-  const { setIsWalletModalOpen } = useWalletModalContext();
   const rolodex = useRolodexContext();
   const { updateTransactionState } = useModalContext();
-  const { connected, currentAccount } = useWeb3Context();
+  const { isConnected, address } = useAccount();
   const isLight = useLight();
   const [ishovered, setIshovered] = useState(false);
+  const { openConnectModal } = useConnectModal();
+  const { data: signer } = useSigner();
+
+  const VC = useContract({
+    address: VAULT_CONTROLLER_ADDRESS,
+    abi: IVaultController__factory.abi,
+    signerOrProvider: signer,
+  });
 
   const openVault = async () => {
-    if (!connected || currentAccount === null || currentAccount === undefined || currentAccount === '') {
-      setIsWalletModalOpen(true);
+    if ((!isConnected || !address) && openConnectModal) {
+      openConnectModal();
       return;
     }
 
     try {
-      const mintVaultRes = await rolodex!.VC!.mintVault();
-      updateTransactionState(mintVaultRes);
-      const mintVaultReceipt = await mintVaultRes.wait();
-      updateTransactionState(mintVaultReceipt);
-      return mintVaultRes;
+      if (VC) {
+        const mintVaultRes = await VC.mintVault();
+        updateTransactionState(mintVaultRes);
+        const mintVaultReceipt = await mintVaultRes.wait();
+        updateTransactionState(mintVaultReceipt);
+        return mintVaultRes;
+      }
     } catch (err) {
       updateTransactionState(err as ContractReceipt);
       throw new Error('Error creating vault');
