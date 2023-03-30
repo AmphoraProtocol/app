@@ -13,7 +13,7 @@ import {
   IERC20,
   IERC20__factory,
   IGovernorCharlieDelegate,
-} from '../newContracts';
+} from '../contracts';
 
 export const backupProvider = new JsonRpcProvider(BACKUP_PROVIDER);
 

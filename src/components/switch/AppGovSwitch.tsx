@@ -9,7 +9,7 @@ export const AppGovSwitch = () => {
     if (location.pathname.includes('proposal')) {
       navigate('/');
     } else {
-      navigate('/proposal');
+      // navigate('/proposal');
     }
   };
 

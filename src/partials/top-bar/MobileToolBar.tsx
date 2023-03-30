@@ -103,7 +103,7 @@ export const MobileToolBar = () => {
         {/* temporary */}
         {/* {window.location.hash !== '#/sale' && <MobileIconButton text='Token Sale' img='star' href='/#/sale' />} */}
         <MobileIconButton text='App' img='rocket' href='/' />
-        <MobileIconButton text='Governance' img='people' href='/#/proposal' />
+        <MobileIconButton text='Governance' img='people' href='https://www.tally.xyz/' />
         <br />
         <MobileIconButton text='Docs' img='cog' href='/#/docs' />
         {/* <MobileIconButton text='Whitepaper' img='document' href='/#/whitepaper' /> */}

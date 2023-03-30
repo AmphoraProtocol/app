@@ -9,4 +9,3 @@ export * from './DepositCollateralConfirmationModal';
 export * from './WithdrawCollateralConfirmationModal';
 export * from './BorrowRepayModal';
 export * from './TransactionStatusModal';
-export * from './DelegateIPTModal';

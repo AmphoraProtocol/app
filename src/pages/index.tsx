@@ -160,7 +160,7 @@ const Dashboard = () => {
               <SingleStatCard>
                 <TitleTextToolTip
                   title={`Borrowing Power`}
-                  tooltipContent='Maximum amount that your vault can borrow, calculated by the sum of collateral values discounted by the LTV'
+                  tooltipcontent='Maximum amount that your vault can borrow, calculated by the sum of collateral values discounted by the LTV'
                   text={
                     vaultControllerData.userVault.borrowingPower
                       ? vaultControllerData.userVault.borrowingPower.toLocaleString('en-US', {
@@ -174,14 +174,14 @@ const Dashboard = () => {
               <SingleStatCard>
                 <TitleTextToolTip
                   title={`Deposit APR`}
-                  tooltipContent='Current annualized rate paid to USDA holders'
+                  tooltipcontent='Current annualized rate paid to USDA holders'
                   text={vaultControllerData.depositAPR ? vaultControllerData.depositAPR.toFixed(2) + '%' : null}
                 />
               </SingleStatCard>
               <SingleStatCard>
                 <TitleTextToolTip
                   title={`Borrow APR`}
-                  tooltipContent='Current annualized rate paid by USDA borrowers'
+                  tooltipcontent='Current annualized rate paid by USDA borrowers'
                   text={vaultControllerData.borrowAPR ? vaultControllerData.borrowAPR.toFixed(2) + '%' : null}
                 />
               </SingleStatCard>
@@ -204,7 +204,7 @@ const Dashboard = () => {
               >
                 <TitleTextToolTip
                   title={`USDA Borrowed`}
-                  tooltipContent='The amount of USDA your vault is currently borrowing. This increases as interest accrue.'
+                  tooltipcontent='The amount of USDA your vault is currently borrowing. This increases as interest accrue.'
                   text={
                     vaultControllerData.userVault.accountLiability
                       ? '$' + Math.round(vaultControllerData.userVault.accountLiability).toLocaleString()

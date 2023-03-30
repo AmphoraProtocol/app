@@ -7,7 +7,7 @@ import {
   IERC20Metadata__factory,
   IUSDA__factory,
   IVaultController__factory,
-} from '~/chain/newContracts';
+} from '~/chain/contracts';
 import { getStablecoins } from '~/utils/tokens';
 import { BNtoHexNumber } from '~/utils/BNtoHex';
 import { CURVE_MASTER_ADDRESS, VAULT_CONTROLLER_ADDRESS, ZERO_ADDRESS } from '~/constants';
