@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
-import { BigNumber, ContractReceipt } from 'ethers';
+import { ContractReceipt, utils } from 'ethers';
 import { Box, Typography } from '@mui/material';
+import { useSigner, useContract, useAccount } from 'wagmi';
+import { getAddress } from 'viem';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { BaseModal } from './BaseModal';
 import { useLight } from '~/hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { locale } from '~/utils/locale';
-import { depositCollateral } from '~/contracts/Vault';
-import { hasTokenAllowance } from '~/contracts/misc/hasAllowance';
-import { useRolodexContext } from '~/components/libs/rolodex-data-provider/RolodexDataProvider';
-import { getAllowance } from '~/contracts/ERC20/getAllowance';
-import { approveCollateral } from '~/contracts/ERC20/approveCollateral';
 import { useAppSelector } from '~/hooks/store';
+import { IERC20Metadata__factory, IVault__factory } from '~/chain/contracts';
+import { formatBNtoPreciseStringAndNumber } from '~/hooks/formatBNWithDecimals';
 
 export const DepositCollateralConfirmationModal = () => {
   const {
@@ -27,62 +25,48 @@ export const DepositCollateralConfirmationModal = () => {
     collateralDepositAmountMax,
     setCollateralDepositAmountMax,
   } = useModalContext();
-  const { provider, currentAccount, currentSigner } = useWeb3Context();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
   const { vaultAddress } = useAppSelector((state) => state.VC.userVault);
   const [hasAllowance, setHasAllowance] = useState(false);
-  const rolodex = useRolodexContext();
   const [hasCollateralAllowance, setHasCollateralAllowance] = useState(false);
   const [allowance, setAllowance] = useState<string>('0');
+  const isLight = useLight();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
 
   const amount = collateralDepositAmountMax ? collateralToken.wallet_amount : collateralDepositAmount;
 
-  useEffect(() => {
-    if (rolodex && type === 'DEPOSIT_COLLATERAL_CONFIRMATION') {
-      getAllowance(currentAccount, vaultAddress!, collateralToken.address, rolodex.provider).then(
-        (res: { num: number; str: string; bn: BigNumber }) => {
-          if (res.num >= Number.parseFloat(collateralDepositAmount)) {
-            setHasCollateralAllowance(true);
-          } else {
-            setHasCollateralAllowance(false);
-          }
-          setAllowance(res.str);
-        },
-      );
-    }
-  }, [type, allowance, hasCollateralAllowance]);
+  const collateralContract = useContract({
+    address: collateralToken.address,
+    abi: IERC20Metadata__factory.abi,
+    signerOrProvider: signer,
+  });
 
-  useEffect(() => {
-    if (collateralToken.capped_address && amount) {
-      hasTokenAllowance(
-        currentAccount,
-        collateralToken.capped_address,
-        amount,
-        collateralToken.address,
-        collateralToken.decimals,
-        currentSigner!,
-      ).then(setHasAllowance);
-    }
-  }, [amount]);
+  const vaultContract = useContract({
+    address: vaultAddress,
+    abi: IVault__factory.abi,
+    signerOrProvider: signer,
+  });
 
   const handleDepositConfirmationRequest = async () => {
     try {
-      const attempt = await depositCollateral(
-        amount!,
-        collateralToken.address,
-        provider?.getSigner(currentAccount),
-        vaultAddress!,
-      );
-      updateTransactionState(attempt!);
+      if (vaultContract && amount) {
+        const formattedERC20Amount =
+          typeof amount === 'string' ? utils.parseUnits(amount, collateralToken.decimals) : amount;
 
-      setLoadmsg(locale('TransactionPending'));
-      const receipt = await attempt!.wait();
+        const attempt = await vaultContract.depositERC20(getAddress(collateralToken.address), formattedERC20Amount);
 
-      setCollateralDepositAmount('');
-      setCollateralDepositAmountMax(false);
+        updateTransactionState(attempt!);
 
-      updateTransactionState(receipt);
+        setLoadmsg(locale('TransactionPending'));
+        const receipt = await attempt.wait();
+
+        setCollateralDepositAmount('');
+        setCollateralDepositAmountMax(false);
+
+        updateTransactionState(receipt);
+      }
     } catch (err) {
       const error = err as ContractReceipt;
 
@@ -97,15 +81,13 @@ export const DepositCollateralConfirmationModal = () => {
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
     try {
-      if (amount) {
-        const attempt = await approveCollateral(
-          amount,
-          collateralToken.address,
-          provider?.getSigner(currentAccount),
-          vaultAddress!,
-        );
+      if (amount && collateralContract && vaultAddress) {
+        const formattedERC20Amount =
+          typeof amount === 'string' ? utils.parseUnits(amount, collateralToken.decimals) : amount;
 
-        await attempt!.wait();
+        const attempt = await collateralContract.approve(getAddress(vaultAddress), formattedERC20Amount);
+
+        await attempt.wait();
         setHasCollateralAllowance(true);
         setAllowance(amount.toString());
       }
@@ -118,7 +100,19 @@ export const DepositCollateralConfirmationModal = () => {
     setLoading(false);
   };
 
-  const isLight = useLight();
+  useEffect(() => {
+    if (type === 'DEPOSIT_COLLATERAL_CONFIRMATION' && collateralContract && address && vaultAddress) {
+      collateralContract.allowance(getAddress(address), getAddress(vaultAddress)).then((allowance) => {
+        const formattedBalance = formatBNtoPreciseStringAndNumber(allowance, collateralToken.decimals);
+        if (formattedBalance.num >= Number.parseFloat(collateralDepositAmount)) {
+          setHasCollateralAllowance(true);
+        } else {
+          setHasCollateralAllowance(false);
+        }
+        setAllowance(formattedBalance.str);
+      });
+    }
+  }, [type, allowance, hasCollateralAllowance]);
 
   return (
     <BaseModal

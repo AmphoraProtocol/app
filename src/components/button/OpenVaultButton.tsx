@@ -7,12 +7,10 @@ import { useAccount, useContract, useSigner } from 'wagmi';
 import { useLight } from '~/hooks/useLight';
 import SVGBox from '../icons/misc/SVGBox';
 import { useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
-import { useRolodexContext } from '../libs/rolodex-data-provider/RolodexDataProvider';
 import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { IVaultController__factory } from '~/chain/contracts';
 
 export const OpenVaultButton = () => {
-  const rolodex = useRolodexContext();
   const { updateTransactionState } = useModalContext();
   const { isConnected, address } = useAccount();
   const isLight = useLight();

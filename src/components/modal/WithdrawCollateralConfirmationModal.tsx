@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
+import { useSigner, useContract } from 'wagmi';
+import { getAddress } from 'viem';
+import { utils } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { BaseModal } from './BaseModal';
 import { useLight } from '~/hooks/useLight';
 import { DisableableModalButton } from '../button/DisableableModalButton';
-import { useWeb3Context } from '../libs/web3-data-provider/Web3Provider';
 import { locale } from '~/utils/locale';
 import { round } from '~/utils/bn';
-import withdrawCollateral from '~/contracts/Vault/withdrawCollateral';
 import SVGBox from '../icons/misc/SVGBox';
 import { useAppSelector } from '~/hooks/store';
+import { IVault__factory } from '~/chain/contracts';
 
 export const WithdrawCollateralConfirmationModal = () => {
   const {
@@ -25,11 +27,17 @@ export const WithdrawCollateralConfirmationModal = () => {
     collateralWithdrawAmountMax,
     setCollateralWithdrawAmountMax,
   } = useModalContext();
-  const { provider, currentAccount } = useWeb3Context();
   const { vaultAddress } = useAppSelector((state) => state.VC.userVault);
   const [loadmsg, setLoadmsg] = useState('');
   const [loading, setLoading] = useState(false);
   const isLight = useLight();
+  const { data: signer } = useSigner();
+
+  const vaultContract = useContract({
+    address: vaultAddress,
+    abi: IVault__factory.abi,
+    signerOrProvider: signer,
+  });
 
   const handleCollateralWithdraw = async () => {
     setLoading(true);
@@ -37,25 +45,23 @@ export const WithdrawCollateralConfirmationModal = () => {
 
     const amount = collateralWithdrawAmountMax ? collateralToken.vault_amount : collateralWithdrawAmount;
     try {
-      const attempt = await withdrawCollateral(
-        amount!,
-        collateralToken.capped_address ? collateralToken.capped_address : collateralToken.address,
-        vaultAddress!,
-        provider?.getSigner(currentAccount),
-      );
+      if (vaultContract && amount) {
+        const formattedAmount = utils.parseUnits(amount, collateralToken.decimals);
+        const attempt = await vaultContract.withdrawERC20(getAddress(collateralToken.address), formattedAmount);
 
-      updateTransactionState(attempt);
+        updateTransactionState(attempt);
 
-      setLoadmsg(locale('TransactionPending'));
-      const receipt = await attempt.wait();
+        setLoadmsg(locale('TransactionPending'));
+        const receipt = await attempt.wait();
 
-      setCollateralWithdrawAmount('');
-      setCollateralWithdrawAmountMax(false);
+        setCollateralWithdrawAmount('');
+        setCollateralWithdrawAmountMax(false);
 
-      setLoadmsg('');
-      setLoading(false);
+        setLoadmsg('');
+        setLoading(false);
 
-      updateTransactionState(receipt);
+        updateTransactionState(receipt);
+      }
     } catch (err) {
       const error = err as TransactionReceipt;
       updateTransactionState(error);
