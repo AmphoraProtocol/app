@@ -1,4 +1,3 @@
-export * from './ConnectWalletButton';
 export * from './CopyButton';
 export * from './DelegateIPTButton';
 export * from './SelectedChainButton';

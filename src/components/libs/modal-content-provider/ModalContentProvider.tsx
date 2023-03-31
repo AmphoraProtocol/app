@@ -3,7 +3,7 @@ import { createContext, useState, useContext } from 'react';
 import { useAppSelector } from '~/hooks/store';
 import { getTokensListOnCurrentChain } from '~/utils/tokens';
 import { Token } from '~/types/token';
-import { useWeb3Context } from '../web3-data-provider/Web3Provider';
+import { useNetwork } from 'wagmi';
 
 export enum ModalType {
   None = '',
@@ -62,10 +62,10 @@ export type ModalContextType = {
 export const ModalContentContext = createContext({} as ModalContextType);
 
 export const ModalContentProvider = ({ children }: { children: React.ReactElement }) => {
-  const { chainId } = useWeb3Context();
+  const { chain } = useNetwork();
 
   const [type, setType] = useState<ModalType | null>(null);
-  const [collateralToken, setCollateralToken] = useState<Token>(getTokensListOnCurrentChain(chainId)['WETH']);
+  const [collateralToken, setCollateralToken] = useState<Token>(getTokensListOnCurrentChain(chain?.id || 1)['WETH']);
   const [collateralDepositAmount, setCollateralDepositAmount] = useState('');
   const [collateralWithdrawAmount, setCollateralWithdrawAmount] = useState('');
   const [collateralDepositAmountMax, setCollateralDepositAmountMax] = useState(false);

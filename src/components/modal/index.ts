@@ -1,5 +1,4 @@
 export * from './BaseModal';
-export * from './WalletModal';
 export * from './DepositWithdrawSUSDModal';
 export * from './DepositSUSDConfirmationModal';
 export * from './WithdrawSUSDConfirmationModal';

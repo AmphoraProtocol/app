@@ -132,7 +132,7 @@ export const DesktopMenu = () => {
           {/* <StyledDropdownButton
             img='rewards'
             href='https://app.uniswap.org/#/add/v2/ETH/0x2A54bA2964C8Cd459Dc568853F79813a60761B58?chain=mainnet'
-            text='ETH USDi Rewards'
+            text='ETH USDA Rewards'
             target='_blank'
           /> */}
           {/* <StyledDropdownButton img='chart-bar' href='https://analytics.gfx.xyz/' text='Analytics' target='_blank' /> */}

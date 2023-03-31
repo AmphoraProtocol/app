@@ -247,8 +247,8 @@ const Dashboard = () => {
       </Box>
 
       <Box maxWidth='xl' margin='auto'>
-        {/* Gas Section */}
-        <GweiBlockText />
+        {/* Gas Section: temporary disabled */}
+        {/* <GweiBlockText /> */}
       </Box>
     </Box>
   );

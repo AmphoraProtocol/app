@@ -10,7 +10,7 @@ import { Spinner } from '../loading';
 import { BaseModal } from './BaseModal';
 import { Chains } from '~/utils/chains';
 import SVGBox from '../icons/misc/SVGBox';
-import { VCActions, CollateralActions } from '~/store';
+import { VCActions, CollateralActions, StablecoinActions } from '~/store';
 import { getTokensListOnCurrentChain } from '~/utils/tokens';
 import { useAppSelector, useAppDispatch } from '~/hooks/store';
 import { useAccount, useNetwork } from 'wagmi';
@@ -34,6 +34,9 @@ export const TransactionStatusModal = () => {
           tokens: getTokensListOnCurrentChain(currentChain?.id || 1),
         }),
       );
+      if (address) {
+        dispatch(StablecoinActions.getStablesData({ userAddress: address }));
+      }
     }
   }, [transactionState]);
 
