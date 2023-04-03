@@ -1,9 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Address } from 'wagmi';
+import { multicall, erc20ABI } from '@wagmi/core';
 
-import { IERC20Metadata__factory } from '~/chain/contracts';
 import { getStablecoins, formatBigInt } from '~/utils';
-import { viemClient } from '~/App';
 import { ThunkAPI } from '~/store';
 import { Token } from '~/types';
 
@@ -19,15 +18,15 @@ const getStablesData = createAsyncThunk<
 
   const susdContract = {
     address: SUSD.address as Address,
-    abi: IERC20Metadata__factory.abi,
+    abi: erc20ABI,
   } as const;
 
   const usdaContract = {
     address: USDA.address as Address,
-    abi: IERC20Metadata__factory.abi,
+    abi: erc20ABI,
   } as const;
 
-  const result = await viemClient.multicall({
+  const result = await multicall({
     contracts: [
       {
         ...susdContract,
@@ -51,14 +50,14 @@ const getStablesData = createAsyncThunk<
   });
   SUSD = {
     ...SUSD,
-    wallet_balance: formatBigInt(result[1].result!, result[0].result!).str,
-    wallet_amount: result[1].result!.toString(),
+    wallet_balance: formatBigInt(result[1], result[0]).str,
+    wallet_amount: result[1].toString(),
   };
 
   USDA = {
     ...USDA,
-    wallet_balance: formatBigInt(result[3].result!, result[2].result!).str,
-    wallet_amount: result[3].result!.toString(),
+    wallet_balance: formatBigInt(result[3], result[2]).str,
+    wallet_amount: result[3].toString(),
   };
 
   return { USDA, SUSD };

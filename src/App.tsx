@@ -1,8 +1,6 @@
 import { StrictMode, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
-import { createPublicClient, http } from 'viem';
-import { mainnet } from 'viem/chains';
 import './theme/styles.css';
 
 import { AppLayout } from './partials/app-layout';
@@ -24,12 +22,6 @@ import {
 import { ClaimModal } from './components/modal/ClaimModal';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
 import { RedirectTo } from './components/redirect';
-import { getConfig } from './config';
-
-export const viemClient = createPublicClient({
-  chain: mainnet,
-  transport: http(getConfig().VITE_CUSTOM_LOCAL_RPC),
-});
 
 const DashboardContext = (props: { children: any }) => {
   return (

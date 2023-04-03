@@ -14,7 +14,7 @@ export const formatBNtoPreciseStringAndNumber = (amount: BigNumber, decimals: nu
   };
 };
 
-export const formatBigInt = (amount: bigint, decimals: number) => {
+export const formatBigInt = (amount: bigint | BigNumber, decimals: number) => {
   const formatted = utils.formatUnits(amount.toString(), decimals);
 
   return {
