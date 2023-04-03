@@ -1,4 +1,4 @@
-import { ChainInfo } from '../types/chain';
+import { ChainInfo } from '../types';
 
 export enum ChainIDs {
   MAINNET = 1,

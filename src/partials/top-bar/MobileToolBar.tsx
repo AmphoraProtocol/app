@@ -5,7 +5,7 @@ import { MenuIcon } from '~/components/icons/misc/menuIcon';
 import { Link } from '~/components/link';
 import { SelectedChainButton } from '~/components/button';
 import { ForwardIcon } from '~/components/icons/misc/ForwardIcon';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { PaletteModeContext } from '~/components/libs/palette-mode-provider/palette-mode-provider';
 import { MobileIconButton } from './MobileIconButton';

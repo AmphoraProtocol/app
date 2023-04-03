@@ -1,5 +1,5 @@
 import { Box, BoxProps } from '@mui/material';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 
 export const CardContainer = ({ children }: BoxProps) => {
   const isLight = useLight();

@@ -1,5 +1,5 @@
 import { BigNumber, utils } from 'ethers';
-import { BN } from '~/utils/bn';
+import { BN } from '~/utils';
 
 export const formatBNWithDecimals = (amount: BigNumber, decimals: number) =>
   Number(utils.formatUnits(amount._hex, decimals));

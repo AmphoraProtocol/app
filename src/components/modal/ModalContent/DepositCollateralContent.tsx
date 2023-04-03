@@ -7,8 +7,7 @@ import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
 import { SwapIcon } from '../../icons/misc/SwapIcon';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { useLight } from '~/hooks/useLight';
-import { useAppSelector } from '~/hooks/store';
+import { useLight, useAppSelector } from '~/hooks';
 
 export const DepositCollateralContent = () => {
   const { setType, setCollateralDepositAmount, collateralToken, setCollateralDepositAmountMax } = useModalContext();

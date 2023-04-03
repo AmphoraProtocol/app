@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme, Link as MuiLink } from '@mui/material';
 import { Link } from '~/components/link';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import footerLinks from './footerLinks';
 import SVGBox from '~/components/icons/misc/SVGBox';
 

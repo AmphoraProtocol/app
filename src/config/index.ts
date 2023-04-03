@@ -1,4 +1,4 @@
-import { Config } from '~/types/Config';
+import { Config } from '~/types';
 
 import { getConstants } from './constants';
 import { getEnv } from './env';

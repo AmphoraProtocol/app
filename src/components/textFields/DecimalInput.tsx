@@ -1,6 +1,7 @@
 import { TextField, InputAdornment } from '@mui/material';
-import { ReactElement, ReactNode } from 'react';
-import { useLight } from '~/hooks/useLight';
+import { ReactNode } from 'react';
+
+import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 
 const decimalRegexp = /^\d*(?:[.])?\d*$/;

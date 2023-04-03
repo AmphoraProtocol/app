@@ -4,23 +4,22 @@ import { Box, Typography, useTheme } from '@mui/material';
 import Cookies from 'universal-cookie';
 
 import { formatColor, neutral } from '../theme';
-import { ProtocolStatsCard } from '../components/cards';
-import { StatsMeter } from '../components/statsMeter';
-import { UserStats } from '../components/UserStats';
-import { GweiBlockText, TitleText } from '../components/text';
-import { SingleStatCard } from '../components/cards';
-import { InverseButton } from '../components/button';
-import { TitleTextToolTip } from '../components/text/TitleTextToolTip';
-import { useModalContext, ModalType } from '../components/libs/modal-content-provider/ModalContentProvider';
-import { OpenVaultButton } from '../components/button/OpenVaultButton';
-import { useLight } from '../hooks/useLight';
-import { UserIPTVault } from '../components/UserStats/UserIPTVault';
-import SVGBox from '../components/icons/misc/SVGBox';
-import { useAppDispatch, useAppSelector } from '~/hooks/store';
+import { ProtocolStatsCard } from '~/components/cards';
+import { StatsMeter } from '~/components/statsMeter';
+import { UserStats } from '~/components/UserStats';
+import { GweiBlockText, TitleText } from '~/components/text';
+import { SingleStatCard } from '~/components/cards';
+import { InverseButton } from '~/components/button';
+import { TitleTextToolTip } from '~/components/text/TitleTextToolTip';
+import { useModalContext, ModalType } from '~/components/libs/modal-content-provider/ModalContentProvider';
+import { OpenVaultButton } from '~/components/button/OpenVaultButton';
+import { useLight, useAppDispatch, useAppSelector } from '~/hooks';
+import { UserIPTVault } from '~/components/UserStats/UserIPTVault';
+import SVGBox from '~/components/icons/misc/SVGBox';
 import { CollateralActions, StablecoinActions, VCActions } from '~/store';
-import { getTokensListOnCurrentChain } from '~/utils/tokens';
-import { RedirectTo } from '../components/redirect';
-import { Substat } from '../components/text/Substat';
+import { getTokensListOnCurrentChain } from '~/utils';
+import { RedirectTo } from '~/components/redirect';
+import { Substat } from '~/components/text/Substat';
 
 const Dashboard = () => {
   // temporary

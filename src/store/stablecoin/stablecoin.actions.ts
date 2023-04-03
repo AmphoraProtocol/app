@@ -2,8 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Address } from 'wagmi';
 
 import { IERC20Metadata__factory } from '~/chain/contracts';
-import { formatBigInt } from '~/hooks/formatBNWithDecimals';
-import { getStablecoins } from '~/utils/tokens';
+import { getStablecoins, formatBigInt } from '~/utils';
 import { viemClient } from '~/App';
 import { ThunkAPI } from '~/store';
 import { Token } from '~/types';

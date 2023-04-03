@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Token } from '~/types/token';
+import { Token } from '~/types';
 import { useSwapTokenContext } from '../libs/swap-token-provider/SwapTokenProvider';
 
 export const useTokenAmountInput = (): [

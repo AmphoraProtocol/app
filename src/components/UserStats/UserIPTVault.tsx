@@ -7,7 +7,7 @@ import { addressShortener } from '../text';
 import { ToolTip } from '../tooltip/ToolTip';
 import { CardContainer } from '../cards/CardContainer';
 import { ClaimsCard } from '../cards/ClaimsCard';
-import { useAppSelector } from '~/hooks/store';
+import { useAppSelector } from '~/hooks';
 
 export const UserIPTVault = () => {
   const { isConnected } = useAccount();

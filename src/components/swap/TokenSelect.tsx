@@ -1,9 +1,9 @@
 import { Box, Typography, Button } from '@mui/material';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { DecimalInput } from '../textFields';
 import { WithDots } from '../loading';
-import { Token } from '~/types/token';
+import { Token } from '~/types';
 import SVGBox from '../icons/misc/SVGBox';
 
 interface TokenSelectProps {

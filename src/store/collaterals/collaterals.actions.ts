@@ -1,12 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Address } from 'wagmi';
-
-import { formatBigInt, formatBNtoPreciseStringAndNumber, formatBNWithDecimals } from '~/hooks/formatBNWithDecimals';
-import { IERC20Metadata__factory, IOracleRelay__factory } from '~/chain/contracts';
-import { IVaultController__factory } from '~/chain/contracts';
-import { getOracleType } from '~/utils/getOracleType';
-import { BN, BNtoDecSpecific } from '~/utils/bn';
 import { BigNumber, constants } from 'ethers';
+
+import { IERC20Metadata__factory, IOracleRelay__factory, IVaultController__factory } from '~/chain/contracts';
+import {
+  getOracleType,
+  formatBigInt,
+  formatBNtoPreciseStringAndNumber,
+  formatBNWithDecimals,
+  BN,
+  BNtoDecSpecific,
+} from '~/utils';
 import { CollateralTokens } from '~/types';
 import { ThunkAPI } from '~/store';
 import { viemClient } from '~/App';

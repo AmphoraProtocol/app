@@ -1,20 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { constants } from 'ethers';
-import { viemClient } from '~/App';
 import { Address } from 'wagmi';
+
+import { viemClient } from '~/App';
 import {
   ICurveMaster__factory,
   IERC20Metadata__factory,
   IUSDA__factory,
   IVaultController__factory,
 } from '~/chain/contracts';
-import { getStablecoins } from '~/utils/tokens';
-import { BNtoHexNumber } from '~/utils/BNtoHex';
-import { BN, BNtoDec, round } from '~/utils/bn';
+import { getStablecoins, BNtoHexNumber, BN, BNtoDec, round } from '~/utils';
 import { ThunkAPI } from '~/store';
-import { Token } from '~/types';
-import { UserVault } from '~/types';
+import { Token, UserVault } from '~/types';
 import { getConfig } from '~/config';
+
 const getVCData = createAsyncThunk<
   {
     depositAPR: number | undefined;

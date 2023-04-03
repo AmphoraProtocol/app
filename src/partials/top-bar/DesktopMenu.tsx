@@ -10,7 +10,7 @@ import {
   ClickAwayListener,
 } from '@mui/material';
 
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { EllipsisIcon } from '~/components/icons/misc/EllipsisIcon';
 import SVGBox from '~/components/icons/misc/SVGBox';
 import { PaletteModeContext } from '~/components/libs/palette-mode-provider/palette-mode-provider';

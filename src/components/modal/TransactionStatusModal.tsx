@@ -1,19 +1,17 @@
 import { useEffect } from 'react';
 import { Box, Typography, Link as MuiLink, Button } from '@mui/material';
 import { ContractReceipt, ContractTransaction } from 'ethers';
+import { useAccount, useNetwork } from 'wagmi';
 
-import { useLight } from '~/hooks/useLight';
+import { useLight, useAppSelector, useAppDispatch } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { CircleExclamationIcon } from '../icons/misc/CircleExclamationIcon';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { Spinner } from '../loading';
 import { BaseModal } from './BaseModal';
-import { Chains } from '~/utils/chains';
+import { Chains, getTokensListOnCurrentChain } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
 import { VCActions, CollateralActions, StablecoinActions } from '~/store';
-import { getTokensListOnCurrentChain } from '~/utils/tokens';
-import { useAppSelector, useAppDispatch } from '~/hooks/store';
-import { useAccount, useNetwork } from 'wagmi';
 
 export const TransactionStatusModal = () => {
   const { type, setType, transactionState, transaction } = useModalContext();

@@ -1,4 +1,5 @@
+export * from './Chain';
+export * from './Config';
 export * from './State';
-export * from './chain';
-export * from './token';
 export * from './Status';
+export * from './Token';

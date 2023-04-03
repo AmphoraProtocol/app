@@ -5,7 +5,7 @@ import {
   IUSDA__factory,
   IVaultController__factory,
   IVault__factory,
-} from '~/contracts';
+} from '~/chain/contracts';
 
 import { getConstants } from '~/config/constants';
 

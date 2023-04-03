@@ -1,6 +1,6 @@
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 import { Box } from '@mui/system';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { neutral, formatColor } from '~/theme';
 
 import './button.css';

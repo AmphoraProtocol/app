@@ -1,8 +1,9 @@
-import { Chains } from '~/utils/chains';
 import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useLight } from '~/hooks/useLight';
-import SVGBox from '../icons/misc/SVGBox';
 import { useNetwork } from 'wagmi';
+
+import { Chains } from '~/utils';
+import { useLight } from '~/hooks';
+import SVGBox from '../icons/misc/SVGBox';
 
 export const SelectedChainButton = () => {
   const { chain: currentChain } = useNetwork();

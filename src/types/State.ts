@@ -1,6 +1,6 @@
 import { Address } from 'wagmi';
 import { Status } from './Status';
-import { Token } from './token';
+import { Token } from './Token';
 
 export type ThemeName = 'system-prefs' | 'light' | 'dark';
 

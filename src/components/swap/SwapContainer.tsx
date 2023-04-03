@@ -1,7 +1,7 @@
 import { Box, useTheme, Button } from '@mui/material';
 import { useEffect } from 'react';
 
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
 import { useSwapTokenContext } from '../libs/swap-token-provider/SwapTokenProvider';

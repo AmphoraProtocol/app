@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
 
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { CloseIcon } from '../icons/misc/CloseIcon';
 
 export interface BaseModalProps {

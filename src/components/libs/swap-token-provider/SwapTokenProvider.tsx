@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { useAppSelector } from '~/hooks/store';
-import { Token } from '~/types/token';
+import { useAppSelector } from '~/hooks';
+import { Token } from '~/types';
 
 type SwapTokenContextType = [Token, Token, () => void];
 
