@@ -5,10 +5,6 @@ import { RootState } from '~/types';
 import { createLogger } from 'redux-logger';
 import { cloneDeep } from 'lodash';
 
-// Theme state
-import themeReducer, { themeInitialState } from './theme/theme.reducer';
-import { ThemeActions } from './theme/theme.actions';
-
 // Collaterals state
 import { collateralReducer, collateralInitialState } from './collaterals/collaterals.reducer';
 import { CollateralActions } from './collaterals/collaterals.actions';
@@ -23,23 +19,21 @@ import { VCActions } from './vaultController/vc.actions';
 import { getEnv } from '~/config/env';
 
 export const rootReducer: Reducer<RootState> = combineReducers({
-  theme: themeReducer,
   collaterals: collateralReducer,
   stablecoins: stablecoinReducer,
   VC: VCReducer,
 });
 
 // Actions
-export { ThemeActions, CollateralActions, StablecoinActions, VCActions };
+export { CollateralActions, StablecoinActions, VCActions };
 
 // initialStates
-export { themeInitialState, collateralInitialState, stablecoinInitialState, VCInitialState };
+export { collateralInitialState, stablecoinInitialState, VCInitialState };
 
 export function getStore() {
   const isDev = getEnv().VITE_ALLOW_DEV_MODE;
 
   const initialState = {
-    theme: cloneDeep(themeInitialState),
     collaterals: cloneDeep(collateralInitialState),
     stablecoins: cloneDeep(stablecoinInitialState),
     VC: cloneDeep(VCInitialState),

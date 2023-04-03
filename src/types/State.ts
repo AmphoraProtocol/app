@@ -2,12 +2,6 @@ import { Address } from 'wagmi';
 import { Status } from './Status';
 import { Token } from './Token';
 
-export type ThemeName = 'system-prefs' | 'light' | 'dark';
-
-export interface ThemeState {
-  current: ThemeName;
-}
-
 export interface CollateralState {
   elements?: { [key: string]: Token };
 }
@@ -37,7 +31,6 @@ export interface UserVault {
 }
 
 export interface RootState {
-  theme: ThemeState;
   collaterals: CollateralState;
   stablecoins: StablecoinState;
   VC: VCState;
