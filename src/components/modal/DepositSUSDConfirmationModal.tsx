@@ -1,22 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography, Link as MuiLink } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
+import { useContract, useAccount, useNetwork } from 'wagmi';
+import { ContractTransaction } from 'ethers';
 
+import { BN, locale, Chains, hasSUSDAllowance } from '~/utils';
+import { useAppSelector, useAmphContracts } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
-import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
+import { getConfig } from '~/config';
 import { BaseModal } from './BaseModal';
+import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
-import { BN } from '~/utils/bn';
-import { ContractTransaction } from 'ethers';
-import { locale } from '~/utils/locale';
-import { Chains } from '~/utils/chains';
 import SVGBox from '../icons/misc/SVGBox';
-import { hasSUSDAllowance } from '~/utils/hasAllowance';
-import { useAppSelector } from '~/hooks/store';
-import { useSigner, useContract, useAccount, useNetwork } from 'wagmi';
-import { IUSDA__factory } from '~/chain/contracts';
-import { getConfig } from '~/config';
 
 export const DepositSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
@@ -28,23 +24,14 @@ export const DepositSUSDConfirmationModal = () => {
   const [approvalTxn, setApprovalTxn] = useState<ContractTransaction>();
   const { chain: currentChain } = useNetwork();
   const chain = Chains.getInfo(currentChain?.id || 1);
-  const { data: signer } = useSigner();
   const { address } = useAccount();
   const {
     DEFAULT_APPROVE_AMOUNT,
-    ADDRESSES: { SUSD_ADDRESS, USDA_ADDRESS },
+    ADDRESSES: { USDA_ADDRESS },
   } = getConfig();
-  const SUSDContract = useContract({
-    address: SUSD_ADDRESS,
-    abi: IUSDA__factory.abi,
-    signerOrProvider: signer,
-  });
-
-  const USDAContract = useContract({
-    address: USDA_ADDRESS,
-    abi: IUSDA__factory.abi,
-    signerOrProvider: signer,
-  });
+  const { susdContract, usdaContract } = useAmphContracts();
+  const SUSDContract = useContract(susdContract);
+  const USDAContract = useContract(usdaContract);
 
   useEffect(() => {
     if (SUSD.amountToDeposit && address && SUSDContract) {

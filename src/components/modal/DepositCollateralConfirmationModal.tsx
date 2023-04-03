@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import { ContractReceipt, utils } from 'ethers';
 import { Box, Typography } from '@mui/material';
-import { useSigner, useContract, useAccount } from 'wagmi';
+import { useContract, useAccount } from 'wagmi';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { BaseModal } from './BaseModal';
-import { useLight } from '~/hooks/useLight';
+import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { DisableableModalButton } from '../button/DisableableModalButton';
-import { locale } from '~/utils/locale';
-import { useAppSelector } from '~/hooks/store';
-import { IERC20Metadata__factory, IVault__factory } from '~/chain/contracts';
-import { formatBNtoPreciseStringAndNumber } from '~/hooks/formatBNWithDecimals';
+import { locale, formatBNtoPreciseStringAndNumber } from '~/utils';
 
 export const DepositCollateralConfirmationModal = () => {
   const {
@@ -31,22 +28,12 @@ export const DepositCollateralConfirmationModal = () => {
   const [hasCollateralAllowance, setHasCollateralAllowance] = useState(false);
   const [allowance, setAllowance] = useState<string>('0');
   const isLight = useLight();
-  const { data: signer } = useSigner();
   const { address } = useAccount();
+  const { tokenAbi, VaultControllerContract } = useAmphContracts();
+  const collateralContract = useContract({ ...tokenAbi, address: collateralToken.address });
+  const vaultContract = useContract(VaultControllerContract);
 
   const amount = collateralDepositAmountMax ? collateralToken.wallet_amount : collateralDepositAmount;
-
-  const collateralContract = useContract({
-    address: collateralToken.address,
-    abi: IERC20Metadata__factory.abi,
-    signerOrProvider: signer,
-  });
-
-  const vaultContract = useContract({
-    address: vaultAddress,
-    abi: IVault__factory.abi,
-    signerOrProvider: signer,
-  });
 
   const handleDepositConfirmationRequest = async () => {
     try {

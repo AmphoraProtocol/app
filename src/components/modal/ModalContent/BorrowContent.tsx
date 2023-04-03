@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { ContractReceipt } from 'ethers';
+import { useContract } from 'wagmi';
+import { utils } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
+import { locale, BN } from '~/utils';
+import { getConfig } from '~/config';
+import { useAmphContracts } from '~/hooks';
 import { DecimalInput } from '../../textFields';
 import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
-import { locale } from '~/utils/locale';
 import { useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { useContract, useSigner } from 'wagmi';
-import { IVaultController__factory } from '~/chain/contracts';
-import { BN } from '~/utils/bn';
-import { utils } from 'ethers';
-import { getConfig } from '~/config';
 
 interface BorrowContent {
   tokenName: string;
@@ -32,17 +31,9 @@ export const BorrowContent = (props: BorrowContent) => {
   const [shaking, setShaking] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
   const [newHealth, setNewHealth] = useState(100 * (accountLiability / Number(vaultBorrowPower)));
-  const { data: signer } = useSigner();
-  const {
-    USDA_DECIMALS,
-    ADDRESSES: { VAULT_CONTROLLER_ADDRESS },
-  } = getConfig();
-
-  const VC = useContract({
-    address: VAULT_CONTROLLER_ADDRESS,
-    abi: IVaultController__factory.abi,
-    signerOrProvider: signer,
-  });
+  const { USDA_DECIMALS } = getConfig();
+  const { VaultControllerContract } = useAmphContracts();
+  const VC = useContract(VaultControllerContract);
 
   const toggle = () => setFocus(!focus);
   useEffect(() => {

@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
-import { useContract, useSigner } from 'wagmi';
+import { useContract } from 'wagmi';
 import { utils } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
 import { DecimalInput } from '../../textFields';
 import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
-import { locale } from '~/utils/locale';
+import { locale, BN } from '~/utils';
 import { useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { IVaultController__factory } from '~/chain/contracts';
-import { BN } from '~/utils/bn';
 import { getConfig } from '~/config';
+import { useAmphContracts } from '~/hooks';
 
 interface RepayContent {
   tokenName: string;
@@ -33,17 +32,10 @@ export const RepayContent = (props: RepayContent) => {
   const [shaking, setShaking] = useState(false);
   const [focus, setFocus] = useState(false);
   const toggle = () => setFocus(!focus);
-  const { data: signer } = useSigner();
-  const {
-    USDA_DECIMALS,
-    ADDRESSES: { VAULT_CONTROLLER_ADDRESS },
-  } = getConfig();
+  const { VaultControllerContract } = useAmphContracts();
+  const { USDA_DECIMALS } = getConfig();
 
-  const VC = useContract({
-    address: VAULT_CONTROLLER_ADDRESS,
-    abi: IVaultController__factory.abi,
-    signerOrProvider: signer,
-  });
+  const VC = useContract(VaultControllerContract);
 
   useEffect(() => {
     setDisabled(Number(repayAmount) <= 0 || accountLiability === 0);
