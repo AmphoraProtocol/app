@@ -26,11 +26,37 @@ const _abi = [
       {
         indexed: false,
         internalType: 'uint256',
+        name: '_newCrvReward',
+        type: 'uint256',
+      },
+    ],
+    name: 'ChangedCrvRewardFee',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
         name: '_newCvxRate',
         type: 'uint256',
       },
     ],
     name: 'ChangedCvxRate',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_newCvxReward',
+        type: 'uint256',
+      },
+    ],
+    name: 'ChangedCvxRewardFee',
     type: 'event',
   },
   {
@@ -58,13 +84,13 @@ const _abi = [
       {
         indexed: false,
         internalType: 'uint256',
-        name: '_cvxAmount',
+        name: '_cvxTotalRewards',
         type: 'uint256',
       },
       {
         indexed: false,
         internalType: 'uint256',
-        name: '_crvAmount',
+        name: '_crvTotalRewards',
         type: 'uint256',
       },
       {
@@ -184,11 +210,37 @@ const _abi = [
     inputs: [
       {
         internalType: 'uint256',
+        name: '_newFee',
+        type: 'uint256',
+      },
+    ],
+    name: 'changeCrvRewardFee',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
         name: '_newRate',
         type: 'uint256',
       },
     ],
     name: 'changeCvxRate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_newFee',
+        type: 'uint256',
+      },
+    ],
+    name: 'changeCvxRewardFee',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -215,12 +267,12 @@ const _abi = [
       },
       {
         internalType: 'uint256',
-        name: '_cvxAmount',
+        name: '_cvxTotalRewards',
         type: 'uint256',
       },
       {
         internalType: 'uint256',
-        name: '_crvAmount',
+        name: '_crvTotalRewards',
         type: 'uint256',
       },
       {
@@ -254,12 +306,12 @@ const _abi = [
     inputs: [
       {
         internalType: 'uint256',
-        name: '_cvxAmount',
+        name: '_cvxTotalRewards',
         type: 'uint256',
       },
       {
         internalType: 'uint256',
-        name: '_crvAmount',
+        name: '_crvTotalRewards',
         type: 'uint256',
       },
     ],
@@ -278,6 +330,32 @@ const _abi = [
       {
         internalType: 'uint256',
         name: '_claimableAmph',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'crvRewardFee',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '_crvRewardFee',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'cvxRewardFee',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '_cvxRewardFee',
         type: 'uint256',
       },
     ],

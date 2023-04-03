@@ -79,13 +79,14 @@ export interface IVaultControllerInterface extends utils.Interface {
     'borrowsUSDto(uint96,uint192,address)': FunctionFragment;
     'calculateInterest()': FunctionFragment;
     'changeClaimerContract(address)': FunctionFragment;
-    'changeCurveLpFee(uint256)': FunctionFragment;
     'changeProtocolFee(uint192)': FunctionFragment;
     'checkVault(uint96)': FunctionFragment;
     'claimerContract()': FunctionFragment;
-    'curveLpRewardsFee()': FunctionFragment;
     'curveMaster()': FunctionFragment;
-    'initialize(address,address[],address,uint256,address)': FunctionFragment;
+    'enabledTokens(uint256)': FunctionFragment;
+    'getCollateralsInfo(uint256,uint256)': FunctionFragment;
+    'getEnabledTokens()': FunctionFragment;
+    'initialize(address,address[],address,address)': FunctionFragment;
     'interestFactor()': FunctionFragment;
     'lastInterestTime()': FunctionFragment;
     'liquidateVault(uint96,address,uint256)': FunctionFragment;
@@ -131,12 +132,13 @@ export interface IVaultControllerInterface extends utils.Interface {
       | 'borrowsUSDto'
       | 'calculateInterest'
       | 'changeClaimerContract'
-      | 'changeCurveLpFee'
       | 'changeProtocolFee'
       | 'checkVault'
       | 'claimerContract'
-      | 'curveLpRewardsFee'
       | 'curveMaster'
+      | 'enabledTokens'
+      | 'getCollateralsInfo'
+      | 'getEnabledTokens'
       | 'initialize'
       | 'interestFactor'
       | 'lastInterestTime'
@@ -190,21 +192,19 @@ export interface IVaultControllerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'calculateInterest', values?: undefined): string;
   encodeFunctionData(functionFragment: 'changeClaimerContract', values: [PromiseOrValue<string>]): string;
-  encodeFunctionData(functionFragment: 'changeCurveLpFee', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(functionFragment: 'changeProtocolFee', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(functionFragment: 'checkVault', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(functionFragment: 'claimerContract', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'curveLpRewardsFee', values?: undefined): string;
   encodeFunctionData(functionFragment: 'curveMaster', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'enabledTokens', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(
+    functionFragment: 'getCollateralsInfo',
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+  ): string;
+  encodeFunctionData(functionFragment: 'getEnabledTokens', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'initialize',
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>[],
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-    ],
+    values: [PromiseOrValue<string>, PromiseOrValue<string>[], PromiseOrValue<string>, PromiseOrValue<string>],
   ): string;
   encodeFunctionData(functionFragment: 'interestFactor', values?: undefined): string;
   encodeFunctionData(functionFragment: 'lastInterestTime', values?: undefined): string;
@@ -287,12 +287,13 @@ export interface IVaultControllerInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'borrowsUSDto', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'calculateInterest', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'changeClaimerContract', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'changeCurveLpFee', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'changeProtocolFee', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'checkVault', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'claimerContract', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'curveLpRewardsFee', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'curveMaster', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'enabledTokens', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getCollateralsInfo', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getEnabledTokens', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'interestFactor', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'lastInterestTime', data: BytesLike): Result;
@@ -331,7 +332,6 @@ export interface IVaultControllerInterface extends utils.Interface {
   events: {
     'BorrowUSDA(uint256,address,uint256)': EventFragment;
     'ChangedClaimerContract(address,address)': EventFragment;
-    'ChangedCurveLpFee(uint256,uint256)': EventFragment;
     'InterestEvent(uint64,uint192,uint256)': EventFragment;
     'Liquidate(uint256,address,uint256,uint256)': EventFragment;
     'NewProtocolFee(uint192)': EventFragment;
@@ -344,7 +344,6 @@ export interface IVaultControllerInterface extends utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: 'BorrowUSDA'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ChangedClaimerContract'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'ChangedCurveLpFee'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'InterestEvent'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'Liquidate'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'NewProtocolFee'): EventFragment;
@@ -371,14 +370,6 @@ export interface ChangedClaimerContractEventObject {
 export type ChangedClaimerContractEvent = TypedEvent<[string, string], ChangedClaimerContractEventObject>;
 
 export type ChangedClaimerContractEventFilter = TypedEventFilter<ChangedClaimerContractEvent>;
-
-export interface ChangedCurveLpFeeEventObject {
-  _oldFee: BigNumber;
-  _newFee: BigNumber;
-}
-export type ChangedCurveLpFeeEvent = TypedEvent<[BigNumber, BigNumber], ChangedCurveLpFeeEventObject>;
-
-export type ChangedCurveLpFeeEventFilter = TypedEventFilter<ChangedCurveLpFeeEvent>;
 
 export interface InterestEventEventObject {
   _epoch: BigNumber;
@@ -518,11 +509,6 @@ export interface IVaultController extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    changeCurveLpFee(
-      _newFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
-    ): Promise<ContractTransaction>;
-
     changeProtocolFee(
       _newProtocolFee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
@@ -535,15 +521,29 @@ export interface IVaultController extends BaseContract {
 
     claimerContract(overrides?: CallOverrides): Promise<[string] & { _claimerContract: string }>;
 
-    curveLpRewardsFee(overrides?: CallOverrides): Promise<[BigNumber] & { _fee: BigNumber }>;
-
     curveMaster(overrides?: CallOverrides): Promise<[string] & { _curveMaster: string }>;
+
+    enabledTokens(
+      _index: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<[string] & { _enabledToken: string }>;
+
+    getCollateralsInfo(
+      _start: PromiseOrValue<BigNumberish>,
+      _end: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<
+      [IVaultController.CollateralInfoStructOutput[]] & {
+        _collateralsInfo: IVaultController.CollateralInfoStructOutput[];
+      }
+    >;
+
+    getEnabledTokens(overrides?: CallOverrides): Promise<[string[]] & { _enabledTokens: string[] }>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
       _claimerContract: PromiseOrValue<string>,
-      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
       _vaultDeployer: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
@@ -745,11 +745,6 @@ export interface IVaultController extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  changeCurveLpFee(
-    _newFee: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> },
-  ): Promise<ContractTransaction>;
-
   changeProtocolFee(
     _newProtocolFee: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
@@ -759,15 +754,22 @@ export interface IVaultController extends BaseContract {
 
   claimerContract(overrides?: CallOverrides): Promise<string>;
 
-  curveLpRewardsFee(overrides?: CallOverrides): Promise<BigNumber>;
-
   curveMaster(overrides?: CallOverrides): Promise<string>;
+
+  enabledTokens(_index: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<string>;
+
+  getCollateralsInfo(
+    _start: PromiseOrValue<BigNumberish>,
+    _end: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides,
+  ): Promise<IVaultController.CollateralInfoStructOutput[]>;
+
+  getEnabledTokens(overrides?: CallOverrides): Promise<string[]>;
 
   initialize(
     _oldVaultController: PromiseOrValue<string>,
     _tokenAddresses: PromiseOrValue<string>[],
     _claimerContract: PromiseOrValue<string>,
-    _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
     _vaultDeployer: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
@@ -919,23 +921,28 @@ export interface IVaultController extends BaseContract {
 
     changeClaimerContract(_newClaimerContract: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
-    changeCurveLpFee(_newFee: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
-
     changeProtocolFee(_newProtocolFee: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
 
     checkVault(_id: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<boolean>;
 
     claimerContract(overrides?: CallOverrides): Promise<string>;
 
-    curveLpRewardsFee(overrides?: CallOverrides): Promise<BigNumber>;
-
     curveMaster(overrides?: CallOverrides): Promise<string>;
+
+    enabledTokens(_index: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<string>;
+
+    getCollateralsInfo(
+      _start: PromiseOrValue<BigNumberish>,
+      _end: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<IVaultController.CollateralInfoStructOutput[]>;
+
+    getEnabledTokens(overrides?: CallOverrides): Promise<string[]>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
       _claimerContract: PromiseOrValue<string>,
-      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
       _vaultDeployer: PromiseOrValue<string>,
       overrides?: CallOverrides,
     ): Promise<void>;
@@ -1062,9 +1069,6 @@ export interface IVaultController extends BaseContract {
     ): ChangedClaimerContractEventFilter;
     ChangedClaimerContract(_oldClaimerContract?: null, _newClaimerContract?: null): ChangedClaimerContractEventFilter;
 
-    'ChangedCurveLpFee(uint256,uint256)'(_oldFee?: null, _newFee?: null): ChangedCurveLpFeeEventFilter;
-    ChangedCurveLpFee(_oldFee?: null, _newFee?: null): ChangedCurveLpFeeEventFilter;
-
     'InterestEvent(uint64,uint192,uint256)'(_epoch?: null, _amount?: null, _curveVal?: null): InterestEventEventFilter;
     InterestEvent(_epoch?: null, _amount?: null, _curveVal?: null): InterestEventEventFilter;
 
@@ -1162,11 +1166,6 @@ export interface IVaultController extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    changeCurveLpFee(
-      _newFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
-    ): Promise<BigNumber>;
-
     changeProtocolFee(
       _newProtocolFee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
@@ -1176,15 +1175,22 @@ export interface IVaultController extends BaseContract {
 
     claimerContract(overrides?: CallOverrides): Promise<BigNumber>;
 
-    curveLpRewardsFee(overrides?: CallOverrides): Promise<BigNumber>;
-
     curveMaster(overrides?: CallOverrides): Promise<BigNumber>;
+
+    enabledTokens(_index: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<BigNumber>;
+
+    getCollateralsInfo(
+      _start: PromiseOrValue<BigNumberish>,
+      _end: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>;
+
+    getEnabledTokens(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
       _claimerContract: PromiseOrValue<string>,
-      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
       _vaultDeployer: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
@@ -1337,11 +1343,6 @@ export interface IVaultController extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    changeCurveLpFee(
-      _newFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
-    ): Promise<PopulatedTransaction>;
-
     changeProtocolFee(
       _newProtocolFee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
@@ -1351,15 +1352,22 @@ export interface IVaultController extends BaseContract {
 
     claimerContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    curveLpRewardsFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     curveMaster(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    enabledTokens(_index: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getCollateralsInfo(
+      _start: PromiseOrValue<BigNumberish>,
+      _end: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    getEnabledTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _oldVaultController: PromiseOrValue<string>,
       _tokenAddresses: PromiseOrValue<string>[],
       _claimerContract: PromiseOrValue<string>,
-      _curveLpRewardsFee: PromiseOrValue<BigNumberish>,
       _vaultDeployer: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;

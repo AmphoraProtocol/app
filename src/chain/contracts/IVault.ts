@@ -33,9 +33,10 @@ export interface IVaultInterface extends utils.Interface {
   functions: {
     'CONTROLLER()': FunctionFragment;
     'baseLiability()': FunctionFragment;
-    'claimRewards(address)': FunctionFragment;
+    'claimRewards(address[])': FunctionFragment;
     'claimableRewards(address)': FunctionFragment;
     'controllerTransfer(address,address,uint256)': FunctionFragment;
+    'controllerWithdrawAndUnwrap(address,uint256)': FunctionFragment;
     'depositERC20(address,uint256)': FunctionFragment;
     'id()': FunctionFragment;
     'minter()': FunctionFragment;
@@ -52,6 +53,7 @@ export interface IVaultInterface extends utils.Interface {
       | 'claimRewards'
       | 'claimableRewards'
       | 'controllerTransfer'
+      | 'controllerWithdrawAndUnwrap'
       | 'depositERC20'
       | 'id'
       | 'minter'
@@ -63,11 +65,15 @@ export interface IVaultInterface extends utils.Interface {
 
   encodeFunctionData(functionFragment: 'CONTROLLER', values?: undefined): string;
   encodeFunctionData(functionFragment: 'baseLiability', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'claimRewards', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'claimRewards', values: [PromiseOrValue<string>[]]): string;
   encodeFunctionData(functionFragment: 'claimableRewards', values: [PromiseOrValue<string>]): string;
   encodeFunctionData(
     functionFragment: 'controllerTransfer',
     values: [PromiseOrValue<string>, PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'controllerWithdrawAndUnwrap',
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
     functionFragment: 'depositERC20',
@@ -91,6 +97,7 @@ export interface IVaultInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'claimRewards', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'claimableRewards', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'controllerTransfer', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'controllerWithdrawAndUnwrap', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'depositERC20', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'id', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'minter', data: BytesLike): Result;
@@ -172,7 +179,7 @@ export interface IVault extends BaseContract {
     baseLiability(overrides?: CallOverrides): Promise<[BigNumber] & { _liability: BigNumber }>;
 
     claimRewards(
-      _tokenAddress: PromiseOrValue<string>,
+      _tokenAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
@@ -184,6 +191,12 @@ export interface IVault extends BaseContract {
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    controllerWithdrawAndUnwrap(
+      _rewardPool: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
@@ -226,7 +239,7 @@ export interface IVault extends BaseContract {
   baseLiability(overrides?: CallOverrides): Promise<BigNumber>;
 
   claimRewards(
-    _tokenAddress: PromiseOrValue<string>,
+    _tokenAddresses: PromiseOrValue<string>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
@@ -238,6 +251,12 @@ export interface IVault extends BaseContract {
   controllerTransfer(
     _token: PromiseOrValue<string>,
     _to: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  controllerWithdrawAndUnwrap(
+    _rewardPool: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
@@ -276,7 +295,7 @@ export interface IVault extends BaseContract {
 
     baseLiability(overrides?: CallOverrides): Promise<BigNumber>;
 
-    claimRewards(_tokenAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
+    claimRewards(_tokenAddresses: PromiseOrValue<string>[], overrides?: CallOverrides): Promise<void>;
 
     claimableRewards(
       _tokenAddress: PromiseOrValue<string>,
@@ -286,6 +305,12 @@ export interface IVault extends BaseContract {
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides,
+    ): Promise<void>;
+
+    controllerWithdrawAndUnwrap(
+      _rewardPool: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides,
     ): Promise<void>;
@@ -337,7 +362,7 @@ export interface IVault extends BaseContract {
     baseLiability(overrides?: CallOverrides): Promise<BigNumber>;
 
     claimRewards(
-      _tokenAddress: PromiseOrValue<string>,
+      _tokenAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
@@ -346,6 +371,12 @@ export interface IVault extends BaseContract {
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    controllerWithdrawAndUnwrap(
+      _rewardPool: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
@@ -386,7 +417,7 @@ export interface IVault extends BaseContract {
     baseLiability(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     claimRewards(
-      _tokenAddress: PromiseOrValue<string>,
+      _tokenAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
@@ -395,6 +426,12 @@ export interface IVault extends BaseContract {
     controllerTransfer(
       _token: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    controllerWithdrawAndUnwrap(
+      _rewardPool: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;

@@ -157,9 +157,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: '_tokenAddress',
-        type: 'address',
+        internalType: 'address[]',
+        name: '_tokenAddresses',
+        type: 'address[]',
       },
     ],
     name: 'claimRewards',
@@ -217,6 +217,24 @@ const _abi = [
       },
     ],
     name: 'controllerTransfer',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'contract IBaseRewardPool',
+        name: '_rewardPool',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'controllerWithdrawAndUnwrap',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
