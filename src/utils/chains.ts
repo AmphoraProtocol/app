@@ -2,9 +2,6 @@ import { ChainInfo } from '../types';
 
 export enum ChainIDs {
   MAINNET = 1,
-  ROPSTEN = 3,
-  GOERLI = 5,
-  POLYGON = 137,
   LOCAL = 1337,
 }
 
@@ -14,8 +11,6 @@ const configs: Array<ChainInfo> = [
     name: 'Ethereum',
     symbol: 'ETH',
     logo: 'ETH',
-    usda_address: '0x40A633EeF249F21D95C8803b7144f19AAfeEF7ae',
-    susd_address: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
     scan_url: 'https://etherscan.io/tx/',
     scan_site: 'Etherscan',
   },
@@ -24,9 +19,6 @@ const configs: Array<ChainInfo> = [
     name: 'Ethereum Local',
     symbol: 'ETH Local',
     logo: 'ETH',
-    // temporary: set all addresses in one place
-    usda_address: '0x40A633EeF249F21D95C8803b7144f19AAfeEF7ae',
-    susd_address: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
     scan_url: 'https://etherscan.io/tx/',
     scan_site: 'Etherscan',
   },

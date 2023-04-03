@@ -6,5 +6,5 @@ export * from './formatBNWithDecimals';
 export * from './getOracleType';
 export * from './hasAllowance';
 export * from './hexToAscii';
-export * from './tokens';
+export * from './initializeToken';
 export * from './tokensToChains';

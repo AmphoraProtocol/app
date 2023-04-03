@@ -7,7 +7,6 @@ import { formatColor, neutral } from '../theme';
 import { ProtocolStatsCard } from '~/components/cards';
 import { StatsMeter } from '~/components/statsMeter';
 import { UserStats } from '~/components/UserStats';
-import { GweiBlockText, TitleText } from '~/components/text';
 import { SingleStatCard } from '~/components/cards';
 import { InverseButton } from '~/components/button';
 import { TitleTextToolTip } from '~/components/text/TitleTextToolTip';
@@ -17,7 +16,7 @@ import { useLight, useAppDispatch, useAppSelector } from '~/hooks';
 import { UserIPTVault } from '~/components/UserStats/UserIPTVault';
 import SVGBox from '~/components/icons/misc/SVGBox';
 import { CollateralActions, StablecoinActions, VCActions } from '~/store';
-import { getTokensListOnCurrentChain } from '~/utils';
+import { GweiBlockText, TitleText } from '~/components/text';
 import { RedirectTo } from '~/components/redirect';
 import { Substat } from '~/components/text/Substat';
 
@@ -36,13 +35,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(VCActions.getVCData({ userAddress: address }));
-    dispatch(
-      CollateralActions.getCollateralData({
-        userAddress: address,
-        vaultAddress: vaultControllerData.userVault.vaultAddress,
-        tokens: getTokensListOnCurrentChain(chain?.id || 1),
-      }),
-    );
+
+    if (vaultControllerData.collaterals) {
+      dispatch(
+        CollateralActions.getCollateralData({
+          userAddress: address,
+          vaultAddress: vaultControllerData.userVault.vaultAddress,
+          tokens: vaultControllerData.collaterals,
+        }),
+      );
+    }
 
     if (address) {
       dispatch(StablecoinActions.getStablesData({ userAddress: address }));
