@@ -156,14 +156,3 @@ export const getTokensListOnCurrentChain = (chain_id: ChainIDs): CollateralToken
     // }),
   };
 };
-
-export const getTokenFromTicker = (chainId: ChainIDs, ticker: string): Token => {
-  const tokens = getTokensListOnCurrentChain(chainId);
-
-  const tok = (tokens as any)[ticker];
-  if (tok != undefined) {
-    return tok;
-  }
-
-  throw new TypeError('Could not find Token');
-};

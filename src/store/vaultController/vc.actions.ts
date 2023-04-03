@@ -22,6 +22,7 @@ const getVCData = createAsyncThunk<
     totalSUSDDeposited: number;
     reserveRatio: number;
     userVault: UserVault;
+    collaterals?: Address[];
   },
   {
     userAddress: Address | undefined;
@@ -92,6 +93,10 @@ const getVCData = createAsyncThunk<
         functionName: 'vaultSummaries',
         args: [firstCall[3][0], firstCall[3][0]],
       },
+      {
+        ...vcContract,
+        functionName: 'getEnabledTokens',
+      },
     ],
   });
 
@@ -149,6 +154,7 @@ const getVCData = createAsyncThunk<
       borrowingPower,
       accountLiability,
     },
+    collaterals: [...ratioResult[3]],
   };
 });
 
