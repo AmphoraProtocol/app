@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { constants } from 'ethers';
-import { Address, getAddress } from 'viem';
 import { viemClient } from '~/App';
+import { Address } from 'wagmi';
 import {
   ICurveMaster__factory,
   IERC20Metadata__factory,
@@ -10,11 +10,11 @@ import {
 } from '~/chain/contracts';
 import { getStablecoins } from '~/utils/tokens';
 import { BNtoHexNumber } from '~/utils/BNtoHex';
-import { CURVE_MASTER_ADDRESS, VAULT_CONTROLLER_ADDRESS, ZERO_ADDRESS } from '~/constants';
 import { BN, BNtoDec, round } from '~/utils/bn';
 import { ThunkAPI } from '~/store';
 import { Token } from '~/types';
 import { UserVault } from '~/types';
+import { getConfig } from '~/config';
 const getVCData = createAsyncThunk<
   {
     depositAPR: number | undefined;
@@ -25,10 +25,11 @@ const getVCData = createAsyncThunk<
     userVault: UserVault;
   },
   {
-    userAddress: string | undefined;
+    userAddress: Address | undefined;
   },
   ThunkAPI
 >('vaultController/getVCData', async ({ userAddress }) => {
+  const { ZERO_ADDRESS, VAULT_CONTROLLER_ADDRESS, CURVE_MASTER_ADDRESS } = getConfig().ADDRESSES;
   const USDA: Token = getStablecoins().USDA;
   const SUSD: Token = getStablecoins().SUSD;
 
@@ -43,12 +44,12 @@ const getVCData = createAsyncThunk<
   } as const;
 
   const curveContract = {
-    address: CURVE_MASTER_ADDRESS as Address,
+    address: CURVE_MASTER_ADDRESS,
     abi: ICurveMaster__factory.abi,
   };
 
   const vcContract = {
-    address: VAULT_CONTROLLER_ADDRESS as Address,
+    address: VAULT_CONTROLLER_ADDRESS,
     abi: IVaultController__factory.abi,
   };
 
@@ -70,7 +71,7 @@ const getVCData = createAsyncThunk<
       {
         ...vcContract,
         functionName: 'vaultIDs',
-        args: [getAddress(userAddress || ZERO_ADDRESS)],
+        args: [userAddress || ZERO_ADDRESS],
       },
     ],
   });
@@ -120,12 +121,12 @@ const getVCData = createAsyncThunk<
     vaultID = Number.parseInt(result[3].result[0].toString());
   }
 
-  let vaultAddress: string | undefined;
+  let vaultAddress: Address | undefined;
   if (ratioResult[1].result) {
     vaultAddress = ratioResult[1].result;
   }
 
-  let tokenAddresses: string[] | undefined;
+  let tokenAddresses: Address[] | undefined;
   let borrowingPower = 0;
   let accountLiability = 0;
   // let tokenBalances: bigint[] | undefined;

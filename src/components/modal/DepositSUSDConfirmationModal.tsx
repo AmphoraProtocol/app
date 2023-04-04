@@ -13,11 +13,10 @@ import { locale } from '~/utils/locale';
 import { Chains } from '~/utils/chains';
 import SVGBox from '../icons/misc/SVGBox';
 import { hasSUSDAllowance } from '~/utils/hasAllowance';
-import { DEFAULT_APPROVE_AMOUNT, SUSD_ADDRESS, USDA_ADDRESS } from '~/constants';
 import { useAppSelector } from '~/hooks/store';
 import { useSigner, useContract, useAccount, useNetwork } from 'wagmi';
 import { IUSDA__factory } from '~/chain/contracts';
-import { getAddress } from 'viem';
+import { getConfig } from '~/config';
 
 export const DepositSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
@@ -31,7 +30,10 @@ export const DepositSUSDConfirmationModal = () => {
   const chain = Chains.getInfo(currentChain?.id || 1);
   const { data: signer } = useSigner();
   const { address } = useAccount();
-
+  const {
+    DEFAULT_APPROVE_AMOUNT,
+    ADDRESSES: { SUSD_ADDRESS, USDA_ADDRESS },
+  } = getConfig();
   const SUSDContract = useContract({
     address: SUSD_ADDRESS,
     abi: IUSDA__factory.abi,
@@ -46,7 +48,7 @@ export const DepositSUSDConfirmationModal = () => {
 
   useEffect(() => {
     if (SUSD.amountToDeposit && address && SUSDContract) {
-      SUSDContract.allowance(getAddress(address), getAddress(USDA_ADDRESS)).then((allowance) => {
+      SUSDContract.allowance(address, USDA_ADDRESS).then((allowance) => {
         hasSUSDAllowance(
           SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : SUSD.amountToDeposit,
           allowance,

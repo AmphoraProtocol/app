@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Address, getAddress } from 'viem';
+import { Address } from 'wagmi';
 
 import { IERC20Metadata__factory } from '~/chain/contracts';
 import { formatBigInt } from '~/hooks/formatBNWithDecimals';
@@ -11,7 +11,7 @@ import { Token } from '~/types';
 const getStablesData = createAsyncThunk<
   { USDA: Token; SUSD: Token },
   {
-    userAddress: string;
+    userAddress: Address;
   },
   ThunkAPI
 >('stablecoin/getStablecoinData', async ({ userAddress }) => {
@@ -37,7 +37,7 @@ const getStablesData = createAsyncThunk<
       {
         ...susdContract,
         functionName: 'balanceOf',
-        args: [getAddress(userAddress)],
+        args: [userAddress],
       },
       {
         ...usdaContract,
@@ -46,7 +46,7 @@ const getStablesData = createAsyncThunk<
       {
         ...usdaContract,
         functionName: 'balanceOf',
-        args: [getAddress(userAddress)],
+        args: [userAddress],
       },
     ],
   });

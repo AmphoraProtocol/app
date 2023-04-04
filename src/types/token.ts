@@ -1,6 +1,8 @@
+import { Address } from 'wagmi';
+
 export interface Token {
   name: string;
-  address: string;
+  address: Address;
   ticker: string;
   price: number;
   decimals: number;
@@ -30,7 +32,7 @@ export type OracleType = '' | 'Chainlink' | 'Uniswap' | 'Price';
 export interface InitializeTokenProps {
   name: string;
   ticker: string;
-  address: string;
+  address: Address;
   capped_token?: boolean;
   capped_address?: string;
   price?: number;

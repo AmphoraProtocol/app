@@ -13,13 +13,14 @@ import { locale } from '~/utils/locale';
 import SVGBox from '../icons/misc/SVGBox';
 import { useAppSelector } from '~/hooks/store';
 import { IUSDA__factory } from '~/chain/contracts';
-import { USDA_ADDRESS } from '~/constants';
+import { getConfig } from '~/config';
 
 export const WithdrawSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
   const isLight = useLight();
+  const { USDA_ADDRESS } = getConfig().ADDRESSES;
 
   const { USDA } = useAppSelector((state) => state.stablecoins);
 

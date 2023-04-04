@@ -7,8 +7,8 @@ import { useAccount, useContract, useSigner } from 'wagmi';
 import { useLight } from '~/hooks/useLight';
 import SVGBox from '../icons/misc/SVGBox';
 import { useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
-import { VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { IVaultController__factory } from '~/chain/contracts';
+import { getConfig } from '~/config';
 
 export const OpenVaultButton = () => {
   const { updateTransactionState } = useModalContext();
@@ -19,7 +19,7 @@ export const OpenVaultButton = () => {
   const { data: signer } = useSigner();
 
   const VC = useContract({
-    address: VAULT_CONTROLLER_ADDRESS,
+    address: getConfig().ADDRESSES.VAULT_CONTROLLER_ADDRESS,
     abi: IVaultController__factory.abi,
     signerOrProvider: signer,
   });

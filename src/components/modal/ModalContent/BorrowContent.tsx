@@ -10,9 +10,9 @@ import { locale } from '~/utils/locale';
 import { useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { useContract, useSigner } from 'wagmi';
 import { IVaultController__factory } from '~/chain/contracts';
-import { USDA_DECIMALS, VAULT_CONTROLLER_ADDRESS } from '~/constants';
 import { BN } from '~/utils/bn';
 import { utils } from 'ethers';
+import { getConfig } from '~/config';
 
 interface BorrowContent {
   tokenName: string;
@@ -33,6 +33,10 @@ export const BorrowContent = (props: BorrowContent) => {
   const [loadmsg, setLoadmsg] = useState('');
   const [newHealth, setNewHealth] = useState(100 * (accountLiability / Number(vaultBorrowPower)));
   const { data: signer } = useSigner();
+  const {
+    USDA_DECIMALS,
+    ADDRESSES: { VAULT_CONTROLLER_ADDRESS },
+  } = getConfig();
 
   const VC = useContract({
     address: VAULT_CONTROLLER_ADDRESS,

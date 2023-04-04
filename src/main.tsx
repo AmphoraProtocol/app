@@ -10,13 +10,14 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 import store from '~/store';
 import App from './App';
+import { getConfig } from './config';
 
 const { chains, provider } = configureChains(
   [mainnet, localhost],
   [
     jsonRpcProvider({
       rpc: () => ({
-        http: 'https://eth.llamarpc.com',
+        http: getConfig().VITE_CUSTOM_LOCAL_RPC,
       }),
     }),
     publicProvider(),

@@ -1,3 +1,4 @@
+import { Address } from 'wagmi';
 import { Status } from './Status';
 import { Token } from './token';
 
@@ -29,8 +30,8 @@ export interface VCState {
 
 export interface UserVault {
   vaultID: number | undefined;
-  vaultAddress: string | undefined;
-  tokenAddresses: string[] | undefined;
+  vaultAddress: Address | undefined;
+  tokenAddresses: Address[] | undefined;
   borrowingPower: number;
   accountLiability: number;
 }
