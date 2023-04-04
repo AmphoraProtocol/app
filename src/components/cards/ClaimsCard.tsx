@@ -8,7 +8,7 @@ import { ClaimsButton } from '../button';
 
 export const ClaimsCard = () => {
   // const { claimAmount } = useMerkleRedeemContext();
-  const claimAmount = utils.parseEther('1');
+  const claimAmount = utils.parseEther('27312912');
   const [formattedAmount, setFormattedAmount] = useState(0);
 
   useEffect(() => {
@@ -33,9 +33,10 @@ export const ClaimsCard = () => {
           />
           <Box sx={{ display: 'flex', flexDirection: 'column', ml: 2, rowGap: 0 }}>
             <Typography variant='label_semi' color='text.secondary'>
-              Total AMPH Rewards
+              Total Rewards
             </Typography>
             <Typography variant='h7_semi' lineHeight={{ xs: 1 }} color='text.primary'>
+              ${' '}
               {formattedAmount.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -43,7 +44,7 @@ export const ClaimsCard = () => {
             </Typography>
           </Box>
         </Box>
-        <ClaimsButton />
+        <ClaimsButton text='Claim All' />
       </Box>
     </CardContainer>
   );

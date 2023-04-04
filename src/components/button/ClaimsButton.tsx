@@ -2,7 +2,7 @@ import { Button, Typography } from '@mui/material';
 import { blue, formatColor } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 
-export const ClaimsButton = () => {
+export const ClaimsButton = ({ text }: { text: string }) => {
   const { setType } = useModalContext();
 
   return (
@@ -18,7 +18,7 @@ export const ClaimsButton = () => {
         },
       }}
     >
-      <Typography variant='body1'>Claim</Typography>
+      <Typography variant='body1'>{text}</Typography>
     </Button>
   );
 };
