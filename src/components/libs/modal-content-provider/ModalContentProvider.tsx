@@ -1,9 +1,10 @@
-import { ContractReceipt, ContractTransaction } from 'ethers';
 import { createContext, useState, useContext } from 'react';
-import { useAppSelector } from '~/hooks/store';
-import { getTokensListOnCurrentChain } from '~/utils/tokens';
-import { Token } from '~/types/token';
+import { ContractReceipt, ContractTransaction } from 'ethers';
 import { useNetwork } from 'wagmi';
+
+import { useAppSelector } from '~/hooks';
+import { getTokensListOnCurrentChain } from '~/utils';
+import { Token } from '~/types';
 
 export enum ModalType {
   None = '',

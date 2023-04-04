@@ -6,9 +6,8 @@ import { DecimalInput } from '../../textFields';
 import { DisableableModalButton } from '../../button/DisableableModalButton';
 import { ModalInputContainer } from './ModalInputContainer';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
-import { useLight } from '~/hooks/useLight';
-import { round } from '~/utils/bn';
-import { useAppSelector } from '~/hooks/store';
+import { useLight, useAppSelector } from '~/hooks';
+import { round } from '~/utils';
 
 export const DepositSUSDContent = () => {
   const { SUSD: SUSDToken } = useAppSelector((state) => state.stablecoins);

@@ -8,7 +8,8 @@ import {
   ClickAwayListener,
 } from '@mui/material';
 import { useState } from 'react';
-import { useLight } from '~/hooks/useLight';
+
+import { useLight } from '~/hooks';
 import { EllipsisIcon } from '../icons/misc/EllipsisIcon';
 import SVGBox from '../icons/misc/SVGBox';
 

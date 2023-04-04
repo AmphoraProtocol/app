@@ -1,4 +1,4 @@
-import { Env } from '~/types/Config';
+import { Env } from '~/types';
 
 export const getEnv = (): Env => {
   const { VITE_ALLOW_DEV_MODE, VITE_ALCHEMY_KEY, VITE_CUSTOM_LOCAL_RPC } = import.meta.env;

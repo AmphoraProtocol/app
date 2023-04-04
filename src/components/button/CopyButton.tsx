@@ -1,8 +1,7 @@
 import { Button, Popover, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
-
 import { CopyIcon } from '../icons/misc/CopyIcon';
 
 export const CopyButton = ({ text, copy }: { text?: string; copy?: string }) => {

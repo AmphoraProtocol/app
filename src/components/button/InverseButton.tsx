@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from '@mui/material';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 
 export const InverseButton = (props: ButtonProps) => {

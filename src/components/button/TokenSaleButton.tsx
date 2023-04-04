@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { StarIcon } from '../icons/misc/StarIcon';
 import { Link } from '../link';
 

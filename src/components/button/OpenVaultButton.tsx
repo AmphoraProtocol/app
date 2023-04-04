@@ -2,13 +2,11 @@ import { useState } from 'react';
 import { Typography, Button } from '@mui/material';
 import { ContractReceipt } from 'ethers';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useAccount, useContract, useSigner } from 'wagmi';
+import { useAccount, useContract } from 'wagmi';
 
-import { useLight } from '~/hooks/useLight';
+import { useLight, useAmphContracts } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
 import { useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
-import { IVaultController__factory } from '~/chain/contracts';
-import { getConfig } from '~/config';
 
 export const OpenVaultButton = () => {
   const { updateTransactionState } = useModalContext();
@@ -16,13 +14,8 @@ export const OpenVaultButton = () => {
   const isLight = useLight();
   const [ishovered, setIshovered] = useState(false);
   const { openConnectModal } = useConnectModal();
-  const { data: signer } = useSigner();
-
-  const VC = useContract({
-    address: getConfig().ADDRESSES.VAULT_CONTROLLER_ADDRESS,
-    abi: IVaultController__factory.abi,
-    signerOrProvider: signer,
-  });
+  const { VaultControllerContract } = useAmphContracts();
+  const VC = useContract(VaultControllerContract);
 
   const openVault = async () => {
     if ((!isConnected || !address) && openConnectModal) {

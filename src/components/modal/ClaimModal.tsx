@@ -5,7 +5,7 @@ import { utils } from 'ethers';
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { BaseModal } from './BaseModal';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
 
 export const ClaimModal = () => {

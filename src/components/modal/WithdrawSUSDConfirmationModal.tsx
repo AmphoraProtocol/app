@@ -1,37 +1,26 @@
 import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { BigNumber, ContractReceipt, utils } from 'ethers';
-import { useAccount, useContract, useSigner } from 'wagmi';
+import { useAccount, useContract } from 'wagmi';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { BaseModal } from './BaseModal';
-import { useLight } from '~/hooks/useLight';
+import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
-import { locale } from '~/utils/locale';
+import { locale } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
-import { useAppSelector } from '~/hooks/store';
-import { IUSDA__factory } from '~/chain/contracts';
-import { getConfig } from '~/config';
 
 export const WithdrawSUSDConfirmationModal = () => {
   const { type, setType, SUSD, updateTransactionState } = useModalContext();
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
   const isLight = useLight();
-  const { USDA_ADDRESS } = getConfig().ADDRESSES;
-
   const { USDA } = useAppSelector((state) => state.stablecoins);
-
-  const { data: signer } = useSigner();
   const { address } = useAccount();
-
-  const USDAContract = useContract({
-    address: USDA_ADDRESS,
-    abi: IUSDA__factory.abi,
-    signerOrProvider: signer,
-  });
+  const { usdaContract } = useAmphContracts();
+  const USDAContract = useContract(usdaContract);
 
   const handleWithdrawSUSD = async () => {
     if (address && USDAContract) {

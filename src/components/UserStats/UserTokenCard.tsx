@@ -1,18 +1,15 @@
 import { ContractReceipt } from 'ethers';
 import { Box, BoxProps, Button, LinearProgress, Link, Typography } from '@mui/material';
-import { useAccount, useContract, useSigner } from 'wagmi';
+import { useAccount, useContract } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { formatColor, neutral } from '~/theme';
-import { useLight } from '~/hooks/useLight';
+import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
 import SVGBox from '../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { ToolTip } from '../tooltip/ToolTip';
-import { useAppSelector } from '~/hooks/store';
 import { OracleType } from '~/types';
-import { IVaultController__factory } from '~/chain/contracts';
-import { getConfig } from '~/config';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -41,6 +38,8 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const tokens = useAppSelector((state) => state.collaterals.elements);
+  const { VaultControllerContract } = useAmphContracts();
+  const VC = useContract(VaultControllerContract);
 
   const {
     tokenName,
@@ -58,13 +57,6 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     oracleAddress,
     oracleType,
   } = props;
-  const { data: signer } = useSigner();
-
-  const VC = useContract({
-    address: getConfig().ADDRESSES.VAULT_CONTROLLER_ADDRESS,
-    abi: IVaultController__factory.abi,
-    signerOrProvider: signer,
-  });
 
   const openVault = async () => {
     try {

@@ -5,12 +5,11 @@ import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { BaseSwitch } from '../switch';
 import { BaseModal } from './BaseModal';
-import { useLight } from '~/hooks/useLight';
+import { useLight, useAppSelector } from '~/hooks';
 import { BorrowContent } from './ModalContent/BorrowContent';
 import { RepayContent } from './ModalContent/RepayContent';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
 import SVGBox from '../icons/misc/SVGBox';
-import { useAppSelector } from '~/hooks/store';
 
 export const BorrowRepayModal = () => {
   const { type, setType } = useModalContext();

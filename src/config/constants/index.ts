@@ -1,4 +1,4 @@
-import { Constants } from '~/types/Config';
+import { Constants } from '~/types';
 
 export const getConstants = (): Constants => {
   return {

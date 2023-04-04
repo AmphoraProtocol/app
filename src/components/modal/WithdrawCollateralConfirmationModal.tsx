@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
-import { useSigner, useContract } from 'wagmi';
+import { useContract } from 'wagmi';
 import { utils } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { BaseModal } from './BaseModal';
-import { useLight } from '~/hooks/useLight';
+import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { DisableableModalButton } from '../button/DisableableModalButton';
-import { locale } from '~/utils/locale';
-import { round } from '~/utils/bn';
+import { locale, round } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
-import { useAppSelector } from '~/hooks/store';
-import { IVault__factory } from '~/chain/contracts';
 
 export const WithdrawCollateralConfirmationModal = () => {
   const {
@@ -30,13 +27,8 @@ export const WithdrawCollateralConfirmationModal = () => {
   const [loadmsg, setLoadmsg] = useState('');
   const [loading, setLoading] = useState(false);
   const isLight = useLight();
-  const { data: signer } = useSigner();
-
-  const vaultContract = useContract({
-    address: vaultAddress,
-    abi: IVault__factory.abi,
-    signerOrProvider: signer,
-  });
+  const { vaultAbi } = useAmphContracts();
+  const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
 
   const handleCollateralWithdraw = async () => {
     setLoading(true);

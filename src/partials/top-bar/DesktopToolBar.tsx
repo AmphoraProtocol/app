@@ -1,7 +1,7 @@
 import { Box, Toolbar, Link } from '@mui/material';
 
 import { SelectedChainButton } from '~/components/button';
-import { useLight } from '~/hooks/useLight';
+import { useLight } from '~/hooks';
 import { AppGovSwitch } from '~/components/switch';
 import { DesktopMenu } from './DesktopMenu';
 import { ConnectButton } from '@rainbow-me/rainbowkit';

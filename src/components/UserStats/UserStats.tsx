@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { UserTokenCard } from './UserTokenCard';
 import { CardContainer } from '../cards/CardContainer';
-import { useAppSelector } from '~/hooks/store';
+import { useAppSelector } from '~/hooks';
 
 export const UserStats = () => {
   const [token_cards, setTokenCards] = useState<JSX.Element | undefined>(undefined);
