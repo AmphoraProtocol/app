@@ -68,7 +68,7 @@ export const ClaimAllModal = () => {
               })}
             </Typography>
             <SVGBox
-              svg_name='rETH'
+              svg_name=''
               width={50}
               height={50}
               alt='USDA'
