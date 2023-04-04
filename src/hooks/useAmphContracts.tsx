@@ -1,5 +1,6 @@
 import { useSigner } from 'wagmi';
 import {
+  IAMPHClaimer__factory,
   ICurveMaster__factory,
   IERC20Metadata__factory,
   IUSDA__factory,
@@ -11,29 +12,35 @@ import { getConstants } from '~/config/constants';
 
 export const useAmphContracts = () => {
   const { data: signer } = useSigner();
-  const { VAULT_CONTROLLER_ADDRESS, CURVE_MASTER_ADDRESS, USDA_ADDRESS, SUSD_ADDRESS } = getConstants().ADDRESSES;
+  const { VAULT_CONTROLLER, CURVE_MASTER, USDA, SUSD, AMPH_CLAIMER } = getConstants().ADDRESSES;
 
   const VaultControllerContract = {
-    address: VAULT_CONTROLLER_ADDRESS,
+    address: VAULT_CONTROLLER,
     abi: IVaultController__factory.abi,
     signerOrProvider: signer,
   };
 
   const CurveContract = {
-    address: CURVE_MASTER_ADDRESS,
+    address: CURVE_MASTER,
     abi: ICurveMaster__factory.abi,
     signerOrProvider: signer,
   };
 
   const susdContract = {
-    address: SUSD_ADDRESS,
+    address: SUSD,
     abi: IERC20Metadata__factory.abi,
     signerOrProvider: signer,
   };
 
   const usdaContract = {
-    address: USDA_ADDRESS,
+    address: USDA,
     abi: IUSDA__factory.abi,
+    signerOrProvider: signer,
+  };
+
+  const amphClaimerContract = {
+    address: AMPH_CLAIMER,
+    abi: IAMPHClaimer__factory.abi,
     signerOrProvider: signer,
   };
 
@@ -52,6 +59,7 @@ export const useAmphContracts = () => {
     CurveContract,
     susdContract,
     usdaContract,
+    amphClaimerContract,
     tokenAbi,
     vaultAbi,
   };

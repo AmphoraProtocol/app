@@ -34,7 +34,7 @@ const getCollateralData = createAsyncThunk<
 
   // const tokenList: Address[] = tokens || ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'];
 
-  const { VAULT_CONTROLLER_ADDRESS, ZERO_ADDRESS } = getConfig().ADDRESSES;
+  const { VAULT_CONTROLLER, ZERO_ADDRESS } = getConfig().ADDRESSES;
   const collateralsLength = tokenList.length;
 
   const tokensName = tokenList.map((address) => {
@@ -72,7 +72,7 @@ const getCollateralData = createAsyncThunk<
     // temporary
     if (token.address !== '0xD533a949740bb3306d119CC777fa900bA034cd52') {
       const data = await readContract({
-        address: VAULT_CONTROLLER_ADDRESS,
+        address: VAULT_CONTROLLER,
         abi: IVaultController__factory.abi,
         functionName: 'tokenCollateralInfo',
         args: [token.address],

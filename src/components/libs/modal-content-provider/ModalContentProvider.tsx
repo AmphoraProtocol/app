@@ -71,7 +71,7 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
   const [collateralToken, setCollateralToken] = useState<Token>(
     initializeToken({
       name: 'Wrapped ETH',
-      address: getConfig().ADDRESSES.WETH_ADDRESS,
+      address: getConfig().ADDRESSES.WETH,
       ticker: 'WETH',
     }),
   );
