@@ -44,7 +44,7 @@ export const ClaimsCard = () => {
             </Typography>
           </Box>
         </Box>
-        <ClaimsButton text='Claim All' />
+        <ClaimsButton text='Claim All' claimAll={true} />
       </Box>
     </CardContainer>
   );

@@ -10,6 +10,7 @@ import SVGBox from '../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { ToolTip } from '../tooltip/ToolTip';
 import { OracleType } from '~/types';
+import { ClaimsButton } from '../button';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -29,6 +30,7 @@ interface UserTokenCardProps extends BoxProps {
   cappedPercent: number | undefined;
   oracleAddress: string | undefined;
   oracleType: OracleType | undefined;
+  curve_lp: boolean | undefined;
 }
 
 export const UserTokenCard = (props: UserTokenCardProps) => {
@@ -56,6 +58,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     cappedPercent,
     oracleAddress,
     oracleType,
+    curve_lp,
   } = props;
 
   const openVault = async () => {
@@ -98,7 +101,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
           display: 'grid',
           gridTemplateColumns: {
             xs: '1.5fr 1fr 1fr',
-            lg: '1.5fr 0.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr 0.8fr',
+            lg: '1.55fr 0.5fr 0.7fr 0.45fr 0.45fr 0.7fr 0.6fr 0.95fr 0.7fr',
           },
           mb: 0,
           columnGap: 2,
@@ -172,11 +175,19 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
           </Typography>
         </Box>
 
+        {curve_lp ? (
+          <Box pl={2}>
+            <ClaimsButton text='Claim Rewards' />
+          </Box>
+        ) : (
+          <Box></Box>
+        )}
+
         <Box
           sx={{
             display: { xs: 'none', lg: 'flex' },
             columnGap: 1.5,
-            justifySelf: 'flex-end',
+            justifySelf: 'center',
           }}
         >
           <Button

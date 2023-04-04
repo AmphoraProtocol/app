@@ -11,6 +11,7 @@ export enum ModalType {
   Borrow = 'BORROW',
   Repay = 'REPAY',
   Claim = 'CLAIM',
+  ClaimAll = 'CLAIM_ALL',
   WithdrawSUSD = 'WITHDRAW_SUSD',
   DepositSUSD = 'DEPOSIT_SUSD',
   DepositSUSDConfirmation = 'DEPOSIT_SUSD_CONFIRMATION',

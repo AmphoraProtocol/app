@@ -3,6 +3,7 @@ export * from './DepositWithdrawSUSDModal';
 export * from './DepositSUSDConfirmationModal';
 export * from './WithdrawSUSDConfirmationModal';
 export * from './ClaimModal';
+export * from './ClaimAllModal';
 export * from './DepositWithdrawCollateralModal';
 export * from './DepositCollateralConfirmationModal';
 export * from './WithdrawCollateralConfirmationModal';
