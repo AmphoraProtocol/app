@@ -25,10 +25,14 @@ export interface IAMPHClaimerInterface extends utils.Interface {
     'amphPerCrv()': FunctionFragment;
     'amphPerCvx()': FunctionFragment;
     'changeCrvRate(uint256)': FunctionFragment;
+    'changeCrvRewardFee(uint256)': FunctionFragment;
     'changeCvxRate(uint256)': FunctionFragment;
+    'changeCvxRewardFee(uint256)': FunctionFragment;
     'changeVaultController(address)': FunctionFragment;
     'claimAmph(uint96,uint256,uint256,address)': FunctionFragment;
     'claimable(uint256,uint256)': FunctionFragment;
+    'crvRewardFee()': FunctionFragment;
+    'cvxRewardFee()': FunctionFragment;
     'recoverDust(address,uint256)': FunctionFragment;
     'vaultController()': FunctionFragment;
   };
@@ -41,10 +45,14 @@ export interface IAMPHClaimerInterface extends utils.Interface {
       | 'amphPerCrv'
       | 'amphPerCvx'
       | 'changeCrvRate'
+      | 'changeCrvRewardFee'
       | 'changeCvxRate'
+      | 'changeCvxRewardFee'
       | 'changeVaultController'
       | 'claimAmph'
       | 'claimable'
+      | 'crvRewardFee'
+      | 'cvxRewardFee'
       | 'recoverDust'
       | 'vaultController',
   ): FunctionFragment;
@@ -55,7 +63,9 @@ export interface IAMPHClaimerInterface extends utils.Interface {
   encodeFunctionData(functionFragment: 'amphPerCrv', values?: undefined): string;
   encodeFunctionData(functionFragment: 'amphPerCvx', values?: undefined): string;
   encodeFunctionData(functionFragment: 'changeCrvRate', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'changeCrvRewardFee', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(functionFragment: 'changeCvxRate', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'changeCvxRewardFee', values: [PromiseOrValue<BigNumberish>]): string;
   encodeFunctionData(functionFragment: 'changeVaultController', values: [PromiseOrValue<string>]): string;
   encodeFunctionData(
     functionFragment: 'claimAmph',
@@ -70,6 +80,8 @@ export interface IAMPHClaimerInterface extends utils.Interface {
     functionFragment: 'claimable',
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
   ): string;
+  encodeFunctionData(functionFragment: 'crvRewardFee', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'cvxRewardFee', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'recoverDust',
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
@@ -82,23 +94,31 @@ export interface IAMPHClaimerInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'amphPerCrv', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'amphPerCvx', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'changeCrvRate', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'changeCrvRewardFee', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'changeCvxRate', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'changeCvxRewardFee', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'changeVaultController', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'claimAmph', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'claimable', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'crvRewardFee', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'cvxRewardFee', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'recoverDust', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'vaultController', data: BytesLike): Result;
 
   events: {
     'ChangedCrvRate(uint256)': EventFragment;
+    'ChangedCrvRewardFee(uint256)': EventFragment;
     'ChangedCvxRate(uint256)': EventFragment;
+    'ChangedCvxRewardFee(uint256)': EventFragment;
     'ChangedVaultController(address)': EventFragment;
     'ClaimedAmph(address,uint256,uint256,uint256)': EventFragment;
     'RecoveredDust(address,address,uint256)': EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: 'ChangedCrvRate'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ChangedCrvRewardFee'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ChangedCvxRate'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ChangedCvxRewardFee'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ChangedVaultController'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ClaimedAmph'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RecoveredDust'): EventFragment;
@@ -111,12 +131,26 @@ export type ChangedCrvRateEvent = TypedEvent<[BigNumber], ChangedCrvRateEventObj
 
 export type ChangedCrvRateEventFilter = TypedEventFilter<ChangedCrvRateEvent>;
 
+export interface ChangedCrvRewardFeeEventObject {
+  _newCrvReward: BigNumber;
+}
+export type ChangedCrvRewardFeeEvent = TypedEvent<[BigNumber], ChangedCrvRewardFeeEventObject>;
+
+export type ChangedCrvRewardFeeEventFilter = TypedEventFilter<ChangedCrvRewardFeeEvent>;
+
 export interface ChangedCvxRateEventObject {
   _newCvxRate: BigNumber;
 }
 export type ChangedCvxRateEvent = TypedEvent<[BigNumber], ChangedCvxRateEventObject>;
 
 export type ChangedCvxRateEventFilter = TypedEventFilter<ChangedCvxRateEvent>;
+
+export interface ChangedCvxRewardFeeEventObject {
+  _newCvxReward: BigNumber;
+}
+export type ChangedCvxRewardFeeEvent = TypedEvent<[BigNumber], ChangedCvxRewardFeeEventObject>;
+
+export type ChangedCvxRewardFeeEventFilter = TypedEventFilter<ChangedCvxRewardFeeEvent>;
 
 export interface ChangedVaultControllerEventObject {
   _newVaultController: string;
@@ -127,8 +161,8 @@ export type ChangedVaultControllerEventFilter = TypedEventFilter<ChangedVaultCon
 
 export interface ClaimedAmphEventObject {
   _vaultClaimer: string;
-  _cvxAmount: BigNumber;
-  _crvAmount: BigNumber;
+  _cvxTotalRewards: BigNumber;
+  _crvTotalRewards: BigNumber;
   _amphAmount: BigNumber;
 }
 export type ClaimedAmphEvent = TypedEvent<[string, BigNumber, BigNumber, BigNumber], ClaimedAmphEventObject>;
@@ -182,8 +216,18 @@ export interface IAMPHClaimer extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
+    changeCrvRewardFee(
+      _newFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
     changeCvxRate(
       _newRate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<ContractTransaction>;
+
+    changeCvxRewardFee(
+      _newFee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
@@ -194,15 +238,15 @@ export interface IAMPHClaimer extends BaseContract {
 
     claimAmph(
       _vaultId: PromiseOrValue<BigNumberish>,
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     claimable(
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
@@ -211,6 +255,10 @@ export interface IAMPHClaimer extends BaseContract {
         _claimableAmph: BigNumber;
       }
     >;
+
+    crvRewardFee(overrides?: CallOverrides): Promise<[BigNumber] & { _crvRewardFee: BigNumber }>;
+
+    cvxRewardFee(overrides?: CallOverrides): Promise<[BigNumber] & { _cvxRewardFee: BigNumber }>;
 
     recoverDust(
       _token: PromiseOrValue<string>,
@@ -236,8 +284,18 @@ export interface IAMPHClaimer extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
+  changeCrvRewardFee(
+    _newFee: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
   changeCvxRate(
     _newRate: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
+  ): Promise<ContractTransaction>;
+
+  changeCvxRewardFee(
+    _newFee: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
@@ -248,15 +306,15 @@ export interface IAMPHClaimer extends BaseContract {
 
   claimAmph(
     _vaultId: PromiseOrValue<BigNumberish>,
-    _cvxAmount: PromiseOrValue<BigNumberish>,
-    _crvAmount: PromiseOrValue<BigNumberish>,
+    _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+    _crvTotalRewards: PromiseOrValue<BigNumberish>,
     _receiver: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   claimable(
-    _cvxAmount: PromiseOrValue<BigNumberish>,
-    _crvAmount: PromiseOrValue<BigNumberish>,
+    _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+    _crvTotalRewards: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides,
   ): Promise<
     [BigNumber, BigNumber, BigNumber] & {
@@ -265,6 +323,10 @@ export interface IAMPHClaimer extends BaseContract {
       _claimableAmph: BigNumber;
     }
   >;
+
+  crvRewardFee(overrides?: CallOverrides): Promise<BigNumber>;
+
+  cvxRewardFee(overrides?: CallOverrides): Promise<BigNumber>;
 
   recoverDust(
     _token: PromiseOrValue<string>,
@@ -287,14 +349,18 @@ export interface IAMPHClaimer extends BaseContract {
 
     changeCrvRate(_newRate: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
 
+    changeCrvRewardFee(_newFee: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
+
     changeCvxRate(_newRate: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
+
+    changeCvxRewardFee(_newFee: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<void>;
 
     changeVaultController(_newVaultController: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
     claimAmph(
       _vaultId: PromiseOrValue<BigNumberish>,
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       _receiver: PromiseOrValue<string>,
       overrides?: CallOverrides,
     ): Promise<
@@ -306,8 +372,8 @@ export interface IAMPHClaimer extends BaseContract {
     >;
 
     claimable(
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
@@ -316,6 +382,10 @@ export interface IAMPHClaimer extends BaseContract {
         _claimableAmph: BigNumber;
       }
     >;
+
+    crvRewardFee(overrides?: CallOverrides): Promise<BigNumber>;
+
+    cvxRewardFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     recoverDust(
       _token: PromiseOrValue<string>,
@@ -330,19 +400,30 @@ export interface IAMPHClaimer extends BaseContract {
     'ChangedCrvRate(uint256)'(_newCrvRate?: null): ChangedCrvRateEventFilter;
     ChangedCrvRate(_newCrvRate?: null): ChangedCrvRateEventFilter;
 
+    'ChangedCrvRewardFee(uint256)'(_newCrvReward?: null): ChangedCrvRewardFeeEventFilter;
+    ChangedCrvRewardFee(_newCrvReward?: null): ChangedCrvRewardFeeEventFilter;
+
     'ChangedCvxRate(uint256)'(_newCvxRate?: null): ChangedCvxRateEventFilter;
     ChangedCvxRate(_newCvxRate?: null): ChangedCvxRateEventFilter;
+
+    'ChangedCvxRewardFee(uint256)'(_newCvxReward?: null): ChangedCvxRewardFeeEventFilter;
+    ChangedCvxRewardFee(_newCvxReward?: null): ChangedCvxRewardFeeEventFilter;
 
     'ChangedVaultController(address)'(_newVaultController?: null): ChangedVaultControllerEventFilter;
     ChangedVaultController(_newVaultController?: null): ChangedVaultControllerEventFilter;
 
     'ClaimedAmph(address,uint256,uint256,uint256)'(
       _vaultClaimer?: null,
-      _cvxAmount?: null,
-      _crvAmount?: null,
+      _cvxTotalRewards?: null,
+      _crvTotalRewards?: null,
       _amphAmount?: null,
     ): ClaimedAmphEventFilter;
-    ClaimedAmph(_vaultClaimer?: null, _cvxAmount?: null, _crvAmount?: null, _amphAmount?: null): ClaimedAmphEventFilter;
+    ClaimedAmph(
+      _vaultClaimer?: null,
+      _cvxTotalRewards?: null,
+      _crvTotalRewards?: null,
+      _amphAmount?: null,
+    ): ClaimedAmphEventFilter;
 
     'RecoveredDust(address,address,uint256)'(_token?: null, _receiver?: null, _amount?: null): RecoveredDustEventFilter;
     RecoveredDust(_token?: null, _receiver?: null, _amount?: null): RecoveredDustEventFilter;
@@ -364,8 +445,18 @@ export interface IAMPHClaimer extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
+    changeCrvRewardFee(
+      _newFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
     changeCvxRate(
       _newRate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<BigNumber>;
+
+    changeCvxRewardFee(
+      _newFee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
@@ -376,17 +467,21 @@ export interface IAMPHClaimer extends BaseContract {
 
     claimAmph(
       _vaultId: PromiseOrValue<BigNumberish>,
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     claimable(
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides,
     ): Promise<BigNumber>;
+
+    crvRewardFee(overrides?: CallOverrides): Promise<BigNumber>;
+
+    cvxRewardFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     recoverDust(
       _token: PromiseOrValue<string>,
@@ -413,8 +508,18 @@ export interface IAMPHClaimer extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
+    changeCrvRewardFee(
+      _newFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
     changeCvxRate(
       _newRate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
+    ): Promise<PopulatedTransaction>;
+
+    changeCvxRewardFee(
+      _newFee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
@@ -425,17 +530,21 @@ export interface IAMPHClaimer extends BaseContract {
 
     claimAmph(
       _vaultId: PromiseOrValue<BigNumberish>,
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     claimable(
-      _cvxAmount: PromiseOrValue<BigNumberish>,
-      _crvAmount: PromiseOrValue<BigNumberish>,
+      _cvxTotalRewards: PromiseOrValue<BigNumberish>,
+      _crvTotalRewards: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
+
+    crvRewardFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    cvxRewardFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     recoverDust(
       _token: PromiseOrValue<string>,

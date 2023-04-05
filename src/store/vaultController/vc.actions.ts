@@ -9,9 +9,9 @@ import {
   IUSDA__factory,
   IVaultController__factory,
 } from '~/chain/contracts';
-import { getStablecoins, BNtoHexNumber, BN, BNtoDec, round } from '~/utils';
+import { BNtoHexNumber, BN, BNtoDec, round } from '~/utils';
 import { ThunkAPI } from '~/store';
-import { Token, UserVault } from '~/types';
+import { UserVault } from '~/types';
 import { getConfig } from '~/config';
 
 const getVCData = createAsyncThunk<
@@ -22,25 +22,25 @@ const getVCData = createAsyncThunk<
     totalSUSDDeposited: number;
     reserveRatio: number;
     userVault: UserVault;
+    collaterals?: Address[];
   },
   {
     userAddress: Address | undefined;
   },
   ThunkAPI
 >('vaultController/getVCData', async ({ userAddress }) => {
-  const { ZERO_ADDRESS, VAULT_CONTROLLER_ADDRESS, CURVE_MASTER_ADDRESS } = getConfig().ADDRESSES;
-  const USDA: Token = getStablecoins().USDA;
-  const SUSD: Token = getStablecoins().SUSD;
+  const { ZERO_ADDRESS, VAULT_CONTROLLER_ADDRESS, CURVE_MASTER_ADDRESS, SUSD_ADDRESS, USDA_ADDRESS } =
+    getConfig().ADDRESSES;
 
   const susdContract = {
-    address: SUSD.address as Address,
+    address: SUSD_ADDRESS,
     abi: IERC20Metadata__factory.abi,
-  } as const;
+  };
 
   const usdaContract = {
-    address: USDA.address as Address,
+    address: USDA_ADDRESS,
     abi: IUSDA__factory.abi,
-  } as const;
+  };
 
   const curveContract = {
     address: CURVE_MASTER_ADDRESS,
@@ -71,6 +71,10 @@ const getVCData = createAsyncThunk<
         ...vcContract,
         functionName: 'vaultIDs',
         args: [userAddress || ZERO_ADDRESS] as [Address],
+      },
+      {
+        ...vcContract,
+        functionName: 'getEnabledTokens',
       },
     ],
   });
@@ -149,6 +153,7 @@ const getVCData = createAsyncThunk<
       borrowingPower,
       accountLiability,
     },
+    collaterals: [...firstCall[4]],
   };
 });
 

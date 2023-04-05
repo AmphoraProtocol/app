@@ -20,6 +20,7 @@ export interface VCState {
   depositAPR: number | undefined;
   status: Status;
   userVault: UserVault;
+  collaterals: Address[] | undefined;
 }
 
 export interface UserVault {

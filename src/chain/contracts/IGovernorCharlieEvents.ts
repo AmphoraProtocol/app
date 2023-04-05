@@ -20,12 +20,17 @@ export interface IGovernorCharlieEventsInterface extends utils.Interface {
     'OptimisticQuorumVotesSet(uint256,uint256)': EventFragment;
     'OptimisticVotingDelaySet(uint256,uint256)': EventFragment;
     'ProposalCanceled(uint256)': EventFragment;
+    'ProposalCanceledIndexed(uint256)': EventFragment;
     'ProposalCreated(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)': EventFragment;
+    'ProposalCreatedIndexed(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)': EventFragment;
     'ProposalExecuted(uint256)': EventFragment;
+    'ProposalExecutedIndexed(uint256)': EventFragment;
     'ProposalQueued(uint256,uint256)': EventFragment;
+    'ProposalQueuedIndexed(uint256,uint256)': EventFragment;
     'ProposalThresholdSet(uint256,uint256)': EventFragment;
     'QueueTransaction(bytes32,address,uint256,string,bytes,uint256)': EventFragment;
     'VoteCast(address,uint256,uint8,uint256,string)': EventFragment;
+    'VoteCastIndexed(address,uint256,uint8,uint256,string)': EventFragment;
     'VotingDelaySet(uint256,uint256)': EventFragment;
     'VotingPeriodSet(uint256,uint256)': EventFragment;
     'WhitelistAccountExpirationSet(address,uint256)': EventFragment;
@@ -42,12 +47,17 @@ export interface IGovernorCharlieEventsInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'OptimisticQuorumVotesSet'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'OptimisticVotingDelaySet'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ProposalCanceled'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ProposalCanceledIndexed'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ProposalCreated'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ProposalCreatedIndexed'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ProposalExecuted'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ProposalExecutedIndexed'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ProposalQueued'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ProposalQueuedIndexed'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ProposalThresholdSet'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'QueueTransaction'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'VoteCast'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'VoteCastIndexed'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'VotingDelaySet'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'VotingPeriodSet'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'WhitelistAccountExpirationSet'): EventFragment;
@@ -141,13 +151,38 @@ export type OptimisticVotingDelaySetEvent = TypedEvent<[BigNumber, BigNumber], O
 export type OptimisticVotingDelaySetEventFilter = TypedEventFilter<OptimisticVotingDelaySetEvent>;
 
 export interface ProposalCanceledEventObject {
-  _id: BigNumber;
+  id: BigNumber;
 }
 export type ProposalCanceledEvent = TypedEvent<[BigNumber], ProposalCanceledEventObject>;
 
 export type ProposalCanceledEventFilter = TypedEventFilter<ProposalCanceledEvent>;
 
+export interface ProposalCanceledIndexedEventObject {
+  _id: BigNumber;
+}
+export type ProposalCanceledIndexedEvent = TypedEvent<[BigNumber], ProposalCanceledIndexedEventObject>;
+
+export type ProposalCanceledIndexedEventFilter = TypedEventFilter<ProposalCanceledIndexedEvent>;
+
 export interface ProposalCreatedEventObject {
+  id: BigNumber;
+  proposer: string;
+  targets: string[];
+  values: BigNumber[];
+  signatures: string[];
+  calldatas: string[];
+  startBlock: BigNumber;
+  endBlock: BigNumber;
+  description: string;
+}
+export type ProposalCreatedEvent = TypedEvent<
+  [BigNumber, string, string[], BigNumber[], string[], string[], BigNumber, BigNumber, string],
+  ProposalCreatedEventObject
+>;
+
+export type ProposalCreatedEventFilter = TypedEventFilter<ProposalCreatedEvent>;
+
+export interface ProposalCreatedIndexedEventObject {
   _id: BigNumber;
   _proposer: string;
   _targets: string[];
@@ -158,27 +193,42 @@ export interface ProposalCreatedEventObject {
   _endBlock: BigNumber;
   _description: string;
 }
-export type ProposalCreatedEvent = TypedEvent<
+export type ProposalCreatedIndexedEvent = TypedEvent<
   [BigNumber, string, string[], BigNumber[], string[], string[], BigNumber, BigNumber, string],
-  ProposalCreatedEventObject
+  ProposalCreatedIndexedEventObject
 >;
 
-export type ProposalCreatedEventFilter = TypedEventFilter<ProposalCreatedEvent>;
+export type ProposalCreatedIndexedEventFilter = TypedEventFilter<ProposalCreatedIndexedEvent>;
 
 export interface ProposalExecutedEventObject {
-  _id: BigNumber;
+  id: BigNumber;
 }
 export type ProposalExecutedEvent = TypedEvent<[BigNumber], ProposalExecutedEventObject>;
 
 export type ProposalExecutedEventFilter = TypedEventFilter<ProposalExecutedEvent>;
 
-export interface ProposalQueuedEventObject {
+export interface ProposalExecutedIndexedEventObject {
   _id: BigNumber;
-  _eta: BigNumber;
+}
+export type ProposalExecutedIndexedEvent = TypedEvent<[BigNumber], ProposalExecutedIndexedEventObject>;
+
+export type ProposalExecutedIndexedEventFilter = TypedEventFilter<ProposalExecutedIndexedEvent>;
+
+export interface ProposalQueuedEventObject {
+  id: BigNumber;
+  eta: BigNumber;
 }
 export type ProposalQueuedEvent = TypedEvent<[BigNumber, BigNumber], ProposalQueuedEventObject>;
 
 export type ProposalQueuedEventFilter = TypedEventFilter<ProposalQueuedEvent>;
+
+export interface ProposalQueuedIndexedEventObject {
+  _id: BigNumber;
+  _eta: BigNumber;
+}
+export type ProposalQueuedIndexedEvent = TypedEvent<[BigNumber, BigNumber], ProposalQueuedIndexedEventObject>;
+
+export type ProposalQueuedIndexedEventFilter = TypedEventFilter<ProposalQueuedIndexedEvent>;
 
 export interface ProposalThresholdSetEventObject {
   _oldProposalThreshold: BigNumber;
@@ -204,15 +254,29 @@ export type QueueTransactionEvent = TypedEvent<
 export type QueueTransactionEventFilter = TypedEventFilter<QueueTransactionEvent>;
 
 export interface VoteCastEventObject {
+  voter: string;
+  proposalId: BigNumber;
+  support: number;
+  votes: BigNumber;
+  reason: string;
+}
+export type VoteCastEvent = TypedEvent<[string, BigNumber, number, BigNumber, string], VoteCastEventObject>;
+
+export type VoteCastEventFilter = TypedEventFilter<VoteCastEvent>;
+
+export interface VoteCastIndexedEventObject {
   _voter: string;
   _proposalId: BigNumber;
   _support: number;
   _votes: BigNumber;
   _reason: string;
 }
-export type VoteCastEvent = TypedEvent<[string, BigNumber, number, BigNumber, string], VoteCastEventObject>;
+export type VoteCastIndexedEvent = TypedEvent<
+  [string, BigNumber, number, BigNumber, string],
+  VoteCastIndexedEventObject
+>;
 
-export type VoteCastEventFilter = TypedEventFilter<VoteCastEvent>;
+export type VoteCastIndexedEventFilter = TypedEventFilter<VoteCastIndexedEvent>;
 
 export interface VotingDelaySetEventObject {
   _oldVotingDelay: BigNumber;
@@ -355,21 +419,36 @@ export interface IGovernorCharlieEvents extends BaseContract {
       _optimisticVotingDelay?: null,
     ): OptimisticVotingDelaySetEventFilter;
 
-    'ProposalCanceled(uint256)'(_id?: PromiseOrValue<BigNumberish> | null): ProposalCanceledEventFilter;
-    ProposalCanceled(_id?: PromiseOrValue<BigNumberish> | null): ProposalCanceledEventFilter;
+    'ProposalCanceled(uint256)'(id?: null): ProposalCanceledEventFilter;
+    ProposalCanceled(id?: null): ProposalCanceledEventFilter;
+
+    'ProposalCanceledIndexed(uint256)'(_id?: PromiseOrValue<BigNumberish> | null): ProposalCanceledIndexedEventFilter;
+    ProposalCanceledIndexed(_id?: PromiseOrValue<BigNumberish> | null): ProposalCanceledIndexedEventFilter;
 
     'ProposalCreated(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)'(
-      _id?: PromiseOrValue<BigNumberish> | null,
-      _proposer?: PromiseOrValue<string> | null,
-      _targets?: null,
-      _values?: null,
-      _signatures?: null,
-      _calldatas?: null,
-      _startBlock?: PromiseOrValue<BigNumberish> | null,
-      _endBlock?: null,
-      _description?: null,
+      id?: null,
+      proposer?: null,
+      targets?: null,
+      values?: null,
+      signatures?: null,
+      calldatas?: null,
+      startBlock?: null,
+      endBlock?: null,
+      description?: null,
     ): ProposalCreatedEventFilter;
     ProposalCreated(
+      id?: null,
+      proposer?: null,
+      targets?: null,
+      values?: null,
+      signatures?: null,
+      calldatas?: null,
+      startBlock?: null,
+      endBlock?: null,
+      description?: null,
+    ): ProposalCreatedEventFilter;
+
+    'ProposalCreatedIndexed(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)'(
       _id?: PromiseOrValue<BigNumberish> | null,
       _proposer?: PromiseOrValue<string> | null,
       _targets?: null,
@@ -379,16 +458,33 @@ export interface IGovernorCharlieEvents extends BaseContract {
       _startBlock?: PromiseOrValue<BigNumberish> | null,
       _endBlock?: null,
       _description?: null,
-    ): ProposalCreatedEventFilter;
+    ): ProposalCreatedIndexedEventFilter;
+    ProposalCreatedIndexed(
+      _id?: PromiseOrValue<BigNumberish> | null,
+      _proposer?: PromiseOrValue<string> | null,
+      _targets?: null,
+      _values?: null,
+      _signatures?: null,
+      _calldatas?: null,
+      _startBlock?: PromiseOrValue<BigNumberish> | null,
+      _endBlock?: null,
+      _description?: null,
+    ): ProposalCreatedIndexedEventFilter;
 
-    'ProposalExecuted(uint256)'(_id?: PromiseOrValue<BigNumberish> | null): ProposalExecutedEventFilter;
-    ProposalExecuted(_id?: PromiseOrValue<BigNumberish> | null): ProposalExecutedEventFilter;
+    'ProposalExecuted(uint256)'(id?: null): ProposalExecutedEventFilter;
+    ProposalExecuted(id?: null): ProposalExecutedEventFilter;
 
-    'ProposalQueued(uint256,uint256)'(
+    'ProposalExecutedIndexed(uint256)'(_id?: PromiseOrValue<BigNumberish> | null): ProposalExecutedIndexedEventFilter;
+    ProposalExecutedIndexed(_id?: PromiseOrValue<BigNumberish> | null): ProposalExecutedIndexedEventFilter;
+
+    'ProposalQueued(uint256,uint256)'(id?: null, eta?: null): ProposalQueuedEventFilter;
+    ProposalQueued(id?: null, eta?: null): ProposalQueuedEventFilter;
+
+    'ProposalQueuedIndexed(uint256,uint256)'(
       _id?: PromiseOrValue<BigNumberish> | null,
       _eta?: null,
-    ): ProposalQueuedEventFilter;
-    ProposalQueued(_id?: PromiseOrValue<BigNumberish> | null, _eta?: null): ProposalQueuedEventFilter;
+    ): ProposalQueuedIndexedEventFilter;
+    ProposalQueuedIndexed(_id?: PromiseOrValue<BigNumberish> | null, _eta?: null): ProposalQueuedIndexedEventFilter;
 
     'ProposalThresholdSet(uint256,uint256)'(
       _oldProposalThreshold?: null,
@@ -414,19 +510,34 @@ export interface IGovernorCharlieEvents extends BaseContract {
     ): QueueTransactionEventFilter;
 
     'VoteCast(address,uint256,uint8,uint256,string)'(
-      _voter?: PromiseOrValue<string> | null,
-      _proposalId?: PromiseOrValue<BigNumberish> | null,
-      _support?: null,
-      _votes?: null,
-      _reason?: null,
+      voter?: PromiseOrValue<string> | null,
+      proposalId?: null,
+      support?: null,
+      votes?: null,
+      reason?: null,
     ): VoteCastEventFilter;
     VoteCast(
+      voter?: PromiseOrValue<string> | null,
+      proposalId?: null,
+      support?: null,
+      votes?: null,
+      reason?: null,
+    ): VoteCastEventFilter;
+
+    'VoteCastIndexed(address,uint256,uint8,uint256,string)'(
       _voter?: PromiseOrValue<string> | null,
       _proposalId?: PromiseOrValue<BigNumberish> | null,
       _support?: null,
       _votes?: null,
       _reason?: null,
-    ): VoteCastEventFilter;
+    ): VoteCastIndexedEventFilter;
+    VoteCastIndexed(
+      _voter?: PromiseOrValue<string> | null,
+      _proposalId?: PromiseOrValue<BigNumberish> | null,
+      _support?: null,
+      _votes?: null,
+      _reason?: null,
+    ): VoteCastIndexedEventFilter;
 
     'VotingDelaySet(uint256,uint256)'(_oldVotingDelay?: null, _newVotingDelay?: null): VotingDelaySetEventFilter;
     VotingDelaySet(_oldVotingDelay?: null, _newVotingDelay?: null): VotingDelaySetEventFilter;

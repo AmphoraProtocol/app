@@ -1,10 +1,10 @@
 import { createContext, useState, useContext } from 'react';
 import { ContractReceipt, ContractTransaction } from 'ethers';
-import { useNetwork } from 'wagmi';
 
 import { useAppSelector } from '~/hooks';
-import { getTokensListOnCurrentChain } from '~/utils';
+import { initializeToken } from '~/utils';
 import { Token } from '~/types';
+import { getConfig } from '~/config';
 
 export enum ModalType {
   None = '',
@@ -63,14 +63,18 @@ export type ModalContextType = {
 export const ModalContentContext = createContext({} as ModalContextType);
 
 export const ModalContentProvider = ({ children }: { children: React.ReactElement }) => {
-  const { chain } = useNetwork();
-
   const [type, setType] = useState<ModalType | null>(null);
-  const [collateralToken, setCollateralToken] = useState<Token>(getTokensListOnCurrentChain(chain?.id || 1)['WETH']);
   const [collateralDepositAmount, setCollateralDepositAmount] = useState('');
   const [collateralWithdrawAmount, setCollateralWithdrawAmount] = useState('');
   const [collateralDepositAmountMax, setCollateralDepositAmountMax] = useState(false);
   const [collateralWithdrawAmountMax, setCollateralWithdrawAmountMax] = useState(false);
+  const [collateralToken, setCollateralToken] = useState<Token>(
+    initializeToken({
+      name: 'Wrapped ETH',
+      address: getConfig().ADDRESSES.WETH_ADDRESS,
+      ticker: 'WETH',
+    }),
+  );
 
   const { SUSD: susdContext } = useAppSelector((state) => state.stablecoins);
 

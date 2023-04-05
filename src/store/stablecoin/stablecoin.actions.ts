@@ -2,9 +2,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Address } from 'wagmi';
 import { multicall, erc20ABI } from '@wagmi/core';
 
-import { getStablecoins, formatBigInt } from '~/utils';
+import { formatBigInt, initializeToken } from '~/utils';
 import { ThunkAPI } from '~/store';
 import { Token } from '~/types';
+import { getConfig } from '~/config';
 
 const getStablesData = createAsyncThunk<
   { USDA: Token; SUSD: Token },
@@ -13,8 +14,24 @@ const getStablesData = createAsyncThunk<
   },
   ThunkAPI
 >('stablecoin/getStablecoinData', async ({ userAddress }) => {
-  let USDA: Token = getStablecoins().USDA!;
-  let SUSD: Token = getStablecoins().SUSD!;
+  const {
+    USDA_DECIMALS,
+    ADDRESSES: { USDA_ADDRESS, SUSD_ADDRESS },
+  } = getConfig();
+
+  let USDA: Token = initializeToken({
+    name: 'Amphora USD',
+    address: USDA_ADDRESS,
+    ticker: 'USDA',
+    decimals: USDA_DECIMALS,
+  });
+
+  let SUSD: Token = initializeToken({
+    name: 'Synth sUSD',
+    address: SUSD_ADDRESS,
+    ticker: 'sUSD',
+    decimals: 18,
+  });
 
   const susdContract = {
     address: SUSD.address as Address,

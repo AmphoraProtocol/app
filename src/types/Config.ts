@@ -15,6 +15,7 @@ export interface Constants {
     CURVE_MASTER_ADDRESS: Address;
     USDA_ADDRESS: Address;
     SUSD_ADDRESS: Address;
+    WETH_ADDRESS: Address;
   };
 }
 

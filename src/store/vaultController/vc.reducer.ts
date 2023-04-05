@@ -16,6 +16,7 @@ export const VCInitialState: VCState = {
     borrowingPower: 0,
     accountLiability: 0,
   },
+  collaterals: undefined,
   status: initialStatus,
 };
 
@@ -24,13 +25,17 @@ const { getVCData } = VCActions;
 export const VCReducer = createReducer(VCInitialState, (builder) => {
   builder.addCase(
     getVCData.fulfilled,
-    (state, { payload: { borrowAPR, depositAPR, totalSUSDDeposited, usdaSupply, reserveRatio, userVault } }) => {
+    (
+      state,
+      { payload: { borrowAPR, depositAPR, totalSUSDDeposited, usdaSupply, reserveRatio, userVault, collaterals } },
+    ) => {
       state.borrowAPR = borrowAPR;
       state.depositAPR = depositAPR;
       state.totalSUSDDeposited = totalSUSDDeposited;
       state.usdaSupply = usdaSupply;
       state.reserveRatio = reserveRatio;
       state.userVault = userVault;
+      state.collaterals = collaterals;
       state.status.loading = false;
     },
   );

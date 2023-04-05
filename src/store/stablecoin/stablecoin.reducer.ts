@@ -2,11 +2,27 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { StablecoinActions } from './stablecoin.actions';
 import { initialStatus, StablecoinState } from '~/types';
-import { getStablecoins } from '~/utils';
+import { initializeToken } from '~/utils';
+import { getConfig } from '~/config';
+
+const {
+  USDA_DECIMALS,
+  ADDRESSES: { USDA_ADDRESS, SUSD_ADDRESS },
+} = getConfig();
 
 export const stablecoinInitialState: StablecoinState = {
-  USDA: getStablecoins().USDA,
-  SUSD: getStablecoins().SUSD,
+  USDA: initializeToken({
+    name: 'Amphora USD',
+    address: USDA_ADDRESS,
+    ticker: 'USDA',
+    decimals: USDA_DECIMALS,
+  }),
+  SUSD: initializeToken({
+    name: 'Synth sUSD',
+    address: SUSD_ADDRESS,
+    ticker: 'sUSD',
+    decimals: 18,
+  }),
   status: initialStatus,
 };
 

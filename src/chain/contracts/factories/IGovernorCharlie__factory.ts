@@ -350,13 +350,87 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+    ],
+    name: 'ProposalCanceled',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: 'uint256',
         name: '_id',
         type: 'uint256',
       },
     ],
-    name: 'ProposalCanceled',
+    name: 'ProposalCanceledIndexed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'proposer',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'address[]',
+        name: 'targets',
+        type: 'address[]',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256[]',
+        name: 'values',
+        type: 'uint256[]',
+      },
+      {
+        indexed: false,
+        internalType: 'string[]',
+        name: 'signatures',
+        type: 'string[]',
+      },
+      {
+        indexed: false,
+        internalType: 'bytes[]',
+        name: 'calldatas',
+        type: 'bytes[]',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'startBlock',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'endBlock',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'description',
+        type: 'string',
+      },
+    ],
+    name: 'ProposalCreated',
     type: 'event',
   },
   {
@@ -417,7 +491,20 @@ const _abi = [
         type: 'string',
       },
     ],
-    name: 'ProposalCreated',
+    name: 'ProposalCreatedIndexed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+    ],
+    name: 'ProposalExecuted',
     type: 'event',
   },
   {
@@ -430,7 +517,26 @@ const _abi = [
         type: 'uint256',
       },
     ],
-    name: 'ProposalExecuted',
+    name: 'ProposalExecutedIndexed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'eta',
+        type: 'uint256',
+      },
+    ],
+    name: 'ProposalQueued',
     type: 'event',
   },
   {
@@ -449,7 +555,7 @@ const _abi = [
         type: 'uint256',
       },
     ],
-    name: 'ProposalQueued',
+    name: 'ProposalQueuedIndexed',
     type: 'event',
   },
   {
@@ -520,6 +626,43 @@ const _abi = [
       {
         indexed: true,
         internalType: 'address',
+        name: 'voter',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'proposalId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint8',
+        name: 'support',
+        type: 'uint8',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'votes',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'reason',
+        type: 'string',
+      },
+    ],
+    name: 'VoteCast',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
         name: '_voter',
         type: 'address',
       },
@@ -548,7 +691,7 @@ const _abi = [
         type: 'string',
       },
     ],
-    name: 'VoteCast',
+    name: 'VoteCastIndexed',
     type: 'event',
   },
   {
@@ -725,6 +868,19 @@ const _abi = [
     name: 'castVoteWithReason',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'delay',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '_delay',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -1149,13 +1305,47 @@ const _abi = [
         name: '_description',
         type: 'string',
       },
-      {
-        internalType: 'bool',
-        name: '_emergency',
-        type: 'bool',
-      },
     ],
     name: 'propose',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '_proposalId',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address[]',
+        name: '_targets',
+        type: 'address[]',
+      },
+      {
+        internalType: 'uint256[]',
+        name: '_values',
+        type: 'uint256[]',
+      },
+      {
+        internalType: 'string[]',
+        name: '_signatures',
+        type: 'string[]',
+      },
+      {
+        internalType: 'bytes[]',
+        name: '_calldatas',
+        type: 'bytes[]',
+      },
+      {
+        internalType: 'string',
+        name: '_description',
+        type: 'string',
+      },
+    ],
+    name: 'proposeEmergency',
     outputs: [
       {
         internalType: 'uint256',
@@ -1386,6 +1576,19 @@ const _abi = [
         internalType: 'enum ProposalState',
         name: '_proposalState',
         type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'timelock',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '_timelock',
+        type: 'address',
       },
     ],
     stateMutability: 'view',

@@ -9,7 +9,7 @@ import { CircleExclamationIcon } from '../icons/misc/CircleExclamationIcon';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { Spinner } from '../loading';
 import { BaseModal } from './BaseModal';
-import { Chains, getTokensListOnCurrentChain } from '~/utils';
+import { Chains } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
 import { VCActions, CollateralActions, StablecoinActions } from '~/store';
 
@@ -25,13 +25,17 @@ export const TransactionStatusModal = () => {
   useEffect(() => {
     if (transactionState === 'SUCCESS') {
       dispatch(VCActions.getVCData({ userAddress: address }));
-      dispatch(
-        CollateralActions.getCollateralData({
-          userAddress: address,
-          vaultAddress: vaultControllerData.userVault.vaultAddress,
-          tokens: getTokensListOnCurrentChain(currentChain?.id || 1),
-        }),
-      );
+
+      if (vaultControllerData.collaterals) {
+        dispatch(
+          CollateralActions.getCollateralData({
+            userAddress: address,
+            vaultAddress: vaultControllerData.userVault.vaultAddress,
+            tokens: vaultControllerData.collaterals,
+          }),
+        );
+      }
+
       if (address) {
         dispatch(StablecoinActions.getStablesData({ userAddress: address }));
       }

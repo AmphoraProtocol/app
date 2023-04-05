@@ -29,9 +29,9 @@ export const DepositCollateralConfirmationModal = () => {
   const [allowance, setAllowance] = useState<string>('0');
   const isLight = useLight();
   const { address } = useAccount();
-  const { tokenAbi, VaultControllerContract } = useAmphContracts();
+  const { tokenAbi, vaultAbi } = useAmphContracts();
   const collateralContract = useContract({ ...tokenAbi, address: collateralToken.address });
-  const vaultContract = useContract(VaultControllerContract);
+  const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
 
   const amount = collateralDepositAmountMax ? collateralToken.wallet_amount : collateralDepositAmount;
 

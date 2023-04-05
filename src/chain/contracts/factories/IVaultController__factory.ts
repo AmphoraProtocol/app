@@ -141,25 +141,6 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: 'uint256',
-        name: '_oldFee',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: '_newFee',
-        type: 'uint256',
-      },
-    ],
-    name: 'ChangedCurveLpFee',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
         internalType: 'uint64',
         name: '_epoch',
         type: 'uint64',
@@ -499,19 +480,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: '_newFee',
-        type: 'uint256',
-      },
-    ],
-    name: 'changeCurveLpFee',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'uint192',
         name: '_newProtocolFee',
         type: 'uint192',
@@ -556,12 +524,102 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'curveLpRewardsFee',
+    name: 'curveMaster',
     outputs: [
       {
+        internalType: 'contract CurveMaster',
+        name: '_curveMaster',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'uint256',
-        name: '_fee',
+        name: '_index',
         type: 'uint256',
+      },
+    ],
+    name: 'enabledTokens',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '_enabledToken',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_start',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_end',
+        type: 'uint256',
+      },
+    ],
+    name: 'getCollateralsInfo',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'tokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'ltv',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'cap',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'totalDeposited',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'liquidationIncentive',
+            type: 'uint256',
+          },
+          {
+            internalType: 'contract IOracleRelay',
+            name: 'oracle',
+            type: 'address',
+          },
+          {
+            internalType: 'enum IVaultController.CollateralType',
+            name: 'collateralType',
+            type: 'uint8',
+          },
+          {
+            internalType: 'contract IBaseRewardPool',
+            name: 'crvRewardsContract',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'poolId',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct IVaultController.CollateralInfo[]',
+        name: '_collateralsInfo',
+        type: 'tuple[]',
       },
     ],
     stateMutability: 'view',
@@ -569,12 +627,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'curveMaster',
+    name: 'getEnabledTokens',
     outputs: [
       {
-        internalType: 'contract CurveMaster',
-        name: '_curveMaster',
-        type: 'address',
+        internalType: 'address[]',
+        name: '_enabledTokens',
+        type: 'address[]',
       },
     ],
     stateMutability: 'view',
@@ -596,11 +654,6 @@ const _abi = [
         internalType: 'contract IAMPHClaimer',
         name: '_claimerContract',
         type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_curveLpRewardsFee',
-        type: 'uint256',
       },
       {
         internalType: 'contract IVaultDeployer',
