@@ -235,6 +235,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             onClickDeposit={() => handleDWClick(ModalType.DepositCollateral)}
             onClickWithdraw={() => handleDWClick(ModalType.WithdrawCollateral)}
             onClickClaim={() => handleDWClick(ModalType.Claim)}
+            isCurveLP={curve_lp}
           />
         </Box>
       </Box>
