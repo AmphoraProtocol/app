@@ -45,7 +45,7 @@ export const Fractional: React.FC = () => {
                 color: formatColor(neutral.black),
               }}
             >
-              Interest Protocol applies fractional reserve banking to decentralized finance
+              Amphora Protocol applies fractional reserve banking to decentralized finance
             </Typography>
             <Typography
               display='flex'
