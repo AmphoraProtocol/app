@@ -59,6 +59,7 @@ const Dashboard = () => {
         marginX: 'auto',
         position: 'relative',
         overflow: 'hidden',
+        paddingBottom: 5,
       }}
     >
       <Box

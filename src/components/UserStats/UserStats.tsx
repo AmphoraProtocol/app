@@ -73,21 +73,26 @@ export const UserStats = () => {
           }}
         >
           <Typography variant='label'>Assets</Typography>
+
           <Typography display={{ xs: 'none', lg: 'block' }} textAlign='end' variant='label'>
             Oracle
           </Typography>
+
           <Typography display={{ xs: 'none', lg: 'block' }} textAlign='end' variant='label'>
             Price
           </Typography>
           <Typography display={{ xs: 'none', lg: 'flex' }} variant='label' justifyContent='end'>
             LTV
           </Typography>
+
           <Typography display={{ xs: 'none', lg: 'flex' }} variant='label' justifyContent='end'>
             Penalty
           </Typography>
-          <Typography variant='label' whiteSpace='nowrap' display={{ xs: 'none', lg: 'flex' }} justifyContent='center'>
+
+          <Typography display={{ xs: 'none', lg: 'flex' }} variant='label' whiteSpace='nowrap' justifyContent='center'>
             Capped Token
           </Typography>
+
           <Typography variant='label' whiteSpace='nowrap' textAlign='end'>
             Vault Balance
           </Typography>

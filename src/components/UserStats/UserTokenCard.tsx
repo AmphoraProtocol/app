@@ -108,6 +108,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
           alignItems: 'center',
         }}
       >
+        {/* Token icon and name */}
         <Box display='flex' alignItems='center' columnGap={2}>
           <SVGBox width={{ xs: 24, lg: 40 }} height={{ xs: 24, lg: 40 }} svg_name={image.src} alt={image.alt} />
           <Link href={`https://etherscan.io/token/${tokenAddress}`} target='_blank'>
@@ -121,15 +122,24 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             </Box>
           </Link>
         </Box>
-        <Link href={`https://etherscan.io/address/${oracleAddress}`} target='_blank'>
-          <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
+
+        {/* Oracle type */}
+        <Link
+          display={{ xs: 'none', lg: 'block' }}
+          href={`https://etherscan.io/address/${oracleAddress}`}
+          target='_blank'
+        >
+          <Typography variant='body1' color='text.primary' textAlign='end'>
             {oracleType}
           </Typography>
         </Link>
+
+        {/* Token price */}
         <Typography display={{ xs: 'none', lg: 'block' }} variant='body1' color='text.primary' textAlign='end'>
           {tokenPrice}
         </Typography>
 
+        {/* LTV */}
         <Box display={{ xs: 'none', lg: 'flex' }} justifyContent='end'>
           <ToolTip
             content={<Typography variant='body3'>Maximum Loan-To-Value for this asset</Typography>}
@@ -138,6 +148,8 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             text_variant='body2'
           />
         </Box>
+
+        {/* Liquitation penalty */}
         <Box display={{ xs: 'none', lg: 'flex' }} justifyContent='end'>
           <ToolTip
             content={
@@ -150,6 +162,8 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             text_variant='body2'
           />
         </Box>
+
+        {/* Capped Bar */}
         <Box display={{ xs: 'none', lg: 'flex' }} justifyContent='center'>
           {cappedToken && (
             <LinearProgress
@@ -165,6 +179,8 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             />
           )}
         </Box>
+
+        {/* Vault Balance */}
         <Box display='flex' flexDirection='column' textAlign='end'>
           <Typography variant='body1' color='text.primary'>
             {vaultBalance}
@@ -175,14 +191,12 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
           </Typography>
         </Box>
 
-        {curve_lp ? (
-          <Box pl={2}>
-            <ClaimsButton text='Claim Rewards' />
-          </Box>
-        ) : (
-          <Box></Box>
-        )}
+        {/* Claim button */}
+        <Box pl={2} display={{ xs: 'none', lg: 'flex' }}>
+          {curve_lp && <ClaimsButton text='Claim Rewards' />}
+        </Box>
 
+        {/* Deposit and Withdraw button */}
         <Box
           sx={{
             display: { xs: 'none', lg: 'flex' },
@@ -215,10 +229,12 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             <SVGBox width={16} height={16} svg_name='minus' />
           </Button>
         </Box>
+
         <Box display={{ xs: 'flex', lg: 'none' }} justifySelf='flex-end' width='fit-content'>
           <UserTokenMobileDropdown
             onClickDeposit={() => handleDWClick(ModalType.DepositCollateral)}
             onClickWithdraw={() => handleDWClick(ModalType.WithdrawCollateral)}
+            onClickClaim={() => handleDWClick(ModalType.Claim)}
           />
         </Box>
       </Box>
