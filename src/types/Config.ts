@@ -16,7 +16,6 @@ export interface Constants {
     USDA: Address;
     SUSD: Address;
     WETH: Address;
-    AMPH_CLAIMER: Address;
   };
 }
 

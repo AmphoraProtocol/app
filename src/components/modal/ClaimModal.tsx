@@ -16,8 +16,7 @@ export const ClaimModal = () => {
 
   const [formattedAmount, setFormattedAmount] = useState(0);
   const vaultAddress = useAppSelector((state) => state.VC.userVault.vaultAddress);
-  const { amphClaimerContract, vaultAbi } = useAmphContracts();
-  const amphClaimer = useContract(amphClaimerContract);
+  const { vaultAbi } = useAmphContracts();
   const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
 
   useEffect(() => {
@@ -25,9 +24,8 @@ export const ClaimModal = () => {
   }, [claimAmount]);
 
   const handleClaimRequest = async () => {
-    if (amphClaimer && vaultAddress && vaultContract) {
+    if (vaultAddress && vaultContract) {
       console.log('Claiming rewards...');
-      const rewards = await vaultContract.claimableRewards('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
     }
   };
 
@@ -54,7 +52,7 @@ export const ClaimModal = () => {
             Unclaimed Rewards (Claim Modal)
           </Typography>
 
-          {/* Convex rewards */}
+          {/* Amphora rewards */}
           <Box
             sx={{
               display: 'flex',
@@ -71,7 +69,7 @@ export const ClaimModal = () => {
               svg_name=''
               width={50}
               height={50}
-              alt='USDA'
+              alt='AMPH'
               sx={{
                 padding: 1,
               }}

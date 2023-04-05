@@ -11,7 +11,6 @@ export const getConstants = (): Constants => {
       USDA: '0x532802f2F9E0e3EE9d5Ba70C35E1F43C0498772D',
       SUSD: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
       WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-      AMPH_CLAIMER: '0x52173b6ac069619c206b9A0e75609fC92860AB2A',
     },
   };
 };
