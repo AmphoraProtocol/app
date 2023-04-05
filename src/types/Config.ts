@@ -11,11 +11,11 @@ export interface Constants {
   USDA_DECIMALS: number;
   ADDRESSES: {
     ZERO_ADDRESS: Address;
-    VAULT_CONTROLLER_ADDRESS: Address;
-    CURVE_MASTER_ADDRESS: Address;
-    USDA_ADDRESS: Address;
-    SUSD_ADDRESS: Address;
-    WETH_ADDRESS: Address;
+    VAULT_CONTROLLER: Address;
+    CURVE_MASTER: Address;
+    USDA: Address;
+    SUSD: Address;
+    WETH: Address;
   };
 }
 

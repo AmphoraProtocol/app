@@ -7,19 +7,19 @@ import { getConfig } from '~/config';
 
 const {
   USDA_DECIMALS,
-  ADDRESSES: { USDA_ADDRESS, SUSD_ADDRESS },
+  ADDRESSES: { USDA, SUSD },
 } = getConfig();
 
 export const stablecoinInitialState: StablecoinState = {
   USDA: initializeToken({
     name: 'Amphora USD',
-    address: USDA_ADDRESS,
+    address: USDA,
     ticker: 'USDA',
     decimals: USDA_DECIMALS,
   }),
   SUSD: initializeToken({
     name: 'Synth sUSD',
-    address: SUSD_ADDRESS,
+    address: SUSD,
     ticker: 'sUSD',
     decimals: 18,
   }),

@@ -9,7 +9,7 @@ import { BaseModal } from './BaseModal';
 import { useAmphContracts, useAppSelector, useLight } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
 
-export const ClaimModal = () => {
+export const ClaimAllModal = () => {
   const { type, setType } = useModalContext();
   const claimAmount = utils.parseEther('1.23');
   const isLight = useLight();
@@ -31,7 +31,7 @@ export const ClaimModal = () => {
 
   return (
     <BaseModal
-      open={type === ModalType.Claim}
+      open={type === ModalType.ClaimAll}
       setOpen={() => {
         setType(null);
       }}
@@ -49,7 +49,7 @@ export const ClaimModal = () => {
 
         <Box>
           <Typography variant='body2' color={formatColor(neutral.gray3)}>
-            Unclaimed Rewards (Claim Modal)
+            Unclaimed Rewards (Claim All Modal)
           </Typography>
 
           {/* Amphora rewards */}
@@ -69,7 +69,7 @@ export const ClaimModal = () => {
               svg_name=''
               width={50}
               height={50}
-              alt='AMPH'
+              alt='Amph'
               sx={{
                 padding: 1,
               }}

@@ -19,7 +19,7 @@ export interface Token {
   token_penalty?: number;
 
   can_delegate?: boolean;
-
+  curve_lp?: boolean;
   capped_token?: boolean;
   capped_address?: string;
   capped_percent?: number;

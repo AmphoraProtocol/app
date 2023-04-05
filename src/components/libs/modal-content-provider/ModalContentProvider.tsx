@@ -11,6 +11,7 @@ export enum ModalType {
   Borrow = 'BORROW',
   Repay = 'REPAY',
   Claim = 'CLAIM',
+  ClaimAll = 'CLAIM_ALL',
   WithdrawSUSD = 'WITHDRAW_SUSD',
   DepositSUSD = 'DEPOSIT_SUSD',
   DepositSUSDConfirmation = 'DEPOSIT_SUSD_CONFIRMATION',
@@ -71,7 +72,7 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
   const [collateralToken, setCollateralToken] = useState<Token>(
     initializeToken({
       name: 'Wrapped ETH',
-      address: getConfig().ADDRESSES.WETH_ADDRESS,
+      address: getConfig().ADDRESSES.WETH,
       ticker: 'WETH',
     }),
   );

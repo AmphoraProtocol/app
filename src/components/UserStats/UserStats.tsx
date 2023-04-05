@@ -41,6 +41,7 @@ export const UserStats = () => {
             cappedPercent={val.capped_percent}
             oracleType={val.oracle_type}
             oracleAddress={val.oracle_address}
+            curve_lp={val.curve_lp}
           />,
         );
       }
@@ -64,7 +65,7 @@ export const UserStats = () => {
             px: { xs: 2, lg: 3 },
             gridTemplateColumns: {
               xs: '1.5fr 1fr 1fr',
-              lg: '1.5fr 0.5fr 1fr 0.5fr 0.5fr 1fr 0.6fr  0.8fr',
+              lg: '1.55fr 0.5fr 0.7fr 0.45fr 0.45fr 0.7fr 0.6fr  0.95fr 0.7fr',
             },
             mb: 0,
             columnGap: 2,
@@ -90,6 +91,7 @@ export const UserStats = () => {
           <Typography variant='label' whiteSpace='nowrap' textAlign='end'>
             Vault Balance
           </Typography>
+          <Box></Box>
           <Box></Box>
           <Box display={{ xs: 'none', lg: 'block' }}></Box>
         </Box>

@@ -16,7 +16,7 @@ const getStablesData = createAsyncThunk<
 >('stablecoin/getStablecoinData', async ({ userAddress }) => {
   const {
     USDA_DECIMALS,
-    ADDRESSES: { USDA_ADDRESS, SUSD_ADDRESS },
+    ADDRESSES: { USDA: USDA_ADDRESS, SUSD: SUSD_ADDRESS },
   } = getConfig();
 
   let USDA: Token = initializeToken({

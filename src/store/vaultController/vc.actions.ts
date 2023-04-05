@@ -29,8 +29,13 @@ const getVCData = createAsyncThunk<
   },
   ThunkAPI
 >('vaultController/getVCData', async ({ userAddress }) => {
-  const { ZERO_ADDRESS, VAULT_CONTROLLER_ADDRESS, CURVE_MASTER_ADDRESS, SUSD_ADDRESS, USDA_ADDRESS } =
-    getConfig().ADDRESSES;
+  const {
+    ZERO_ADDRESS,
+    VAULT_CONTROLLER: VAULT_CONTROLLER_ADDRESS,
+    CURVE_MASTER: CURVE_MASTER_ADDRESS,
+    SUSD: SUSD_ADDRESS,
+    USDA: USDA_ADDRESS,
+  } = getConfig().ADDRESSES;
 
   const susdContract = {
     address: SUSD_ADDRESS,

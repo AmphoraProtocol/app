@@ -14,7 +14,17 @@ interface SVGBoxProps extends BoxProps {
 
 const SVGBox = ({ sx, svg_name, height = 20, width = 20, alt = 'image' }: SVGBoxProps) => {
   return (
-    <Box component='img' height={height} width={width} src={`images/${svg_name}.svg`} alt={alt} sx={{ ...sx }}></Box>
+    <Box
+      component='img'
+      height={height}
+      width={width}
+      src={`images/${svg_name}.svg`}
+      alt={alt}
+      sx={{ ...sx }}
+      onError={(ev: any) => {
+        ev.target.src = 'images/default.png';
+      }}
+    ></Box>
   );
 };
 

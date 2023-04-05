@@ -18,8 +18,9 @@ import {
   WithdrawCollateralConfirmationModal,
   DepositCollateralConfirmationModal,
   TransactionStatusModal,
+  ClaimAllModal,
+  ClaimModal,
 } from './components/modal';
-import { ClaimModal } from './components/modal/ClaimModal';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
 import { RedirectTo } from './components/redirect';
 
@@ -36,6 +37,7 @@ const DashboardContext = (props: { children: any }) => {
         <DepositSUSDConfirmationModal />
         <WithdrawSUSDConfirmationModal />
         <ClaimModal />
+        <ClaimAllModal />
         <TransactionStatusModal />
       </>
     </ModalContentProvider>

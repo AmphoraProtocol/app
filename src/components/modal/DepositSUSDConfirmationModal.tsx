@@ -27,7 +27,7 @@ export const DepositSUSDConfirmationModal = () => {
   const { address } = useAccount();
   const {
     DEFAULT_APPROVE_AMOUNT,
-    ADDRESSES: { USDA_ADDRESS },
+    ADDRESSES: { USDA },
   } = getConfig();
   const { susdContract, usdaContract } = useAmphContracts();
   const SUSDContract = useContract(susdContract);
@@ -35,7 +35,7 @@ export const DepositSUSDConfirmationModal = () => {
 
   useEffect(() => {
     if (SUSD.amountToDeposit && address && SUSDContract) {
-      SUSDContract.allowance(address, USDA_ADDRESS).then((allowance) => {
+      SUSDContract.allowance(address, USDA).then((allowance) => {
         hasSUSDAllowance(
           SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : SUSD.amountToDeposit,
           allowance,
@@ -78,7 +78,7 @@ export const DepositSUSDConfirmationModal = () => {
       setLoading(true);
       try {
         setLoadmsg(locale('CheckWallet'));
-        const txn = await SUSDContract.approve(USDA_ADDRESS, depositAmount);
+        const txn = await SUSDContract.approve(USDA, depositAmount);
 
         setApprovalTxn(txn);
 
