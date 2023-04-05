@@ -34,13 +34,14 @@ export const Splash: React.FC = () => {
       >
         <Box>
           <Typography flexBasis='50%' variant='h1' color='#202020'>
-            Interest Protocol
+            Amphora Protocol
           </Typography>
         </Box>
         <Box />
         <Box sx={{ flexBasis: '100%' }}>
           <Button
-            href={'#/whitepaper'}
+            href='https://github.com/'
+            target='_blank'
             sx={{
               marginTop: { xs: 2, md: 5 },
               border: '1px solid ' + formatColor(neutral.black),
@@ -49,7 +50,7 @@ export const Splash: React.FC = () => {
             }}
           >
             <Typography variant='body1' whiteSpace='nowrap' color={formatColor(neutral.black)}>
-              IP Whitepaper
+              AMPH Whitepaper
             </Typography>
             <ForwardIcon
               sx={{

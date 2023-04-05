@@ -36,6 +36,12 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(VCActions.getVCData({ userAddress: address }));
 
+    if (address) {
+      dispatch(StablecoinActions.getStablesData({ userAddress: address }));
+    }
+  }, [vaultControllerData.userVault.vaultAddress, chain?.id, address]);
+
+  useEffect(() => {
     if (vaultControllerData.collaterals) {
       dispatch(
         CollateralActions.getCollateralData({
@@ -45,11 +51,7 @@ const Dashboard = () => {
         }),
       );
     }
-
-    if (address) {
-      dispatch(StablecoinActions.getStablesData({ userAddress: address }));
-    }
-  }, [vaultControllerData.userVault.vaultAddress, chain?.id, address]);
+  }, [vaultControllerData.collaterals]);
 
   return (
     <Box
