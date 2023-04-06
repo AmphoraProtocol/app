@@ -36,8 +36,6 @@ export const LandingDesktopToolbar = () => {
       <Box sx={{ gap: 5 }} display='flex' ml={5}>
         <DesktopLinkTo url='#/whitepaper' label='Whitepaper' />
         <DesktopLinkTo url='#/docs' label='Docs' />
-        <DesktopLinkTo url='https://gfx.cafe/ip/contracts' label='Git' newTarget />
-        <DesktopLinkTo url='#/sale' label='Token Sale' />
       </Box>
 
       <Box ml='auto'>

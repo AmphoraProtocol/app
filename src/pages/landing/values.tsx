@@ -48,17 +48,17 @@ export const Values: React.FC = () => {
         <GradientBox
           bg={`linear-gradient(${formatGradient(gradient.gradientPinkPeach)})`}
           left='1. Efficiency'
-          right='Capital flows to capital-efficient protocols. Interest Protocol’s improved risk management, automated rate adjustments, and superior terms make it the most capital-efficient lending protocol.'
+          right='Capital flows to capital-efficient protocols. Amphora Protocol’s improved risk management, automated rate adjustments, and superior terms make it the most capital-efficient lending protocol.'
         />
         <GradientBox
           bg={`linear-gradient(${formatGradient(gradient.gradientPurpleGrey)})`}
           left='2. Adaptability'
-          right='Community is the bedrock of Interest Protocol. A keep-it-simple approach to concepts and code encourages participation, leading to a vibrant community and an adaptable protocol.'
+          right='Community is the bedrock of Amphora Protocol. A keep-it-simple approach to concepts and code encourages participation, leading to a vibrant community and an adaptable protocol.'
         />
         <GradientBox
           bg={`linear-gradient(${formatGradient(gradient.gradientPurpleYellow)})`}
           left='3. Transparency'
-          right="Anyone can audit Interest Protocol's finances on-chain. The whitepaper and docs explain how Interest Protocol works, the risks involved, and governance processes. Nothing is hidden."
+          right="Anyone can audit Amphora Protocol's finances on-chain. The whitepaper and docs explain how Amphora Protocol works, the risks involved, and governance processes. Nothing is hidden."
         />
       </Box>
     </Box>

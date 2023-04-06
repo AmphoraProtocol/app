@@ -113,17 +113,6 @@ export const LandingMobileToolbar = () => {
               Docs
             </Typography>
           </Link>
-          <Link href='https://gfx.cafe/ip/contracts' target='_blank'>
-            <Typography variant='body3' color={formatColor(neutral.black)}>
-              Git
-            </Typography>
-          </Link>
-
-          <Link href='#/sale'>
-            <Typography variant='body3' color={formatColor(neutral.black)}>
-              Sale
-            </Typography>
-          </Link>
         </Box>
       </SwipeableDrawer>
     </Toolbar>

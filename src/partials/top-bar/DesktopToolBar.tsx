@@ -1,29 +1,54 @@
-import { Box, Toolbar, Link } from '@mui/material';
+import { Box, Toolbar, Link, Typography } from '@mui/material';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { SelectedChainButton } from '~/components/button';
 import { useLight } from '~/hooks';
-import { AppGovSwitch } from '~/components/switch';
 import { DesktopMenu } from './DesktopMenu';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-// import { useAppGovernanceContext } from '~/components/libs/app-governance-provider/AppGovernanceProvider';
+import { formatColor, neutral } from '~/theme';
+
+const AppLinkTo = ({ url, label, newTarget }: { url: string; label: string; newTarget?: boolean }) => (
+  <Typography
+    sx={{
+      color: formatColor(neutral.gray2),
+      display: 'flex',
+      zIndex: 10,
+      variant: 'label',
+      alignItems: 'center',
+    }}
+  >
+    <Link href={url} sx={{ color: 'inherit' }} target={newTarget ? '_blank' : ''}>
+      {label}
+    </Link>
+  </Typography>
+);
 
 export const DesktopToolBar = () => {
   //desktop menu config
-
   const isLight = useLight();
-
-  // const { setIsApp } = useAppGovernanceContext();
 
   return (
     <Toolbar sx={{ padding: 0 }} disableGutters>
-      {/* temporary */}
+      {/* temporary icon*/}
       <Link href='#' /* '#/landing' */ role='heading' aria-level={1}>
         <span style={{ fontSize: 35 }}>🏺</span>
         {/* <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={50} height={50} /> */}
       </Link>
-      <Box sx={{ gap: 3 }} display='flex' ml={3}>
-        <AppGovSwitch />
-        <Box display='flex' alignItems='center'></Box>
+
+      <Box sx={{ gap: 5 }} display='flex' ml={5}>
+        <Typography
+          sx={{
+            color: formatColor(neutral.gray2),
+            display: 'flex',
+            zIndex: 10,
+            variant: 'label',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          App
+        </Typography>
+        <AppLinkTo url='https://www.tally.xyz/' label='Governance' newTarget />
+        <AppLinkTo url='https://www.tally.xyz/' label='Documentation' newTarget />
       </Box>
 
       <Box sx={{ gap: 2 }} display='flex' mr={-1} ml='auto'>
