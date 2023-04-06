@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ButtonProps,
   Button,
@@ -7,7 +8,6 @@ import {
   AccordionDetails,
   ClickAwayListener,
 } from '@mui/material';
-import { useState } from 'react';
 
 import { useLight } from '~/hooks';
 import { EllipsisIcon } from '../icons/misc/EllipsisIcon';
@@ -66,11 +66,13 @@ const StyledDropdownButton = (props: StyledDropdownButton) => {
 interface UserTokenMobileDropdownProps {
   onClickDeposit: () => void;
   onClickWithdraw: () => void;
+  onClickClaim: () => void;
+  isCurveLP?: boolean;
 }
 
 export const UserTokenMobileDropdown = (props: UserTokenMobileDropdownProps) => {
   const isLight = useLight();
-  const { onClickDeposit, onClickWithdraw } = props;
+  const { onClickDeposit, onClickWithdraw, onClickClaim, isCurveLP } = props;
 
   const [expanded, setExpanded] = useState(false);
 
@@ -128,6 +130,7 @@ export const UserTokenMobileDropdown = (props: UserTokenMobileDropdownProps) => 
             zIndex: 10,
           }}
         >
+          {isCurveLP && <StyledDropdownButton img='plus_circle' text={`Claim Rewards`} onClick={onClickClaim} />}
           <StyledDropdownButton img='plus_circle' text={`Deposit`} onClick={onClickDeposit} />
           <StyledDropdownButton img='minus_circle' text={`Withdraw`} onClick={onClickWithdraw} />
         </AccordionDetails>
