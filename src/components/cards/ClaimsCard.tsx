@@ -1,15 +1,18 @@
 import { Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { ClaimIcon } from '../icons/misc/ClaimIcon';
-// import { useMerkleRedeemContext } from '../libs/merkle-redeem-provider/MerkleRedeemProvider';
+import { useAccount } from 'wagmi';
+
 import { utils } from 'ethers';
 import { CardContainer } from './CardContainer';
 import { ClaimsButton } from '../button';
+// import { useMerkleRedeemContext } from '../libs/merkle-redeem-provider/MerkleRedeemProvider';
 
 export const ClaimsCard = () => {
   // const { claimAmount } = useMerkleRedeemContext();
   const claimAmount = utils.parseEther('27312912');
   const [formattedAmount, setFormattedAmount] = useState(0);
+  const { isConnected } = useAccount();
 
   useEffect(() => {
     setFormattedAmount(Number(utils.formatEther(claimAmount)));
@@ -44,7 +47,7 @@ export const ClaimsCard = () => {
             </Typography>
           </Box>
         </Box>
-        <ClaimsButton text='Claim All' claimAll={true} />
+        {isConnected && <ClaimsButton text='Claim All' claimAll={true} />}
       </Box>
     </CardContainer>
   );

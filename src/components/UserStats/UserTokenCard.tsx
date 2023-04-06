@@ -193,7 +193,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
 
         {/* Claim button */}
         <Box pl={2} display={{ xs: 'none', lg: 'flex' }}>
-          {curve_lp && <ClaimsButton text='Claim Rewards' />}
+          {curve_lp && isConnected && <ClaimsButton text='Claim Rewards' />}
         </Box>
 
         {/* Deposit and Withdraw button */}
