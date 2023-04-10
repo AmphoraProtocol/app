@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography, Link as MuiLink } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
-import { useContract, useAccount, useNetwork } from 'wagmi';
+import { useContract, useAccount, useNetwork, useProvider } from 'wagmi';
 import { ContractTransaction } from 'ethers';
 
 import { BN, locale, Chains, hasSUSDAllowance } from '~/utils';
@@ -29,8 +29,9 @@ export const DepositSUSDConfirmationModal = () => {
     DEFAULT_APPROVE_AMOUNT,
     ADDRESSES: { USDA },
   } = getConfig();
+  const provider = useProvider();
   const { susdContract, usdaContract } = useAmphContracts();
-  const SUSDContract = useContract(susdContract);
+  const SUSDContract = useContract({ ...susdContract, signerOrProvider: provider });
   const USDAContract = useContract(usdaContract);
 
   useEffect(() => {

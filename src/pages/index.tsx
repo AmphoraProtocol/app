@@ -39,7 +39,7 @@ const Dashboard = () => {
     if (address) {
       dispatch(StablecoinActions.getStablesData({ userAddress: address }));
     }
-  }, [vaultControllerData.userVault.vaultAddress, chain?.id, address]);
+  }, [chain?.id, address]);
 
   useEffect(() => {
     if (vaultControllerData.collaterals) {

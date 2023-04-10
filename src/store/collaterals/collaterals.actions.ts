@@ -3,7 +3,12 @@ import { BigNumber, constants } from 'ethers';
 import { Address } from 'wagmi';
 import { multicall, readContract } from '@wagmi/core';
 
-import { IERC20Metadata__factory, IOracleRelay__factory, IVaultController__factory } from '~/chain/contracts';
+import {
+  IERC20Metadata__factory,
+  IOracleRelay__factory,
+  IVaultController__factory,
+  IVault__factory,
+} from '~/chain/contracts';
 import {
   getOracleType,
   formatBigInt,
@@ -73,8 +78,22 @@ const getCollateralData = createAsyncThunk<
     // temporary
     token.curve_lp = true;
     if (token.address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-      // temporary fixed value
-      token.curve_lp = false;
+      try {
+        if (vaultAddress) {
+          const rewards = await readContract({
+            address: vaultAddress,
+            abi: IVault__factory.abi,
+            functionName: 'claimableRewards',
+            args: [token.address],
+          });
+
+          console.log(rewards);
+          token.curve_lp = true;
+        }
+      } catch (error) {
+        console.log(token.ticker, 'not CurveLP');
+        token.curve_lp = false;
+      }
 
       const data = await readContract({
         address: VAULT_CONTROLLER,
@@ -87,7 +106,7 @@ const getCollateralData = createAsyncThunk<
       token.token_penalty = data.liquidationIncentive.div(BN('1e16')).toNumber();
       token.capped_token = !constants.MaxUint256.eq(data.cap);
       token.oracle_address = data.oracle;
-
+      token.curve_lp = !!data.collateralType;
       let cappedPercent = 0;
 
       if (!constants.MaxUint256.eq(data.cap)) {
@@ -104,12 +123,12 @@ const getCollateralData = createAsyncThunk<
       const erc20Contract = {
         address: token.address as Address,
         abi: IERC20Metadata__factory.abi,
-      } as const;
+      };
 
       const oracleContract = {
         address: data.oracle as Address,
         abi: IOracleRelay__factory.abi,
-      } as const;
+      };
 
       const [decimals, currentValue, oracleType, balanceOf1, balanceOf2] = await multicall({
         contracts: [

@@ -104,11 +104,8 @@ const getVCData = createAsyncThunk<
     ],
   });
 
-  const ratio = firstCall[2];
-  const ratioDec = ratio.div(1e14).toNumber() / 1e4;
-  const apr = ratioResult[0];
-
   const susdDeposited = firstCall[0].div(constants.WeiPerEther).toLocaleString();
+  const ratioDecimal = firstCall[2].div(1e14).toNumber() / 1e4;
   const usdaSupply = firstCall[1].div(1e9).div(1e9).toString();
   const toPercentage = BNtoHexNumber(firstCall[2]) / 1e16;
   const reserveRatio = toPercentage.toLocaleString(undefined, {
@@ -116,16 +113,16 @@ const getVCData = createAsyncThunk<
     maximumFractionDigits: 2,
   });
 
-  let borrowAPR: number | undefined;
-  let depositAPR: number | undefined;
-  if (apr) {
-    borrowAPR = apr.div(BN('1e14')).toNumber() / 100;
-    depositAPR = round(borrowAPR * (1 - ratioDec) * 0.85, 3);
-  }
-
   let vaultID: number | undefined;
   if (firstCall[3] && firstCall[3][0]) {
     vaultID = Number.parseInt(firstCall[3][0].toString());
+  }
+
+  let borrowAPR: number | undefined;
+  let depositAPR: number | undefined;
+  if (ratioResult[0]) {
+    borrowAPR = ratioResult[0].div(BN('1e14')).toNumber() / 100;
+    depositAPR = round(borrowAPR * (1 - ratioDecimal) * 0.85, 3);
   }
 
   let vaultAddress: Address | undefined;
