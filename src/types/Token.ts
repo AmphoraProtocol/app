@@ -17,12 +17,16 @@ export interface Token {
 
   token_LTV?: number;
   token_penalty?: number;
+  tokenId?: number;
+  poolId?: number;
 
-  can_delegate?: boolean;
   curve_lp?: boolean;
+  rewards_contract?: Address;
+
   capped_token?: boolean;
   capped_address?: string;
   capped_percent?: number;
+
   oracle_address?: string;
   oracle_type?: OracleType;
 }
@@ -36,7 +40,6 @@ export interface InitializeTokenProps {
   capped_token?: boolean;
   capped_address?: string;
   price?: number;
-  can_delegate?: boolean;
   decimals?: number;
 }
 
