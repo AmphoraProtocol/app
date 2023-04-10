@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useContract } from 'wagmi';
 
@@ -7,29 +6,21 @@ import { ModalType, useModalContext } from '../libs/modal-content-provider/Modal
 import { BaseModal } from './BaseModal';
 import { useAmphContracts, useAppSelector, useLight } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
-import { getTotalAmount } from '~/utils';
+import TokenIcon from '../icons/misc/TokenIcon';
 
 export const ClaimModal = () => {
-  const { type, setType } = useModalContext();
+  const { type, setType, collateralToken } = useModalContext();
   const isLight = useLight();
-  const rewards = useAppSelector((state) => state.VC.userVault.rewards);
 
-  const [formattedAmount, setFormattedAmount] = useState('0');
   const vaultAddress = useAppSelector((state) => state.VC.userVault.vaultAddress);
   const { vaultAbi } = useAmphContracts();
   const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
 
   const handleClaimRequest = async () => {
     if (vaultAddress && vaultContract) {
-      console.log('Claiming rewards...');
+      vaultContract.claimRewards([collateralToken.address]);
     }
   };
-
-  useEffect(() => {
-    if (rewards?.prices && rewards?.amounts) {
-      setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
-    }
-  }, [rewards]);
 
   return (
     <BaseModal
@@ -51,72 +42,30 @@ export const ClaimModal = () => {
 
         <Box>
           <Typography variant='body2' color={formatColor(neutral.gray3)}>
-            Unclaimed Rewards (Claim Modal)
+            Unclaimed Rewards
           </Typography>
-
-          {/* Amphora rewards */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant='h5' color='text.primary' mt={0.8}>
-              {rewards?.amounts[0].toLocaleString(undefined, {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2,
-              })}
-            </Typography>
-            <SVGBox
-              svg_name=''
-              width={50}
-              height={50}
-              alt='AMPH'
+          {collateralToken.claimable_rewards?.map((rewards) => (
+            <Box
+              key={rewards.token}
               sx={{
-                padding: 1,
+                display: 'flex',
+                alignItems: 'center',
               }}
-            />
-          </Box>
+            >
+              <TokenIcon height={35} width={35} address={rewards.token} />
 
-          {/* Curve rewards */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant='h5' color='text.primary' mt={0.8}>
-              {rewards?.amounts[1].toLocaleString(undefined, {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2,
-              })}
-            </Typography>
-            <SVGBox
-              svg_name='CRV'
-              width={50}
-              height={50}
-              alt='CRV'
-              sx={{
-                padding: 1.1,
-              }}
-            />
-          </Box>
-
-          {/* Convex rewards */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant='h5' color='text.primary' mt={0.8}>
-              {rewards?.amounts[2].toLocaleString(undefined, {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2,
-              })}
-            </Typography>
-            <SVGBox svg_name='CVX' width={50} height={50} alt='CVX' />
-          </Box>
+              <Typography variant='h5' color='text.primary' mt={0.8}>
+                {Number.parseFloat(rewards.amount).toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 2,
+                })}{' '}
+                {rewards.price.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 2,
+                })}
+              </Typography>
+            </Box>
+          ))}
         </Box>
       </Box>
 
@@ -125,9 +74,8 @@ export const ClaimModal = () => {
           variant='contained'
           sx={{ color: formatColor(neutral.white), marginY: 2, width: '100%' }}
           onClick={handleClaimRequest}
-          disabled={!!(Number.parseFloat(formattedAmount) <= 0 || !vaultAddress || !vaultContract)}
         >
-          Claim ($ {formattedAmount})
+          Claim
         </Button>
       </Box>
     </BaseModal>

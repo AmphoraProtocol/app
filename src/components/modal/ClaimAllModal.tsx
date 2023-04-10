@@ -11,7 +11,7 @@ import { getTotalAmount } from '~/utils';
 
 export const ClaimAllModal = () => {
   const { type, setType } = useModalContext();
-  const rewards = useAppSelector((state) => state.VC.userVault.rewards);
+  // const rewards = useAppSelector((state) => state.collaterals.elements?.WETH.claimable_rewards);
   const isLight = useLight();
 
   const [formattedAmount, setFormattedAmount] = useState('0');
@@ -25,11 +25,11 @@ export const ClaimAllModal = () => {
     }
   };
 
-  useEffect(() => {
-    if (rewards?.prices && rewards?.amounts) {
-      setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
-    }
-  }, [rewards]);
+  // useEffect(() => {
+  //   if (rewards?.prices && rewards?.amounts) {
+  //     setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
+  //   }
+  // }, [rewards]);
 
   return (
     <BaseModal
@@ -62,10 +62,10 @@ export const ClaimAllModal = () => {
             }}
           >
             <Typography variant='h5' color='text.primary' mt={0.8}>
-              {rewards?.amounts[0].toLocaleString(undefined, {
+              {/* {rewards?.amounts[0].toLocaleString(undefined, {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 2,
-              })}
+              })} */}
             </Typography>
             <SVGBox
               svg_name=''
@@ -86,10 +86,10 @@ export const ClaimAllModal = () => {
             }}
           >
             <Typography variant='h5' color='text.primary' mt={0.8}>
-              {rewards?.amounts[1].toLocaleString(undefined, {
+              {/* {rewards?.amounts[1].toLocaleString(undefined, {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 2,
-              })}
+              })} */}
             </Typography>
             <SVGBox
               svg_name='CRV'
@@ -110,10 +110,10 @@ export const ClaimAllModal = () => {
             }}
           >
             <Typography variant='h5' color='text.primary' mt={0.8}>
-              {rewards?.amounts[2].toLocaleString(undefined, {
+              {/* {rewards?.amounts[2].toLocaleString(undefined, {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 2,
-              })}
+              })} */}
             </Typography>
             <SVGBox svg_name='CVX' width={50} height={50} alt='CVX' />
           </Box>

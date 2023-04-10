@@ -2,17 +2,13 @@ import { Button, Typography } from '@mui/material';
 import { blue, formatColor } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 
-export const ClaimsButton = ({ text, claimAll }: { text: string; claimAll?: boolean }) => {
+export const ClaimsButton = ({ text }: { text: string }) => {
   const { setType } = useModalContext();
 
   return (
     <Button
       onClick={() => {
-        if (claimAll) {
-          setType(ModalType.ClaimAll);
-        } else {
-          setType(ModalType.Claim);
-        }
+        setType(ModalType.ClaimAll);
       }}
       sx={{
         maxWidth: { xs: '100%', lg: 150 },

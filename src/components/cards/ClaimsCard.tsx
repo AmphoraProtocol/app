@@ -9,15 +9,15 @@ import { useAppSelector } from '~/hooks';
 import { getTotalAmount } from '~/utils';
 
 export const ClaimsCard = () => {
-  const rewards = useAppSelector((state) => state.VC.userVault.rewards);
+  // const rewards = useAppSelector((state) => state.VC.userVault.rewards);
   const [formattedAmount, setFormattedAmount] = useState('0');
   const { isConnected } = useAccount();
 
-  useEffect(() => {
-    if (rewards?.prices && rewards?.amounts) {
-      setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
-    }
-  }, [rewards]);
+  // useEffect(() => {
+  //   if (rewards?.prices && rewards?.amounts) {
+  //     setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
+  //   }
+  // }, [rewards]);
 
   return (
     <CardContainer>
@@ -44,7 +44,7 @@ export const ClaimsCard = () => {
             </Typography>
           </Box>
         </Box>
-        {isConnected && <ClaimsButton text='Claim All' claimAll={true} />}
+        {isConnected && <ClaimsButton text='Claim All' />}
       </Box>
     </CardContainer>
   );

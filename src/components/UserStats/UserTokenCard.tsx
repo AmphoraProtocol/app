@@ -3,14 +3,13 @@ import { Box, BoxProps, Button, LinearProgress, Link, Typography } from '@mui/ma
 import { useAccount, useContract } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
-import { formatColor, neutral } from '~/theme';
+import { blue, formatColor, neutral } from '~/theme';
 import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
 import SVGBox from '../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { ToolTip } from '../tooltip/ToolTip';
 import { OracleType } from '~/types';
-import { ClaimsButton } from '../button';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -31,6 +30,7 @@ interface UserTokenCardProps extends BoxProps {
   oracleAddress: string | undefined;
   oracleType: OracleType | undefined;
   curve_lp: boolean | undefined;
+  rewards: number | undefined;
 }
 
 export const UserTokenCard = (props: UserTokenCardProps) => {
@@ -59,6 +59,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
     oracleAddress,
     oracleType,
     curve_lp,
+    rewards,
   } = props;
 
   const openVault = async () => {
@@ -193,7 +194,24 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
 
         {/* Claim button */}
         <Box pl={2} display={{ xs: 'none', lg: 'flex' }}>
-          {curve_lp && isConnected && <ClaimsButton text='Claim Rewards' />}
+          {curve_lp && isConnected && (
+            <Button
+              onClick={() => handleDWClick(ModalType.Claim)}
+              variant='contained'
+              sx={{
+                maxWidth: { xs: '100%', lg: 150 },
+                backgroundColor: 'button.claim',
+                color: '#FFFFFF',
+                padding: 1.5,
+                '&:hover': {
+                  backgroundColor: formatColor(blue.blue14),
+                },
+              }}
+              disabled={!(rewards && rewards > 0)}
+            >
+              <Typography variant='body1'>Claim Rewards</Typography>
+            </Button>
+          )}
         </Box>
 
         {/* Deposit and Withdraw button */}

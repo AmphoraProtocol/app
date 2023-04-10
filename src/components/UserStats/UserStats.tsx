@@ -15,6 +15,12 @@ export const UserStats = () => {
     if (tokens) {
       const el: Array<any> = [];
       for (const [key, val] of Object.entries(tokens)) {
+        // sum all reward amounts
+        let rewards = 0;
+        val.claimable_rewards?.forEach((tokenRewards) => {
+          rewards += Number.parseFloat(tokenRewards.amount);
+        });
+
         el.push(
           <UserTokenCard
             key={key}
@@ -42,6 +48,7 @@ export const UserStats = () => {
             oracleType={val.oracle_type}
             oracleAddress={val.oracle_address}
             curve_lp={val.curve_lp}
+            rewards={rewards}
           />,
         );
       }

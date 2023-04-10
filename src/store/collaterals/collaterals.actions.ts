@@ -1,9 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, constants } from 'ethers';
+import { constants } from 'ethers';
 import { Address } from 'wagmi';
 import { multicall, readContract } from '@wagmi/core';
 
-import { IERC20Metadata__factory, IOracleRelay__factory, IVaultController__factory } from '~/chain/contracts';
+import {
+  IERC20Metadata__factory,
+  IOracleRelay__factory,
+  IVaultController__factory,
+  IVault__factory,
+} from '~/chain/contracts';
 import {
   getOracleType,
   formatBigInt,
@@ -12,6 +17,7 @@ import {
   BN,
   BNtoDecSpecific,
   initializeToken,
+  getRewardPrices,
 } from '~/utils';
 import { CollateralTokens } from '~/types';
 import { ThunkAPI } from '~/store';
@@ -61,6 +67,14 @@ const getCollateralData = createAsyncThunk<
       }),
     })),
   );
+
+  // Getting rewards prices, temporary fixed values
+  const pools: Address[] = [
+    '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
+    '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
+    '0x0000000000000000000000000000000000000000', // AMPH Pool
+  ];
+  const price_list = await getRewardPrices(pools);
 
   for (const [key, token] of Object.entries(collaterals)) {
     const data = await readContract({
@@ -129,8 +143,28 @@ const getCollateralData = createAsyncThunk<
       ],
     });
 
+    if (vaultAddress && token.curve_lp) {
+      const vaultContract = {
+        address: vaultAddress as Address,
+        abi: IVault__factory.abi,
+      };
+
+      const [claimableRewards] = await multicall({
+        contracts: [
+          {
+            ...vaultContract,
+            functionName: 'claimableRewards',
+            args: [token.address],
+          },
+        ],
+      });
+      token.claimable_rewards = claimableRewards.map((rewards, index) => {
+        return { amount: rewards.amount.toString(), token: rewards.token, price: price_list[index] };
+      });
+    }
+
     let unformattedBalance = '0';
-    let balanceBN = BigNumber.from(0);
+    let balanceBN = BN(0);
     token.oracle_type = getOracleType(oracleType);
     const livePrice = formatBNWithDecimals(currentValue || BN(0), 18 + (18 - decimals!));
     token.price = Math.round(100 * livePrice) / 100;
