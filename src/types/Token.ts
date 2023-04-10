@@ -22,6 +22,11 @@ export interface Token {
 
   curve_lp?: boolean;
   rewards_contract?: Address;
+  claimable_rewards?: {
+    token: `0x${string}`;
+    amount: string;
+    price: number;
+  }[];
 
   capped_token?: boolean;
   capped_address?: string;

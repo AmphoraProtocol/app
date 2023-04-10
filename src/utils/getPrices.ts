@@ -25,28 +25,13 @@ const getFormattedPrice = (ethPrice: BigNumber, sqrtPriceX96: BigNumber, token0:
   return Number.parseFloat(price);
 };
 
-export const getRewardPrices = async (
-  pools: Address[],
-): Promise<{
-  crvPrice: number;
-  cvxPrice: number;
-  amphPrice: number;
-}> => {
+export const getRewardPrices = async (pools: Address[]): Promise<number[]> => {
   try {
     const USDC_ETH_UNISWAP_POOL = '0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640';
 
-    const uniContracts: { address: Address; abi: typeof IUniswapV3Pool__factory.abi; functionName: string }[] = [
-      {
-        address: USDC_ETH_UNISWAP_POOL,
-        abi: IUniswapV3Pool__factory.abi,
-        functionName: 'slot0',
-      },
-      {
-        address: USDC_ETH_UNISWAP_POOL,
-        abi: IUniswapV3Pool__factory.abi,
-        functionName: 'token0',
-      },
-    ];
+    pools.push(USDC_ETH_UNISWAP_POOL);
+
+    const uniContracts: { address: Address; abi: typeof IUniswapV3Pool__factory.abi; functionName: string }[] = [];
 
     pools.forEach((address) => {
       uniContracts.push(
@@ -68,23 +53,23 @@ export const getRewardPrices = async (
     });
 
     const ethPrice = getPriceForToken(
-      result[0].sqrtPriceX96,
-      result[1].toLowerCase() === getConfig().ADDRESSES.WETH.toLowerCase(),
+      result[6].sqrtPriceX96,
+      result[7].toLowerCase() === getConfig().ADDRESSES.WETH.toLowerCase(),
     );
 
     let crvPrice = 0;
-    if ((result[2], result[3])) crvPrice = getFormattedPrice(ethPrice, result[2].sqrtPriceX96, result[3]);
+    if ((result[0], result[1])) crvPrice = getFormattedPrice(ethPrice, result[0].sqrtPriceX96, result[1]);
 
     let cvxPrice = 0;
-    if ((result[4], result[5])) cvxPrice = getFormattedPrice(ethPrice, result[4].sqrtPriceX96, result[5]);
+    if ((result[2], result[3])) cvxPrice = getFormattedPrice(ethPrice, result[2].sqrtPriceX96, result[3]);
 
     let amphPrice = 0;
-    if ((result[6], result[7])) amphPrice = getFormattedPrice(ethPrice, result[6].sqrtPriceX96, result[7]);
+    if ((result[4], result[5])) amphPrice = getFormattedPrice(ethPrice, result[4].sqrtPriceX96, result[5]);
 
-    return { crvPrice, cvxPrice, amphPrice };
+    return [crvPrice, cvxPrice, amphPrice];
   } catch (error) {
     console.log('Error getting reward prices');
-    return { crvPrice: 0, cvxPrice: 0, amphPrice: 0 };
+    return [0, 0, 0];
   }
 };
 
