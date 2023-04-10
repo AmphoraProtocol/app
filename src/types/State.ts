@@ -29,6 +29,12 @@ export interface UserVault {
   tokenAddresses: Address[] | undefined;
   borrowingPower: number;
   accountLiability: number;
+  rewards:
+    | {
+        prices: number[];
+        amounts: number[];
+      }
+    | undefined;
 }
 
 export interface RootState {

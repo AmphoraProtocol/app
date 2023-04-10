@@ -25,7 +25,7 @@ const getFormattedPrice = (ethPrice: BigNumber, sqrtPriceX96: BigNumber, token0:
   return Number.parseFloat(price);
 };
 
-export const fetchPoolsData = async (
+export const getRewardPrices = async (
   pools: Address[],
 ): Promise<{
   crvPrice: number;
@@ -33,11 +33,6 @@ export const fetchPoolsData = async (
   amphPrice: number;
 }> => {
   try {
-    const pools: Address[] = [
-      '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
-      '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
-      '0x0000000000000000000000000000000000000000', // AMPH Pool
-    ];
     const USDC_ETH_UNISWAP_POOL = '0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640';
 
     const uniContracts: { address: Address; abi: typeof IUniswapV3Pool__factory.abi; functionName: string }[] = [
@@ -91,4 +86,16 @@ export const fetchPoolsData = async (
     console.log('Error getting reward prices');
     return { crvPrice: 0, cvxPrice: 0, amphPrice: 0 };
   }
+};
+
+export const getTotalAmount = (prices: number[], amounts: number[]) => {
+  let total = 0;
+  for (let i = 0; i < amounts.length; i++) {
+    total += amounts[i] * prices[i];
+  }
+
+  return total.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
 };

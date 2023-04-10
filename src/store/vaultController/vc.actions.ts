@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { constants } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { Address } from 'wagmi';
 import { multicall } from '@wagmi/core';
 
@@ -9,7 +9,7 @@ import {
   IUSDA__factory,
   IVaultController__factory,
 } from '~/chain/contracts';
-import { BNtoHexNumber, BN, BNtoDec, round } from '~/utils';
+import { BNtoHexNumber, BN, BNtoDec, round, getRewardPrices } from '~/utils';
 import { ThunkAPI } from '~/store';
 import { UserVault } from '~/types';
 import { getConfig } from '~/config';
@@ -89,17 +89,17 @@ const getVCData = createAsyncThunk<
       {
         ...curveContract,
         functionName: 'getValueAt',
-        args: [ZERO_ADDRESS, firstCall[2]],
+        args: [ZERO_ADDRESS, firstCall[2]] as [Address, BigNumber],
       },
       {
         ...vcContract,
         functionName: 'vaultAddress',
-        args: [firstCall[3][0]],
+        args: [firstCall[3][0]] as [BigNumber],
       },
       {
         ...vcContract,
         functionName: 'vaultSummaries',
-        args: [firstCall[3][0], firstCall[3][0]],
+        args: [firstCall[3][0], firstCall[3][0]] as [BigNumber, BigNumber],
       },
     ],
   });
@@ -145,6 +145,14 @@ const getVCData = createAsyncThunk<
     // tokenBalances = [...result.tokenBalances];
   }
 
+  // Getting rewards prices, temporary fixed values
+  const pools: Address[] = [
+    '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
+    '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
+    '0x0000000000000000000000000000000000000000', // AMPH Pool
+  ];
+  const { amphPrice, crvPrice, cvxPrice } = await getRewardPrices(pools);
+
   return {
     depositAPR,
     borrowAPR,
@@ -157,6 +165,11 @@ const getVCData = createAsyncThunk<
       tokenAddresses,
       borrowingPower,
       accountLiability,
+      rewards: {
+        // temporary fixed values
+        prices: [43.4, 27.3, 51.2],
+        amounts: [3.3, crvPrice, cvxPrice],
+      },
     },
     collaterals: [...firstCall[4]],
   };

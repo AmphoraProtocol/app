@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { utils } from 'ethers';
 import { useContract } from 'wagmi';
 
 import { formatColor, neutral } from '~/theme';
@@ -8,26 +7,29 @@ import { ModalType, useModalContext } from '../libs/modal-content-provider/Modal
 import { BaseModal } from './BaseModal';
 import { useAmphContracts, useAppSelector, useLight } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
+import { getTotalAmount } from '~/utils';
 
 export const ClaimAllModal = () => {
   const { type, setType } = useModalContext();
-  const claimAmount = utils.parseEther('1.23');
+  const rewards = useAppSelector((state) => state.VC.userVault.rewards);
   const isLight = useLight();
 
-  const [formattedAmount, setFormattedAmount] = useState(0);
+  const [formattedAmount, setFormattedAmount] = useState('0');
   const vaultAddress = useAppSelector((state) => state.VC.userVault.vaultAddress);
   const { vaultAbi } = useAmphContracts();
   const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
-
-  useEffect(() => {
-    setFormattedAmount(Number(utils.formatEther(claimAmount)));
-  }, [claimAmount]);
 
   const handleClaimRequest = async () => {
     if (vaultAddress && vaultContract) {
       console.log('Claiming rewards...');
     }
   };
+
+  useEffect(() => {
+    if (rewards?.prices && rewards?.amounts) {
+      setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
+    }
+  }, [rewards]);
 
   return (
     <BaseModal
@@ -60,7 +62,7 @@ export const ClaimAllModal = () => {
             }}
           >
             <Typography variant='h5' color='text.primary' mt={0.8}>
-              {formattedAmount.toLocaleString(undefined, {
+              {rewards?.amounts[0].toLocaleString(undefined, {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 2,
               })}
@@ -76,19 +78,6 @@ export const ClaimAllModal = () => {
             />
           </Box>
 
-          {/* Convex rewards */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant='h5' color='text.primary' mt={0.8}>
-              1.70
-            </Typography>
-            <SVGBox svg_name='CVX' width={50} height={50} alt='CVX' />
-          </Box>
-
           {/* Curve rewards */}
           <Box
             sx={{
@@ -97,7 +86,10 @@ export const ClaimAllModal = () => {
             }}
           >
             <Typography variant='h5' color='text.primary' mt={0.8}>
-              7.00
+              {rewards?.amounts[1].toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              })}
             </Typography>
             <SVGBox
               svg_name='CRV'
@@ -109,6 +101,22 @@ export const ClaimAllModal = () => {
               }}
             />
           </Box>
+
+          {/* Convex rewards */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant='h5' color='text.primary' mt={0.8}>
+              {rewards?.amounts[2].toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              })}
+            </Typography>
+            <SVGBox svg_name='CVX' width={50} height={50} alt='CVX' />
+          </Box>
         </Box>
       </Box>
 
@@ -117,9 +125,9 @@ export const ClaimAllModal = () => {
           variant='contained'
           sx={{ color: formatColor(neutral.white), marginY: 2, width: '100%' }}
           onClick={handleClaimRequest}
-          disabled={formattedAmount <= 0}
+          disabled={!!(Number.parseFloat(formattedAmount) <= 0 || !vaultAddress || !vaultContract)}
         >
-          Claim
+          Claim ($ {formattedAmount})
         </Button>
       </Box>
     </BaseModal>
