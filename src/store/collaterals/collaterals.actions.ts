@@ -32,9 +32,9 @@ const getCollateralData = createAsyncThunk<
   },
   ThunkAPI
 >('collateral/getData', async ({ userAddress, vaultAddress, tokens }) => {
-  const tokenList: Address[] = tokens || ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'];
+  const { VAULT_CONTROLLER, ZERO_ADDRESS, WETH } = getConfig().ADDRESSES;
+  const tokenList: Address[] = tokens || [WETH];
 
-  const { VAULT_CONTROLLER, ZERO_ADDRESS } = getConfig().ADDRESSES;
   const collateralsLength = tokenList.length;
 
   const tokensName = tokenList.map((address) => {
@@ -107,14 +107,14 @@ const getCollateralData = createAsyncThunk<
     token.capped_percent = cappedPercent;
 
     const erc20Contract = {
-      address: token.address as Address,
+      address: token.address,
       abi: IERC20Metadata__factory.abi,
-    } as const;
+    };
 
     const oracleContract = {
-      address: data.oracle as Address,
+      address: data.oracle,
       abi: IOracleRelay__factory.abi,
-    } as const;
+    };
 
     const [decimals, currentValue, oracleType, balanceOf1, balanceOf2] = await multicall({
       contracts: [
@@ -145,7 +145,7 @@ const getCollateralData = createAsyncThunk<
 
     if (vaultAddress && token.curve_lp) {
       const vaultContract = {
-        address: vaultAddress as Address,
+        address: vaultAddress,
         abi: IVault__factory.abi,
       };
 
@@ -158,6 +158,7 @@ const getCollateralData = createAsyncThunk<
           },
         ],
       });
+
       token.claimable_rewards = claimableRewards.map((rewards, index) => {
         return { amount: rewards.amount.toString(), token: rewards.token, price: price_list[index] };
       });

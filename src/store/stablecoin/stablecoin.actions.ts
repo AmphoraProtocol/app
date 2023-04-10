@@ -34,14 +34,14 @@ const getStablesData = createAsyncThunk<
   });
 
   const susdContract = {
-    address: SUSD.address as Address,
+    address: SUSD.address,
     abi: erc20ABI,
-  } as const;
+  };
 
   const usdaContract = {
-    address: USDA.address as Address,
+    address: USDA.address,
     abi: erc20ABI,
-  } as const;
+  };
 
   const result = await multicall({
     contracts: [
