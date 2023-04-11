@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useContract } from 'wagmi';
 
@@ -7,11 +8,12 @@ import { BaseModal } from './BaseModal';
 import { useAmphContracts, useAppSelector, useLight } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
 import TokenIcon from '../icons/misc/TokenIcon';
+import { getRewardAmount, formatNumber } from '~/utils';
 
 export const ClaimModal = () => {
   const { type, setType, collateralToken } = useModalContext();
   const isLight = useLight();
-
+  const [rewardsInUsd, setRewardsInUsd] = useState(getRewardAmount(collateralToken.claimable_rewards).value);
   const vaultAddress = useAppSelector((state) => state.VC.userVault.vaultAddress);
   const { vaultAbi } = useAmphContracts();
   const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
@@ -21,6 +23,10 @@ export const ClaimModal = () => {
       vaultContract.claimRewards([collateralToken.address]);
     }
   };
+
+  useEffect(() => {
+    setRewardsInUsd(getRewardAmount(collateralToken.claimable_rewards).value);
+  }, [collateralToken.claimable_rewards]);
 
   return (
     <BaseModal
@@ -53,16 +59,12 @@ export const ClaimModal = () => {
               }}
             >
               <TokenIcon height={35} width={35} address={rewards.token} />
-
               <Typography variant='h5' color='text.primary' mt={0.8}>
-                {Number.parseFloat(rewards.amount).toLocaleString(undefined, {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 2,
-                })}{' '}
-                {rewards.price.toLocaleString(undefined, {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 2,
-                })}
+                {formatNumber(Number.parseFloat(rewards.amount))}
+              </Typography>{' '}
+              <Typography variant='body2' color='text.secondary' mt={0.8} ml={1}>
+                ($
+                {formatNumber(Number.parseFloat(rewards.amount) * rewards.price)})
               </Typography>
             </Box>
           ))}
@@ -75,7 +77,7 @@ export const ClaimModal = () => {
           sx={{ color: formatColor(neutral.white), marginY: 2, width: '100%' }}
           onClick={handleClaimRequest}
         >
-          Claim
+          Claim (${rewardsInUsd})
         </Button>
       </Box>
     </BaseModal>
