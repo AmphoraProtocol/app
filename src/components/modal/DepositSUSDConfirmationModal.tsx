@@ -26,9 +26,8 @@ export const DepositSUSDConfirmationModal = () => {
   const { DEFAULT_APPROVE_AMOUNT, DEFAULT_CHAIN_ID } = getConfig();
   const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
   const { address } = useAccount();
-  const provider = useProvider();
   const { susdContract, usdaContract } = useAmphContracts();
-  const SUSDContract = useContract({ ...susdContract, signerOrProvider: provider });
+  const SUSDContract = useContract(susdContract);
   const USDAContract = useContract(usdaContract);
   const { USDA } = getConfig().ADDRESSES[currentChain?.id || DEFAULT_CHAIN_ID];
 
