@@ -34,10 +34,10 @@ const Dashboard = () => {
   const { chain } = useNetwork();
 
   useEffect(() => {
-    dispatch(VCActions.getVCData({ userAddress: address }));
+    dispatch(VCActions.getVCData({ userAddress: address, chainId: chain?.id || 1 }));
 
     if (address) {
-      dispatch(StablecoinActions.getStablesData({ userAddress: address }));
+      dispatch(StablecoinActions.getStablesData({ userAddress: address, chainId: chain?.id || 1 }));
     }
   }, [chain?.id, address]);
 
@@ -48,6 +48,7 @@ const Dashboard = () => {
           userAddress: address,
           vaultAddress: vaultControllerData.userVault.vaultAddress,
           tokens: vaultControllerData.collaterals,
+          chainId: chain?.id || 1,
         }),
       );
     }

@@ -24,7 +24,7 @@ export const TransactionStatusModal = () => {
   // temporary
   useEffect(() => {
     if (transactionState === 'SUCCESS') {
-      dispatch(VCActions.getVCData({ userAddress: address }));
+      dispatch(VCActions.getVCData({ userAddress: address, chainId: currentChain?.id || 1 }));
 
       if (vaultControllerData.collaterals) {
         dispatch(
@@ -32,12 +32,13 @@ export const TransactionStatusModal = () => {
             userAddress: address,
             vaultAddress: vaultControllerData.userVault.vaultAddress,
             tokens: vaultControllerData.collaterals,
+            chainId: currentChain?.id || 1,
           }),
         );
       }
 
       if (address) {
-        dispatch(StablecoinActions.getStablesData({ userAddress: address }));
+        dispatch(StablecoinActions.getStablesData({ userAddress: address, chainId: currentChain?.id || 1 }));
       }
     }
   }, [transactionState]);

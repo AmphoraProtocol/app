@@ -3,6 +3,8 @@ import { ChainInfo } from '../types';
 export enum ChainIDs {
   MAINNET = 1,
   LOCAL = 1337,
+  GOERLI = 5,
+  SEPOLIA = 11155111,
 }
 
 const configs: Array<ChainInfo> = [
@@ -20,6 +22,22 @@ const configs: Array<ChainInfo> = [
     symbol: 'ETH Local',
     logo: 'ETH',
     scan_url: 'https://etherscan.io/tx/',
+    scan_site: 'Etherscan',
+  },
+  {
+    id: ChainIDs.GOERLI,
+    name: 'Goerli',
+    symbol: 'GETH',
+    logo: 'ETH',
+    scan_url: 'https://goerli.etherscan.io/',
+    scan_site: 'Etherscan',
+  },
+  {
+    id: ChainIDs.SEPOLIA,
+    name: 'Sepolia',
+    symbol: 'SETH',
+    logo: 'ETH',
+    scan_url: 'https://sepolia.etherscan.io/',
     scan_site: 'Etherscan',
   },
 ];

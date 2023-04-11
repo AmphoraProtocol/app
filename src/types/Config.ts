@@ -10,12 +10,15 @@ export interface Constants {
   DEFAULT_APPROVE_AMOUNT: string;
   USDA_DECIMALS: number;
   ADDRESSES: {
-    ZERO_ADDRESS: Address;
-    VAULT_CONTROLLER: Address;
-    CURVE_MASTER: Address;
-    USDA: Address;
-    SUSD: Address;
-    WETH: Address;
+    [key: number]: {
+      ZERO_ADDRESS: Address;
+      VAULT_CONTROLLER: Address;
+      CURVE_MASTER: Address;
+      USDA: Address;
+      SUSD: Address;
+      WETH: Address;
+      USDC_ETH_UNISWAP_POOL: Address;
+    };
   };
 }
 

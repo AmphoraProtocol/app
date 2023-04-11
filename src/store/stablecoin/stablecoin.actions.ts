@@ -11,13 +11,12 @@ const getStablesData = createAsyncThunk<
   { USDA: Token; SUSD: Token },
   {
     userAddress: Address;
+    chainId: number;
   },
   ThunkAPI
->('stablecoin/getStablecoinData', async ({ userAddress }) => {
-  const {
-    USDA_DECIMALS,
-    ADDRESSES: { USDA: USDA_ADDRESS, SUSD: SUSD_ADDRESS },
-  } = getConfig();
+>('stablecoin/getStablecoinData', async ({ userAddress, chainId }) => {
+  const { USDA: USDA_ADDRESS, SUSD: SUSD_ADDRESS } = getConfig().ADDRESSES[chainId];
+  const { USDA_DECIMALS } = getConfig();
 
   let USDA: Token = initializeToken({
     name: 'Amphora USD',

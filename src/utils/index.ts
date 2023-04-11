@@ -8,4 +8,3 @@ export * from './getPrices';
 export * from './hasAllowance';
 export * from './initializeToken';
 export * from './rewards';
-export * from './tokensToChains';
