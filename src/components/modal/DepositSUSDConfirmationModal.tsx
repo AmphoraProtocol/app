@@ -23,14 +23,14 @@ export const DepositSUSDConfirmationModal = () => {
   const [hasAllowance, setHasAllowance] = useState(false);
   const [approvalTxn, setApprovalTxn] = useState<ContractTransaction>();
   const { chain: currentChain } = useNetwork();
-  const chain = Chains.getInfo(currentChain?.id || 1);
+  const { DEFAULT_APPROVE_AMOUNT, DEFAULT_CHAIN_ID } = getConfig();
+  const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
   const { address } = useAccount();
   const provider = useProvider();
   const { susdContract, usdaContract } = useAmphContracts();
   const SUSDContract = useContract({ ...susdContract, signerOrProvider: provider });
   const USDAContract = useContract(usdaContract);
-  const { DEFAULT_APPROVE_AMOUNT } = getConfig();
-  const { USDA } = getConfig().ADDRESSES[currentChain?.id || 1];
+  const { USDA } = getConfig().ADDRESSES[currentChain?.id || DEFAULT_CHAIN_ID];
 
   useEffect(() => {
     if (SUSD.amountToDeposit && address && SUSDContract) {

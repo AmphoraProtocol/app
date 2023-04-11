@@ -71,10 +71,11 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
   const [collateralDepositAmountMax, setCollateralDepositAmountMax] = useState(false);
   const [collateralWithdrawAmountMax, setCollateralWithdrawAmountMax] = useState(false);
   const { chain } = useNetwork();
+  const { DEFAULT_CHAIN_ID } = getConfig();
   const [collateralToken, setCollateralToken] = useState<Token>(
     initializeToken({
       name: 'Wrapped ETH',
-      address: getConfig().ADDRESSES[chain?.id || 1].WETH,
+      address: getConfig().ADDRESSES[chain?.id || DEFAULT_CHAIN_ID].WETH,
       ticker: 'WETH',
     }),
   );
