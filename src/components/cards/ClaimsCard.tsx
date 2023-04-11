@@ -1,19 +1,23 @@
 import { Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { ClaimIcon } from '../icons/misc/ClaimIcon';
-// import { useMerkleRedeemContext } from '../libs/merkle-redeem-provider/MerkleRedeemProvider';
-import { utils } from 'ethers';
+import { useAccount } from 'wagmi';
+
 import { CardContainer } from './CardContainer';
 import { ClaimsButton } from '../button';
+import { useAppSelector } from '~/hooks';
+import { getTotalAmount } from '~/utils';
 
 export const ClaimsCard = () => {
-  // const { claimAmount } = useMerkleRedeemContext();
-  const claimAmount = utils.parseEther('27312912');
-  const [formattedAmount, setFormattedAmount] = useState(0);
+  // const rewards = useAppSelector((state) => state.VC.userVault.rewards);
+  const [formattedAmount, setFormattedAmount] = useState('0');
+  const { isConnected } = useAccount();
 
-  useEffect(() => {
-    setFormattedAmount(Number(utils.formatEther(claimAmount)));
-  }, [claimAmount]);
+  // useEffect(() => {
+  //   if (rewards?.prices && rewards?.amounts) {
+  //     setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
+  //   }
+  // }, [rewards]);
 
   return (
     <CardContainer>
@@ -36,15 +40,11 @@ export const ClaimsCard = () => {
               Total Rewards
             </Typography>
             <Typography variant='h7_semi' lineHeight={{ xs: 1 }} color='text.primary'>
-              ${' '}
-              {formattedAmount.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
+              $ {formattedAmount}
             </Typography>
           </Box>
         </Box>
-        <ClaimsButton text='Claim All' claimAll={true} />
+        {isConnected && <ClaimsButton text='Claim All' />}
       </Box>
     </CardContainer>
   );

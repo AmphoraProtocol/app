@@ -9,7 +9,7 @@ import { BaseModal } from './BaseModal';
 import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
-import { locale } from '~/utils';
+import { formatNumber, locale } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
 
 export const WithdrawSUSDConfirmationModal = () => {
@@ -75,11 +75,7 @@ export const WithdrawSUSDConfirmationModal = () => {
         <Box display='flex' alignItems='center'>
           <Box>
             <Typography variant='body3' color='text.secondary'>
-              {'$' +
-                Number(SUSD.amountToWithdraw).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+              {'$' + formatNumber(Number(SUSD.amountToWithdraw))}
             </Typography>
           </Box>
 
@@ -93,11 +89,7 @@ export const WithdrawSUSDConfirmationModal = () => {
 
           <Box>
             <Typography variant='body3' color='text.secondary'>
-              {'$' +
-                Number(SUSD.amountToWithdraw).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+              {'$' + formatNumber(Number(SUSD.amountToWithdraw))}
             </Typography>
           </Box>
         </Box>

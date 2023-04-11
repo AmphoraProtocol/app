@@ -23,3 +23,14 @@ export const formatBigInt = (amount: bigint | BigNumber, decimals: number) => {
     bn: BN(amount.toString()),
   };
 };
+
+export const formatNumber = (value: number | undefined) => {
+  if (value) {
+    return value.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  } else {
+    return '0';
+  }
+};

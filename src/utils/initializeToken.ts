@@ -6,7 +6,6 @@ export const initializeToken = ({
   address,
   capped_address,
   capped_token = false,
-  can_delegate = false,
   decimals = 18,
   price = 1,
 }: InitializeTokenProps): Token => ({
@@ -25,5 +24,4 @@ export const initializeToken = ({
   token_penalty: 0,
   capped_token,
   capped_address,
-  can_delegate,
 });

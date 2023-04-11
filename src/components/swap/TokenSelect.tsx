@@ -5,6 +5,7 @@ import { DecimalInput } from '../textFields';
 import { WithDots } from '../loading';
 import { Token } from '~/types';
 import SVGBox from '../icons/misc/SVGBox';
+import { formatNumber } from '~/utils';
 
 interface TokenSelectProps {
   token: Token;
@@ -91,12 +92,7 @@ export const TokenSelect = (props: TokenSelectProps) => {
               onClick={setMax}
               disabled={token.wallet_balance === undefined || disableSetMax}
             >
-              <WithDots val={token.wallet_balance != undefined}>
-                {Number(token.wallet_balance).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </WithDots>
+              <WithDots val={token.wallet_balance != undefined}>{formatNumber(Number(token.wallet_balance))}</WithDots>
             </Button>
           </Typography>
         </Box>

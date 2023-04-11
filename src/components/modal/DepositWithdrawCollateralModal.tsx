@@ -7,6 +7,7 @@ import { BaseSwitch } from '../switch';
 import { BaseModal } from './BaseModal';
 import { DepositCollateralContent } from './ModalContent/DepositCollateralContent';
 import { WithdrawCollateralContent } from './ModalContent/WithdrawCollateralContent';
+import { formatNumber } from '~/utils';
 
 export const DepositWithdrawCollateralModal = () => {
   const {
@@ -56,11 +57,7 @@ export const DepositWithdrawCollateralModal = () => {
             1 {collateralToken?.ticker}
           </Typography>
           <Typography variant='h7' display='block' color='text.primary' mb={1}>
-            $
-            {collateralToken.price.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
+            ${formatNumber(collateralToken.price)}
           </Typography>
         </Box>
       </Box>

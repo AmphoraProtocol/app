@@ -4,7 +4,7 @@ import { TransactionReceipt } from '@ethersproject/providers';
 import { useContract, useAccount, useNetwork, useProvider } from 'wagmi';
 import { ContractTransaction } from 'ethers';
 
-import { BN, locale, Chains, hasSUSDAllowance } from '~/utils';
+import { BN, locale, Chains, hasSUSDAllowance, formatNumber } from '~/utils';
 import { useAppSelector, useAmphContracts } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { getConfig } from '~/config';
@@ -121,11 +121,7 @@ export const DepositSUSDConfirmationModal = () => {
           <SVGBox width={36} height={36} svg_name='sUSD' alt='sUSD' sx={{ mr: 3 }} />
           <Box>
             <Typography variant='body3' color='text.primary'>
-              {'$' +
-                Number(SUSD.amountToDeposit).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+              {'$' + formatNumber(Number(SUSD.amountToDeposit))}
             </Typography>
           </Box>
         </Box>
@@ -135,11 +131,7 @@ export const DepositSUSDConfirmationModal = () => {
         <Box display='flex' alignItems='center'>
           <Box>
             <Typography variant='body3' color='text.primary'>
-              {'$' +
-                Number(SUSD.amountToDeposit).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+              {'$' + formatNumber(Number(SUSD.amountToDeposit))}
             </Typography>
           </Box>
 
