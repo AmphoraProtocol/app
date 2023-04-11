@@ -30,7 +30,7 @@ interface UserTokenCardProps extends BoxProps {
   oracleAddress: string | undefined;
   oracleType: OracleType | undefined;
   curve_lp: boolean | undefined;
-  rewards: number | undefined;
+  rewards: string | undefined;
 }
 
 export const UserTokenCard = (props: UserTokenCardProps) => {
@@ -194,7 +194,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
 
         {/* Claim button */}
         <Box pl={2} display={{ xs: 'none', lg: 'flex' }}>
-          {curve_lp && isConnected && (
+          {curve_lp && isConnected && userVault.vaultAddress && (
             <Button
               onClick={() => handleDWClick(ModalType.Claim)}
               variant='contained'
@@ -207,7 +207,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
                   backgroundColor: formatColor(blue.blue14),
                 },
               }}
-              disabled={!(rewards && rewards > 0)}
+              disabled={!(rewards && Number.parseFloat(rewards) > 0)}
             >
               <Typography variant='body1'>Claim Rewards</Typography>
             </Button>

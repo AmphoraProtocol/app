@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { UserTokenCard } from './UserTokenCard';
 import { CardContainer } from '../cards/CardContainer';
 import { useAppSelector } from '~/hooks';
+import { formatNumber, getRewardAmount } from '~/utils';
 
 export const UserStats = () => {
   const [token_cards, setTokenCards] = useState<JSX.Element | undefined>(undefined);
@@ -15,25 +16,13 @@ export const UserStats = () => {
     if (tokens) {
       const el: Array<any> = [];
       for (const [key, val] of Object.entries(tokens)) {
-        // sum all reward amounts
-        let rewards = 0;
-        val.claimable_rewards?.forEach((tokenRewards) => {
-          rewards += Number.parseFloat(tokenRewards.amount);
-        });
-
         el.push(
           <UserTokenCard
             key={key}
             index={el.length}
             tokenName={val.name}
             tokenTicker={val.ticker}
-            tokenPrice={
-              '$' +
-              val.price?.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-            }
+            tokenPrice={'$' + formatNumber(val.price)}
             vaultBalance={'$' + val.vault_balance?.toLocaleString()}
             tokenAmount={Number(val.vault_amount_str).toLocaleString()}
             image={{
@@ -48,7 +37,7 @@ export const UserStats = () => {
             oracleType={val.oracle_type}
             oracleAddress={val.oracle_address}
             curve_lp={val.curve_lp}
-            rewards={rewards}
+            rewards={getRewardAmount(val.claimable_rewards).amount}
           />,
         );
       }

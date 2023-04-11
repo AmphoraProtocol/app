@@ -8,6 +8,7 @@ import { ModalInputContainer } from './ModalInputContainer';
 import { SwapIcon } from '../../icons/misc/SwapIcon';
 import { ModalType, useModalContext } from '../../libs/modal-content-provider/ModalContentProvider';
 import { useLight, useAppSelector } from '~/hooks';
+import { formatNumber } from '~/utils';
 
 export const DepositCollateralContent = () => {
   const { setType, setCollateralDepositAmount, collateralToken, setCollateralDepositAmountMax } = useModalContext();
@@ -90,10 +91,7 @@ export const DepositCollateralContent = () => {
               ? `${inputAmount === '0' ? '0' : (Number(inputAmount) / collateralToken?.price).toFixed(4)} ${
                   collateralToken?.ticker
                 }`
-              : `$${(Number(inputAmount) * collateralToken?.price).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}`}
+              : `$${formatNumber(Number(inputAmount) * collateralToken?.price)}`}
           </Typography>
           <Button
             onClick={setMax}

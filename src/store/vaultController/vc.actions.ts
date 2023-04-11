@@ -9,7 +9,7 @@ import {
   IUSDA__factory,
   IVaultController__factory,
 } from '~/chain/contracts';
-import { BNtoHexNumber, BN, BNtoDec, round } from '~/utils';
+import { BNtoHexNumber, BN, BNtoDec, round, formatNumber } from '~/utils';
 import { ThunkAPI } from '~/store';
 import { UserVault } from '~/types';
 import { getConfig } from '~/config';
@@ -108,10 +108,7 @@ const getVCData = createAsyncThunk<
   const ratioDecimal = firstCall[2].div(1e14).toNumber() / 1e4;
   const usdaSupply = firstCall[1].div(1e9).div(1e9).toString();
   const toPercentage = BNtoHexNumber(firstCall[2]) / 1e16;
-  const reserveRatio = toPercentage.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  const reserveRatio = formatNumber(toPercentage);
 
   let vaultID: number | undefined;
   if (firstCall[3] && firstCall[3][0]) {
