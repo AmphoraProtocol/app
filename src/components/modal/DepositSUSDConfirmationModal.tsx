@@ -23,7 +23,7 @@ export const DepositSUSDConfirmationModal = () => {
   const [hasAllowance, setHasAllowance] = useState(false);
   const [approvalTxn, setApprovalTxn] = useState<ContractTransaction>();
   const { chain: currentChain } = useNetwork();
-  const { DEFAULT_APPROVE_AMOUNT, DEFAULT_CHAIN_ID } = getConfig();
+  const { DEFAULT_CHAIN_ID } = getConfig();
   const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
   const { address } = useAccount();
   const { susdContract, usdaContract } = useAmphContracts();
@@ -71,7 +71,7 @@ export const DepositSUSDConfirmationModal = () => {
 
   const handleApprovalRequest = async () => {
     if (SUSDContract && SUSD.amountToDeposit) {
-      const depositAmount = BN(DEFAULT_APPROVE_AMOUNT).mul(BN(`1e${SUSD_TOKEN.decimals}`));
+      const depositAmount = BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`));
 
       setLoading(true);
       try {
