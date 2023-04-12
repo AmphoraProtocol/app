@@ -1,5 +1,7 @@
-import { Box, useTheme, Button } from '@mui/material';
 import { useEffect } from 'react';
+import { Box, useTheme, Button } from '@mui/material';
+import { useAccount } from 'wagmi';
+import { utils } from 'ethers';
 
 import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
@@ -8,8 +10,8 @@ import { useSwapTokenContext } from '../libs/swap-token-provider/SwapTokenProvid
 import { TokenSelect } from './TokenSelect';
 import { useTokenAmountInput } from './useTokenAmountInput';
 import { useModalContext, ModalType } from '../libs/modal-content-provider/ModalContentProvider';
-import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { BN } from '~/utils';
 
 export const SwapContainer = () => {
   const isLight = useLight();
@@ -132,7 +134,11 @@ export const SwapContainer = () => {
               color: formatColor(neutral.white),
               width: '100%',
             }}
-            disabled={Number(token1Amount) <= 0 || !token1.wallet_balance}
+            disabled={
+              Number(token1Amount) <= 0 ||
+              !token1.wallet_balance ||
+              BN(utils.parseEther(token1Amount)).gt(BN(token1.wallet_amount))
+            }
             onClick={() => {
               if (Number(token1Amount) > 0) {
                 setType(ModalType.DepositSUSDConfirmation);
@@ -149,7 +155,11 @@ export const SwapContainer = () => {
               color: formatColor(neutral.white),
               width: '100%',
             }}
-            disabled={!token1.wallet_balance || Number(token1Amount) <= 0}
+            disabled={
+              !token1.wallet_balance ||
+              Number(token1Amount) <= 0 ||
+              BN(utils.parseEther(token1Amount)).gt(BN(token1.wallet_amount))
+            }
             onClick={() => setType(ModalType.WithdrawSUSDConfirmation)}
           >
             Redeem USDA
