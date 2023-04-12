@@ -35,7 +35,7 @@ const configs: Array<ChainInfo> = [
     name: 'Sepolia',
     symbol: 'SETH',
     logo: 'ETH',
-    scan_url: 'https://sepolia.etherscan.io/',
+    scan_url: 'https://sepolia.etherscan.io/tx/',
     scan_site: 'Etherscan',
   },
 ];
