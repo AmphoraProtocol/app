@@ -16,8 +16,13 @@ export const getPriceForToken = (sqrtPriceX96: BigNumber, isWethToken0: boolean)
   }
 };
 
-const getFormattedPrice = (ethPrice: BigNumber, sqrtPriceX96: BigNumber, token0: Address): number => {
-  const isWethToken0 = !(token0.toLowerCase() === getConfig().ADDRESSES.WETH.toLowerCase());
+const getFormattedPrice = (
+  ethPrice: BigNumber,
+  sqrtPriceX96: BigNumber,
+  token0: Address,
+  WETH_ADDRESS: string,
+): number => {
+  const isWethToken0 = !(token0.toLowerCase() === WETH_ADDRESS);
   const price = utils.formatUnits(
     ethPrice.mul(getPriceForToken(sqrtPriceX96, isWethToken0)).div(constants.WeiPerEther),
     6,
@@ -25,9 +30,10 @@ const getFormattedPrice = (ethPrice: BigNumber, sqrtPriceX96: BigNumber, token0:
   return Number.parseFloat(price);
 };
 
-export const getRewardPrices = async (pools: Address[]): Promise<number[]> => {
+export const getRewardPrices = async (pools: Address[], chainId: number): Promise<number[]> => {
   try {
-    const USDC_ETH_UNISWAP_POOL = '0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640';
+    const { WETH, USDC_ETH_UNISWAP_POOL } = getConfig().ADDRESSES[chainId];
+    const WETH_ADDRESS = WETH.toLowerCase();
 
     pools.push(USDC_ETH_UNISWAP_POOL);
 
@@ -52,19 +58,17 @@ export const getRewardPrices = async (pools: Address[]): Promise<number[]> => {
       contracts: uniContracts,
     });
 
-    const ethPrice = getPriceForToken(
-      result[6].sqrtPriceX96,
-      result[7].toLowerCase() === getConfig().ADDRESSES.WETH.toLowerCase(),
-    );
+    const ethPrice = getPriceForToken(result[6].sqrtPriceX96, result[7].toLowerCase() === WETH_ADDRESS);
 
     let crvPrice = 0;
-    if ((result[0], result[1])) crvPrice = getFormattedPrice(ethPrice, result[0].sqrtPriceX96, result[1]);
+    if ((result[0], result[1])) crvPrice = getFormattedPrice(ethPrice, result[0].sqrtPriceX96, result[1], WETH_ADDRESS);
 
     let cvxPrice = 0;
-    if ((result[2], result[3])) cvxPrice = getFormattedPrice(ethPrice, result[2].sqrtPriceX96, result[3]);
+    if ((result[2], result[3])) cvxPrice = getFormattedPrice(ethPrice, result[2].sqrtPriceX96, result[3], WETH_ADDRESS);
 
     let amphPrice = 0;
-    if ((result[4], result[5])) amphPrice = getFormattedPrice(ethPrice, result[4].sqrtPriceX96, result[5]);
+    if ((result[4], result[5]))
+      amphPrice = getFormattedPrice(ethPrice, result[4].sqrtPriceX96, result[5], WETH_ADDRESS);
 
     return [crvPrice, cvxPrice, amphPrice];
   } catch (error) {

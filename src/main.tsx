@@ -3,26 +3,15 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { mainnet, localhost } from 'wagmi/chains';
+import { localhost, sepolia, mainnet } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+
 import '@rainbow-me/rainbowkit/styles.css';
 
 import store from '~/store';
 import App from './App';
-import { getConfig } from './config';
 
-const { chains, provider } = configureChains(
-  [mainnet, localhost],
-  [
-    jsonRpcProvider({
-      rpc: () => ({
-        http: getConfig().VITE_CUSTOM_LOCAL_RPC,
-      }),
-    }),
-    publicProvider(),
-  ],
-);
+const { chains, provider } = configureChains([sepolia, localhost, mainnet], [publicProvider()]);
 
 const { connectors } = getDefaultWallets({
   appName: 'Amphora Protocol',

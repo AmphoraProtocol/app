@@ -4,10 +4,12 @@ import { useNetwork } from 'wagmi';
 import { Chains } from '~/utils';
 import { useLight } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
+import { getConfig } from '~/config';
 
 export const SelectedChainButton = () => {
   const { chain: currentChain } = useNetwork();
-  const chain = Chains.getInfo(currentChain?.id || 1);
+  const { DEFAULT_CHAIN_ID } = getConfig();
+  const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
 
   const theme = useTheme();
   const isLight = useLight();

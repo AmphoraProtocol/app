@@ -12,6 +12,7 @@ import { BaseModal } from './BaseModal';
 import { Chains } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
 import { VCActions, CollateralActions, StablecoinActions } from '~/store';
+import { getConfig } from '~/config';
 
 export const TransactionStatusModal = () => {
   const { type, setType, transactionState, transaction } = useModalContext();
@@ -20,11 +21,12 @@ export const TransactionStatusModal = () => {
   const isLight = useLight();
   const { address } = useAccount();
   const { chain: currentChain } = useNetwork();
+  const { DEFAULT_CHAIN_ID } = getConfig();
 
   // temporary
   useEffect(() => {
     if (transactionState === 'SUCCESS') {
-      dispatch(VCActions.getVCData({ userAddress: address }));
+      dispatch(VCActions.getVCData({ userAddress: address, chainId: currentChain?.id || DEFAULT_CHAIN_ID }));
 
       if (vaultControllerData.collaterals) {
         dispatch(
@@ -32,18 +34,21 @@ export const TransactionStatusModal = () => {
             userAddress: address,
             vaultAddress: vaultControllerData.userVault.vaultAddress,
             tokens: vaultControllerData.collaterals,
+            chainId: currentChain?.id || DEFAULT_CHAIN_ID,
           }),
         );
       }
 
       if (address) {
-        dispatch(StablecoinActions.getStablesData({ userAddress: address }));
+        dispatch(
+          StablecoinActions.getStablesData({ userAddress: address, chainId: currentChain?.id || DEFAULT_CHAIN_ID }),
+        );
       }
     }
   }, [transactionState]);
 
   const renderTransitionState = () => {
-    const chain = Chains.getInfo(currentChain?.id || 1);
+    const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
 
     switch (transactionState) {
       case 'PENDING':

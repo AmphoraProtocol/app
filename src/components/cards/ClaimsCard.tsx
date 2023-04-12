@@ -44,7 +44,7 @@ export const ClaimsCard = () => {
             </Typography>
           </Box>
         </Box>
-        {isConnected && <ClaimsButton text='Claim All' />}
+        {isConnected && !!Number.parseFloat(formattedAmount) && <ClaimsButton text='Claim All' />}
       </Box>
     </CardContainer>
   );

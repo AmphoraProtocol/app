@@ -5,17 +5,14 @@ import { initialStatus, StablecoinState } from '~/types';
 import { initializeToken } from '~/utils';
 import { getConfig } from '~/config';
 
-const {
-  USDA_DECIMALS,
-  ADDRESSES: { USDA, SUSD },
-} = getConfig();
+const { USDA, SUSD } = getConfig().ADDRESSES[1];
 
 export const stablecoinInitialState: StablecoinState = {
   USDA: initializeToken({
     name: 'Amphora USD',
     address: USDA,
     ticker: 'USDA',
-    decimals: USDA_DECIMALS,
+    decimals: 18,
   }),
   SUSD: initializeToken({
     name: 'Synth sUSD',

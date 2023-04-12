@@ -1,4 +1,4 @@
-import { useSigner } from 'wagmi';
+import { useNetwork, useSigner } from 'wagmi';
 import {
   ICurveMaster__factory,
   IERC20Metadata__factory,
@@ -6,12 +6,16 @@ import {
   IVaultController__factory,
   IVault__factory,
 } from '~/chain/contracts';
+import { getConfig } from '~/config';
 
 import { getConstants } from '~/config/constants';
 
 export const useAmphContracts = () => {
   const { data: signer } = useSigner();
-  const { VAULT_CONTROLLER, CURVE_MASTER, USDA, SUSD } = getConstants().ADDRESSES;
+  const { chain } = useNetwork();
+  const { DEFAULT_CHAIN_ID } = getConfig();
+
+  const { VAULT_CONTROLLER, CURVE_MASTER, USDA, SUSD } = getConstants().ADDRESSES[chain?.id || DEFAULT_CHAIN_ID];
 
   const VaultControllerContract = {
     address: VAULT_CONTROLLER,

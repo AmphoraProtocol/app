@@ -1,5 +1,6 @@
 import { createContext, useState, useContext } from 'react';
 import { ContractReceipt, ContractTransaction } from 'ethers';
+import { useNetwork } from 'wagmi';
 
 import { useAppSelector } from '~/hooks';
 import { initializeToken } from '~/utils';
@@ -69,10 +70,12 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
   const [collateralWithdrawAmount, setCollateralWithdrawAmount] = useState('');
   const [collateralDepositAmountMax, setCollateralDepositAmountMax] = useState(false);
   const [collateralWithdrawAmountMax, setCollateralWithdrawAmountMax] = useState(false);
+  const { chain } = useNetwork();
+  const { DEFAULT_CHAIN_ID } = getConfig();
   const [collateralToken, setCollateralToken] = useState<Token>(
     initializeToken({
       name: 'Wrapped ETH',
-      address: getConfig().ADDRESSES.WETH,
+      address: getConfig().ADDRESSES[chain?.id || DEFAULT_CHAIN_ID].WETH,
       ticker: 'WETH',
     }),
   );

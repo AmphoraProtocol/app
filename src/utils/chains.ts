@@ -1,25 +1,41 @@
 import { ChainInfo } from '../types';
 
 export enum ChainIDs {
-  MAINNET = 1,
   LOCAL = 1337,
+  SEPOLIA = 11155111,
 }
 
 const configs: Array<ChainInfo> = [
-  {
-    id: ChainIDs.MAINNET,
-    name: 'Ethereum',
-    symbol: 'ETH',
-    logo: 'ETH',
-    scan_url: 'https://etherscan.io/tx/',
-    scan_site: 'Etherscan',
-  },
+  // {
+  //   id: ChainIDs.MAINNET,
+  //   name: 'Ethereum',
+  //   symbol: 'ETH',
+  //   logo: 'ETH',
+  //   scan_url: 'https://etherscan.io/tx/',
+  //   scan_site: 'Etherscan',
+  // },
   {
     id: ChainIDs.LOCAL,
     name: 'Ethereum Local',
     symbol: 'ETH Local',
     logo: 'ETH',
     scan_url: 'https://etherscan.io/tx/',
+    scan_site: 'Etherscan',
+  },
+  // {
+  //   id: ChainIDs.GOERLI,
+  //   name: 'Goerli',
+  //   symbol: 'GETH',
+  //   logo: 'ETH',
+  //   scan_url: 'https://goerli.etherscan.io/',
+  //   scan_site: 'Etherscan',
+  // },
+  {
+    id: ChainIDs.SEPOLIA,
+    name: 'Sepolia',
+    symbol: 'SETH',
+    logo: 'ETH',
+    scan_url: 'https://sepolia.etherscan.io/',
     scan_site: 'Etherscan',
   },
 ];

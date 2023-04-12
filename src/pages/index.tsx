@@ -16,6 +16,7 @@ import { useLight, useAppDispatch, useAppSelector } from '~/hooks';
 import { UserIPTVault } from '~/components/UserStats/UserIPTVault';
 import SVGBox from '~/components/icons/misc/SVGBox';
 import { CollateralActions, StablecoinActions, VCActions } from '~/store';
+import { getConfig } from '~/config';
 import { GweiBlockText, TitleText } from '~/components/text';
 import { RedirectTo } from '~/components/redirect';
 import { Substat } from '~/components/text/Substat';
@@ -32,12 +33,13 @@ const Dashboard = () => {
   const dispatch = useAppDispatch();
   const { address } = useAccount();
   const { chain } = useNetwork();
+  const { DEFAULT_CHAIN_ID } = getConfig();
 
   useEffect(() => {
-    dispatch(VCActions.getVCData({ userAddress: address }));
+    dispatch(VCActions.getVCData({ userAddress: address, chainId: chain?.id || DEFAULT_CHAIN_ID }));
 
     if (address) {
-      dispatch(StablecoinActions.getStablesData({ userAddress: address }));
+      dispatch(StablecoinActions.getStablesData({ userAddress: address, chainId: chain?.id || DEFAULT_CHAIN_ID }));
     }
   }, [chain?.id, address]);
 
@@ -48,6 +50,7 @@ const Dashboard = () => {
           userAddress: address,
           vaultAddress: vaultControllerData.userVault.vaultAddress,
           tokens: vaultControllerData.collaterals,
+          chainId: chain?.id || DEFAULT_CHAIN_ID,
         }),
       );
     }

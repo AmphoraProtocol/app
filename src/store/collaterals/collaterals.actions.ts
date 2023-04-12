@@ -29,10 +29,11 @@ const getCollateralData = createAsyncThunk<
     userAddress?: Address;
     vaultAddress?: Address;
     tokens?: Address[];
+    chainId: number;
   },
   ThunkAPI
->('collateral/getData', async ({ userAddress, vaultAddress, tokens }) => {
-  const { VAULT_CONTROLLER, ZERO_ADDRESS, WETH } = getConfig().ADDRESSES;
+>('collateral/getData', async ({ userAddress, vaultAddress, tokens, chainId }) => {
+  const { VAULT_CONTROLLER, ZERO_ADDRESS, WETH } = getConfig().ADDRESSES[chainId];
   const tokenList: Address[] = tokens || [WETH];
 
   const collateralsLength = tokenList.length;
@@ -69,12 +70,12 @@ const getCollateralData = createAsyncThunk<
   );
 
   // Getting rewards prices, temporary fixed values
-  const pools: Address[] = [
-    '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
-    '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
-    '0x0000000000000000000000000000000000000000', // AMPH Pool
-  ];
-  const price_list = await getRewardPrices(pools);
+  // const pools: Address[] = [
+  //   '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
+  //   '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
+  //   '0x0000000000000000000000000000000000000000', // AMPH Pool
+  // ];
+  // const price_list = await getRewardPrices(pools, chainId);
 
   for (const [key, token] of Object.entries(collaterals)) {
     const data = await readContract({
@@ -160,7 +161,7 @@ const getCollateralData = createAsyncThunk<
       });
 
       token.claimable_rewards = claimableRewards.map((rewards, index) => {
-        return { amount: rewards.amount.toString(), token: rewards.token, price: price_list[index] };
+        return { amount: rewards.amount.toString(), token: rewards.token, price: 0 /*  price_list[index] */ };
       });
     }
 
