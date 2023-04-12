@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { BigNumber, ContractReceipt, utils } from 'ethers';
+import { ContractReceipt, utils } from 'ethers';
 import { useAccount, useContract } from 'wagmi';
 
 import { formatColor, neutral } from '~/theme';
@@ -9,7 +9,7 @@ import { BaseModal } from './BaseModal';
 import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
-import { formatNumber, locale } from '~/utils';
+import { BN, formatNumber, locale } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
 
 export const WithdrawSUSDConfirmationModal = () => {
@@ -28,14 +28,8 @@ export const WithdrawSUSDConfirmationModal = () => {
       try {
         setLoadmsg(locale('CheckWallet'));
 
-        const susd_amount = SUSD.maxWithdraw ? USDA.wallet_amount! : SUSD.amountToWithdraw;
-        let formattedSUSDAmount: BigNumber;
-        if (typeof susd_amount === 'string') {
-          formattedSUSDAmount = utils.parseUnits(susd_amount, 18);
-        } else {
-          formattedSUSDAmount = susd_amount;
-        }
-        const withdrawTxn = await USDAContract.withdraw(formattedSUSDAmount);
+        const susd_amount = SUSD.maxWithdraw ? USDA.wallet_amount! : utils.parseUnits(SUSD.amountToWithdraw, 18);
+        const withdrawTxn = await USDAContract.withdraw(BN(susd_amount));
 
         setLoadmsg(locale('TransactionPending'));
         updateTransactionState(withdrawTxn);

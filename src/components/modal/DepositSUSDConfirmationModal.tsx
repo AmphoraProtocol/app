@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Typography, Link as MuiLink } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
 import { useContract, useAccount, useNetwork } from 'wagmi';
-import { ContractTransaction } from 'ethers';
+import { ContractTransaction, utils } from 'ethers';
 
-import { BN, locale, Chains, hasSUSDAllowance, formatNumber } from '~/utils';
+import { BN, locale, Chains, formatNumber } from '~/utils';
 import { useAppSelector, useAmphContracts } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { getConfig } from '~/config';
@@ -34,11 +34,10 @@ export const DepositSUSDConfirmationModal = () => {
   useEffect(() => {
     if (SUSD.amountToDeposit && address && SUSDContract) {
       SUSDContract.allowance(address, USDA).then((allowance) => {
-        hasSUSDAllowance(
-          SUSD.maxDeposit ? SUSD_TOKEN.wallet_amount! : SUSD.amountToDeposit,
-          allowance,
-          SUSD_TOKEN.decimals,
-        ).then(setHasAllowance);
+        const amount = SUSD.maxDeposit
+          ? SUSD_TOKEN.wallet_amount!
+          : utils.parseUnits(SUSD.amountToDeposit, SUSD_TOKEN.decimals);
+        setHasAllowance(allowance.gte(amount));
       });
     }
   }, [address, SUSD.amountToDeposit, loadmsg]);

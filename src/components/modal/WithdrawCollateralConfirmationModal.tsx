@@ -9,7 +9,7 @@ import { ModalType, useModalContext } from '../libs/modal-content-provider/Modal
 import { BaseModal } from './BaseModal';
 import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { DisableableModalButton } from '../button/DisableableModalButton';
-import { locale, round } from '~/utils';
+import { locale, round, BN } from '~/utils';
 import SVGBox from '../icons/misc/SVGBox';
 
 export const WithdrawCollateralConfirmationModal = () => {
@@ -34,11 +34,12 @@ export const WithdrawCollateralConfirmationModal = () => {
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
 
-    const amount = collateralWithdrawAmountMax ? collateralToken.vault_amount : collateralWithdrawAmount;
     try {
-      if (vaultContract && amount) {
-        const formattedAmount = utils.parseUnits(amount, collateralToken.decimals);
-        const attempt = await vaultContract.withdrawERC20(collateralToken.address, formattedAmount);
+      if (vaultContract && collateralToken.vault_amount) {
+        const amount = collateralWithdrawAmountMax
+          ? collateralToken.vault_amount
+          : utils.parseUnits(collateralWithdrawAmount, collateralToken.decimals);
+        const attempt = await vaultContract.withdrawERC20(collateralToken.address, BN(amount));
 
         updateTransactionState(attempt);
 

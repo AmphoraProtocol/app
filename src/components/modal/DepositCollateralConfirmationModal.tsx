@@ -8,7 +8,7 @@ import { ModalType, useModalContext } from '../libs/modal-content-provider/Modal
 import { BaseModal } from './BaseModal';
 import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
 import { DisableableModalButton } from '../button/DisableableModalButton';
-import { locale, formatBNtoPreciseStringAndNumber } from '~/utils';
+import { locale, formatBNtoPreciseStringAndNumber, BN } from '~/utils';
 
 export const DepositCollateralConfirmationModal = () => {
   const {
@@ -33,15 +33,13 @@ export const DepositCollateralConfirmationModal = () => {
   const collateralContract = useContract({ ...tokenAbi, address: collateralToken.address });
   const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
 
-  const amount = collateralDepositAmountMax ? collateralToken.wallet_amount : collateralDepositAmount;
-
   const handleDepositConfirmationRequest = async () => {
+    const amount = collateralDepositAmountMax
+      ? collateralToken.wallet_amount!
+      : utils.parseUnits(collateralDepositAmount, collateralToken.decimals);
     try {
       if (vaultContract && amount) {
-        const formattedERC20Amount =
-          typeof amount === 'string' ? utils.parseUnits(amount, collateralToken.decimals) : amount;
-
-        const attempt = await vaultContract.depositERC20(collateralToken.address, formattedERC20Amount);
+        const attempt = await vaultContract.depositERC20(collateralToken.address, BN(amount));
 
         updateTransactionState(attempt!);
 
@@ -64,14 +62,14 @@ export const DepositCollateralConfirmationModal = () => {
   };
 
   const handleAllowance = async () => {
+    const amount = collateralDepositAmountMax
+      ? collateralToken.wallet_amount!
+      : utils.parseUnits(collateralDepositAmount, collateralToken.decimals);
     setLoading(true);
     setLoadmsg(locale('CheckWallet'));
     try {
       if (amount && collateralContract && vaultAddress) {
-        const formattedERC20Amount =
-          typeof amount === 'string' ? utils.parseUnits(amount, collateralToken.decimals) : amount;
-
-        const attempt = await collateralContract.approve(vaultAddress, formattedERC20Amount);
+        const attempt = await collateralContract.approve(vaultAddress, BN(amount));
 
         await attempt.wait();
         setHasCollateralAllowance(true);
