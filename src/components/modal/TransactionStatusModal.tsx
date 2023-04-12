@@ -54,7 +54,7 @@ export const TransactionStatusModal = () => {
       case 'PENDING':
         return (
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant='subtitle1' color='text.secondary' mb={1}>
+            <Typography variant='subtitle1' color='text.primary' mb={1}>
               Pending Transaction
             </Typography>
 
@@ -73,7 +73,7 @@ export const TransactionStatusModal = () => {
       case 'SUCCESS':
         return (
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant='subtitle1' color='text.secondary' mb={1}>
+            <Typography variant='subtitle1' color='text.primary' mb={1}>
               Successful Transaction
             </Typography>
 
