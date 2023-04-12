@@ -7,7 +7,6 @@ export interface Env {
 }
 
 export interface Constants {
-  DEFAULT_APPROVE_AMOUNT: string;
   USDA_DECIMALS: number;
   DEFAULT_CHAIN_ID: number;
   ADDRESSES: {

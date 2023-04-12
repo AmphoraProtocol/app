@@ -2,7 +2,6 @@ import { Constants } from '~/types';
 
 export const getConstants = (): Constants => {
   return {
-    DEFAULT_APPROVE_AMOUNT: '1000000000',
     USDA_DECIMALS: 18,
     DEFAULT_CHAIN_ID: 11155111,
     ADDRESSES: {
