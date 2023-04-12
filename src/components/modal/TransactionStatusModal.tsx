@@ -62,7 +62,7 @@ export const TransactionStatusModal = () => {
               <Spinner />
             </Box>
 
-            <MuiLink target='_blank' href={`${chain.scan_url}${(transaction as ContractTransaction).hash}`}>
+            <MuiLink target='_blank' href={`${chain.scan_url}tx/${(transaction as ContractTransaction).hash}`}>
               <Button variant='contained' sx={{ color: formatColor(neutral.white) }}>
                 View on {chain.scan_site}
               </Button>
@@ -80,7 +80,7 @@ export const TransactionStatusModal = () => {
             {/* temporary success icon */}
             <SVGBox svg_name='USDA' width={30} height={30} alt='ip_green' sx={{ my: 3, mx: 'auto' }} />
 
-            <MuiLink target='_blank' href={`${chain.scan_url}${(transaction as ContractReceipt).transactionHash}`}>
+            <MuiLink target='_blank' href={`${chain.scan_url}tx/${(transaction as ContractReceipt).transactionHash}`}>
               <Button
                 variant='contained'
                 sx={{
@@ -107,7 +107,7 @@ export const TransactionStatusModal = () => {
                 strokecolor={isLight ? formatColor(neutral.gray1) : formatColor(neutral.white)}
               />
             </Box>
-            <MuiLink target='_blank' href={`${chain.scan_url}${(transaction as ContractReceipt).transactionHash}`}>
+            <MuiLink target='_blank' href={`${chain.scan_url}tx/${(transaction as ContractReceipt).transactionHash}`}>
               <Button variant='contained' sx={{ color: formatColor(neutral.white) }}>
                 View on {chain.scan_site}
               </Button>

@@ -19,7 +19,7 @@ const configs: Array<ChainInfo> = [
     name: 'Ethereum Local',
     symbol: 'ETH Local',
     logo: 'ETH',
-    scan_url: 'https://etherscan.io/tx/',
+    scan_url: 'https://etherscan.io/',
     scan_site: 'Etherscan',
   },
   // {
@@ -35,7 +35,7 @@ const configs: Array<ChainInfo> = [
     name: 'Sepolia',
     symbol: 'SETH',
     logo: 'ETH',
-    scan_url: 'https://sepolia.etherscan.io/tx/',
+    scan_url: 'https://sepolia.etherscan.io/',
     scan_site: 'Etherscan',
   },
 ];

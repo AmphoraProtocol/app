@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography, Link as MuiLink } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
-import { useContract, useAccount, useNetwork, useProvider } from 'wagmi';
+import { useContract, useAccount, useNetwork } from 'wagmi';
 import { ContractTransaction } from 'ethers';
 
 import { BN, locale, Chains, hasSUSDAllowance, formatNumber } from '~/utils';
@@ -150,7 +150,7 @@ export const DepositSUSDConfirmationModal = () => {
         load_text={loadmsg}
       />
       {approvalTxn !== undefined && (
-        <MuiLink mt={1} display='block' target='_blank' href={`${chain.scan_url}${approvalTxn.hash}`}>
+        <MuiLink mt={1} display='block' target='_blank' href={`${chain.scan_url}tx/${approvalTxn.hash}`}>
           <Button variant='text'>View approval on {chain.scan_site}</Button>
         </MuiLink>
       )}
