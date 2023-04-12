@@ -77,7 +77,7 @@ export const ClaimModal = () => {
           sx={{ color: formatColor(neutral.white), marginY: 2, width: '100%' }}
           onClick={handleClaimRequest}
         >
-          Claim (${rewardsInUsd})
+          Claim (${formatNumber(rewardsInUsd)})
         </Button>
       </Box>
     </BaseModal>

@@ -6,18 +6,19 @@ import { useAccount } from 'wagmi';
 import { CardContainer } from './CardContainer';
 import { ClaimsButton } from '../button';
 import { useAppSelector } from '~/hooks';
-import { getTotalAmount } from '~/utils';
+import { formatNumber, getTotalRewardValue } from '~/utils';
 
 export const ClaimsCard = () => {
-  // const rewards = useAppSelector((state) => state.VC.userVault.rewards);
   const [formattedAmount, setFormattedAmount] = useState('0');
   const { isConnected } = useAccount();
+  const assets = useAppSelector((state) => state.collaterals.elements);
 
-  // useEffect(() => {
-  //   if (rewards?.prices && rewards?.amounts) {
-  //     setFormattedAmount(getTotalAmount(rewards.prices, rewards.amounts));
-  //   }
-  // }, [rewards]);
+  useEffect(() => {
+    let totalValue = 0;
+    if (assets) totalValue = getTotalRewardValue(assets).value;
+
+    setFormattedAmount(formatNumber(totalValue));
+  }, [assets]);
 
   return (
     <CardContainer>

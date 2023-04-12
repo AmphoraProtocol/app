@@ -37,7 +37,7 @@ export const UserStats = () => {
             oracleType={val.oracle_type}
             oracleAddress={val.oracle_address}
             curve_lp={val.curve_lp}
-            rewards={getRewardAmount(val.claimable_rewards).amount}
+            rewards={formatNumber(getRewardAmount(val.claimable_rewards).amount)}
           />,
         );
       }

@@ -5,6 +5,5 @@ export * from './chains';
 export * from './format';
 export * from './getOracleType';
 export * from './getPrices';
-export * from './hasAllowance';
 export * from './initializeToken';
 export * from './rewards';
