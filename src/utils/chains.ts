@@ -12,7 +12,7 @@ const configs: Array<ChainInfo> = [
   //   symbol: 'ETH',
   //   logo: 'ETH',
   //   scan_url: 'https://etherscan.io/tx/',
-  //   scan_site: 'Etherscan',
+  //   scan_site: 'Explorer',
   // },
   {
     id: ChainIDs.LOCAL,
@@ -20,7 +20,7 @@ const configs: Array<ChainInfo> = [
     symbol: 'ETH Local',
     logo: 'ETH',
     scan_url: 'https://etherscan.io/',
-    scan_site: 'Etherscan',
+    scan_site: 'Explorer',
   },
   // {
   //   id: ChainIDs.GOERLI,
@@ -28,7 +28,7 @@ const configs: Array<ChainInfo> = [
   //   symbol: 'GETH',
   //   logo: 'ETH',
   //   scan_url: 'https://goerli.etherscan.io/',
-  //   scan_site: 'Etherscan',
+  //   scan_site: 'Explorer',
   // },
   {
     id: ChainIDs.SEPOLIA,
@@ -36,7 +36,7 @@ const configs: Array<ChainInfo> = [
     symbol: 'SETH',
     logo: 'ETH',
     scan_url: 'https://sepolia.etherscan.io/',
-    scan_site: 'Etherscan',
+    scan_site: 'Explorer',
   },
 ];
 
