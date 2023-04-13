@@ -3,7 +3,7 @@ import { Box, useTheme, Button } from '@mui/material';
 import { useAccount } from 'wagmi';
 import { utils } from 'ethers';
 
-import { useLight } from '~/hooks';
+import { useAppSelector, useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
 import { useSwapTokenContext } from '../libs/swap-token-provider/SwapTokenProvider';
@@ -14,17 +14,15 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { BN } from '~/utils';
 
 export const SwapContainer = () => {
-  const isLight = useLight();
-
   const theme = useTheme();
-
-  const [token1, token2, swapTokenPositions] = useSwapTokenContext();
-  const { openConnectModal } = useConnectModal();
-
-  const { setType, updateSUSD } = useModalContext();
-
+  const isLight = useLight();
   const { isConnected } = useAccount();
+  const totalSUSDDeposited = useAppSelector((state) => state.VC.totalSUSDDeposited);
   const [token1Amount, setToken1Amount, token2Amount, setToken2Amount, swapTokenAmount] = useTokenAmountInput();
+  const [token1, token2, swapTokenPositions] = useSwapTokenContext();
+
+  const { openConnectModal } = useConnectModal();
+  const { setType, updateSUSD } = useModalContext();
 
   const swapTokens = () => {
     if (token1.ticker === 'sUSD') {
@@ -36,6 +34,7 @@ export const SwapContainer = () => {
     swapTokenPositions();
     updateSUSD('maxDeposit', false);
     updateSUSD('maxWithdraw', false);
+    setToken1Amount('');
   };
 
   const token1MaxBalance = () => {
@@ -158,7 +157,8 @@ export const SwapContainer = () => {
             disabled={
               !token1.wallet_balance ||
               Number(token1Amount) <= 0 ||
-              BN(utils.parseEther(token1Amount)).gt(BN(token1.wallet_amount))
+              BN(utils.parseEther(token1Amount)).gt(BN(token1.wallet_amount)) ||
+              totalSUSDDeposited < Number(token1Amount)
             }
             onClick={() => setType(ModalType.WithdrawSUSDConfirmation)}
           >
