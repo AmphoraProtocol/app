@@ -39,7 +39,7 @@ export const DepositCollateralContent = () => {
   };
 
   useEffect(() => {
-    setDisabled(Number(inputAmount) <= 0);
+    setDisabled(!!(Number(inputAmount) <= 0 || Number(inputAmount) > Number(collateralToken.wallet_amount_str)));
 
     if (isMoneyValue) {
       setCollateralDepositAmount((Number(inputAmount) / collateralToken.price).toString());

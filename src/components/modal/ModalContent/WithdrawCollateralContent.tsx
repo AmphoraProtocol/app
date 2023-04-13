@@ -48,7 +48,10 @@ export const WithdrawCollateralContent = () => {
       setNewBorrowingPower(newBorrowingPower);
     }
 
-    if (!collateralWithdrawAmountMax && (newBorrowingPower < accountLiability || Number(inputAmount) <= 0)) {
+    if (
+      (!collateralWithdrawAmountMax && (newBorrowingPower < accountLiability || Number(inputAmount) <= 0)) ||
+      Number(inputAmount) == 0
+    ) {
       setDisabled(true);
     } else {
       setDisabled(false);

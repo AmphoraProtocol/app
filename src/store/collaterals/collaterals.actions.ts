@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { constants } from 'ethers';
+import { constants, utils } from 'ethers';
 import { Address } from 'wagmi';
-import { multicall, readContract } from '@wagmi/core';
+import { multicall } from '@wagmi/core';
 
 import {
   IERC20Metadata__factory,
@@ -70,19 +70,29 @@ const getCollateralData = createAsyncThunk<
   );
 
   // Getting rewards prices, temporary fixed values
-  // const pools: Address[] = [
-  //   '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
-  //   '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
-  //   '0x0000000000000000000000000000000000000000', // AMPH Pool
-  // ];
-  // const price_list = await getRewardPrices(pools, chainId);
+  const pools: Address[] = [
+    '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
+    '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
+    '0x0000000000000000000000000000000000000000', // AMPH Pool
+  ];
+  const price_list = await getRewardPrices(pools, chainId);
 
   for (const [key, token] of Object.entries(collaterals)) {
-    const data = await readContract({
-      address: VAULT_CONTROLLER,
-      abi: IVaultController__factory.abi,
-      functionName: 'tokenCollateralInfo',
-      args: [token.address],
+    const [data, rewards] = await multicall({
+      contracts: [
+        {
+          address: VAULT_CONTROLLER,
+          abi: IVaultController__factory.abi,
+          functionName: 'tokenCollateralInfo',
+          args: [token.address],
+        },
+        {
+          address: vaultAddress || ZERO_ADDRESS,
+          abi: IVault__factory.abi,
+          functionName: 'claimableRewards',
+          args: [token.address],
+        },
+      ],
     });
 
     token.token_LTV = data.ltv.div(BN('1e16')).toNumber();
@@ -144,24 +154,27 @@ const getCollateralData = createAsyncThunk<
       ],
     });
 
-    if (vaultAddress && token.curve_lp) {
-      const vaultContract = {
-        address: vaultAddress,
-        abi: IVault__factory.abi,
-      };
-
-      const [claimableRewards] = await multicall({
-        contracts: [
-          {
-            ...vaultContract,
-            functionName: 'claimableRewards',
-            args: [token.address],
-          },
-        ],
+    // Fetch reward decimals and set reward price and amount:
+    if (rewards) {
+      const contracts: any[] = [];
+      rewards.forEach((element) => {
+        contracts.push({
+          address: element.token,
+          abi: IERC20Metadata__factory.abi,
+          functionName: 'decimals',
+        });
       });
 
-      token.claimable_rewards = claimableRewards.map((rewards, index) => {
-        return { amount: rewards.amount.toString(), token: rewards.token, price: 0 /*  price_list[index] */ };
+      const rewardDecimals = (await multicall({
+        contracts: contracts,
+      })) as number[];
+
+      token.claimable_rewards = rewards.map((rewards, index) => {
+        return {
+          amount: utils.formatUnits(rewards.amount, rewardDecimals[index]),
+          token: rewards.token,
+          price: price_list[index] || 0,
+        };
       });
     }
 

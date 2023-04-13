@@ -225,6 +225,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
         >
           <Button
             onClick={() => handleDWClick(ModalType.DepositCollateral)}
+            disabled={!userVault.vaultAddress}
             sx={{
               borderRadius: 2,
               border: '1.5px solid #A3A9BA',
@@ -233,10 +234,11 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
               minWidth: { xs: 20, lg: 40 },
             }}
           >
-            <SVGBox width={16} height={16} svg_name='plus' />
+            <SVGBox width={16} height={16} svg_name={userVault.vaultAddress ? 'plus' : 'lock'} />
           </Button>
           <Button
             onClick={() => handleDWClick(ModalType.WithdrawCollateral)}
+            disabled={!userVault.vaultAddress}
             sx={{
               borderRadius: 2,
               border: '1.5px solid #A3A9BA',
@@ -245,7 +247,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
               minWidth: { xs: 20, lg: 40 },
             }}
           >
-            <SVGBox width={16} height={16} svg_name='minus' />
+            <SVGBox width={16} height={16} svg_name={userVault.vaultAddress ? 'minus' : 'lock'} />
           </Button>
         </Box>
 

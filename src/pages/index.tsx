@@ -181,14 +181,22 @@ const Dashboard = () => {
                 <TitleTextToolTip
                   title={`Deposit APR`}
                   tooltipcontent='Current annualized rate paid to USDA holders'
-                  text={vaultControllerData.depositAPR ? vaultControllerData.depositAPR.toFixed(2) + '%' : null}
+                  text={
+                    vaultControllerData.depositAPR || vaultControllerData.depositAPR === 0
+                      ? vaultControllerData.depositAPR.toFixed(2) + '%'
+                      : null
+                  }
                 />
               </SingleStatCard>
               <SingleStatCard>
                 <TitleTextToolTip
                   title={`Borrow APR`}
                   tooltipcontent='Current annualized rate paid by USDA borrowers'
-                  text={vaultControllerData.borrowAPR ? vaultControllerData.borrowAPR.toFixed(2) + '%' : null}
+                  text={
+                    vaultControllerData.borrowAPR || vaultControllerData.borrowAPR === 0
+                      ? vaultControllerData.borrowAPR.toFixed(2) + '%'
+                      : null
+                  }
                 />
               </SingleStatCard>
             </Box>

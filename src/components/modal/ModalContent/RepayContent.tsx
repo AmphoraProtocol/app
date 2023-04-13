@@ -147,7 +147,6 @@ export const RepayContent = (props: RepayContent) => {
           text='Repay All'
           onClick={handleRepayAllRequest}
           loading={loading}
-          load_text={loadmsg}
           shaking={shaking}
           disabled={accountLiability <= 0} // disable if account liability is lower than 0.01 and rounded up
         />
