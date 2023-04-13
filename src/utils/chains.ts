@@ -19,17 +19,9 @@ const configs: Array<ChainInfo> = [
     name: 'Ethereum Local',
     symbol: 'ETH Local',
     logo: 'ETH',
-    scan_url: 'https://etherscan.io/tx/',
+    scan_url: 'https://etherscan.io/',
     scan_site: 'Etherscan',
   },
-  // {
-  //   id: ChainIDs.GOERLI,
-  //   name: 'Goerli',
-  //   symbol: 'GETH',
-  //   logo: 'ETH',
-  //   scan_url: 'https://goerli.etherscan.io/',
-  //   scan_site: 'Etherscan',
-  // },
   {
     id: ChainIDs.SEPOLIA,
     name: 'Sepolia',

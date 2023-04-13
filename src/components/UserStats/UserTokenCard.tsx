@@ -1,6 +1,6 @@
 import { ContractReceipt } from 'ethers';
 import { Box, BoxProps, Button, LinearProgress, Link, Typography } from '@mui/material';
-import { useAccount, useContract } from 'wagmi';
+import { useAccount, useContract, useNetwork } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { blue, formatColor, neutral } from '~/theme';
@@ -10,6 +10,8 @@ import SVGBox from '../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { ToolTip } from '../tooltip/ToolTip';
 import { OracleType } from '~/types';
+import { Chains } from '~/utils';
+import { getConfig } from '~/config';
 
 interface UserTokenCardProps extends BoxProps {
   tokenName: string;
@@ -42,6 +44,9 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   const tokens = useAppSelector((state) => state.collaterals.elements);
   const { VaultControllerContract } = useAmphContracts();
   const VC = useContract(VaultControllerContract);
+  const { chain: currentChain } = useNetwork();
+  const { DEFAULT_CHAIN_ID } = getConfig();
+  const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
 
   const {
     tokenName,
@@ -112,7 +117,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
         {/* Token icon and name */}
         <Box display='flex' alignItems='center' columnGap={2}>
           <SVGBox width={{ xs: 24, lg: 40 }} height={{ xs: 24, lg: 40 }} svg_name={image.src} alt={image.alt} />
-          <Link href={`https://etherscan.io/token/${tokenAddress}`} target='_blank'>
+          <Link href={`${chain.scan_url}token/${tokenAddress}`} target='_blank'>
             <Box display='flex' flexDirection='column'>
               <Typography variant='body1' color='text.primary' display={{ xs: 'none', lg: 'block' }}>
                 {tokenName}
@@ -125,11 +130,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
         </Box>
 
         {/* Oracle type */}
-        <Link
-          display={{ xs: 'none', lg: 'block' }}
-          href={`https://etherscan.io/address/${oracleAddress}`}
-          target='_blank'
-        >
+        <Link display={{ xs: 'none', lg: 'block' }} href={`${chain.scan_url}address/${oracleAddress}`} target='_blank'>
           <Typography variant='body1' color='text.primary' textAlign='end'>
             {oracleType}
           </Typography>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography, Link as MuiLink } from '@mui/material';
 import { TransactionReceipt } from '@ethersproject/providers';
-import { useContract, useAccount, useNetwork, useProvider } from 'wagmi';
+import { useContract, useAccount, useNetwork } from 'wagmi';
 import { ContractTransaction } from 'ethers';
 
 import { BN, locale, Chains, hasSUSDAllowance, formatNumber } from '~/utils';
@@ -23,7 +23,7 @@ export const DepositSUSDConfirmationModal = () => {
   const [hasAllowance, setHasAllowance] = useState(false);
   const [approvalTxn, setApprovalTxn] = useState<ContractTransaction>();
   const { chain: currentChain } = useNetwork();
-  const { DEFAULT_APPROVE_AMOUNT, DEFAULT_CHAIN_ID } = getConfig();
+  const { DEFAULT_CHAIN_ID } = getConfig();
   const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
   const { address } = useAccount();
   const { susdContract, usdaContract } = useAmphContracts();
@@ -71,7 +71,7 @@ export const DepositSUSDConfirmationModal = () => {
 
   const handleApprovalRequest = async () => {
     if (SUSDContract && SUSD.amountToDeposit) {
-      const depositAmount = BN(DEFAULT_APPROVE_AMOUNT).mul(BN(`1e${SUSD_TOKEN.decimals}`));
+      const depositAmount = BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`));
 
       setLoading(true);
       try {
@@ -150,7 +150,7 @@ export const DepositSUSDConfirmationModal = () => {
         load_text={loadmsg}
       />
       {approvalTxn !== undefined && (
-        <MuiLink mt={1} display='block' target='_blank' href={`${chain.scan_url}${approvalTxn.hash}`}>
+        <MuiLink mt={1} display='block' target='_blank' href={`${chain.scan_url}tx/${approvalTxn.hash}`}>
           <Button variant='text'>View approval on {chain.scan_site}</Button>
         </MuiLink>
       )}
