@@ -22,14 +22,6 @@ const configs: Array<ChainInfo> = [
     scan_url: 'https://etherscan.io/',
     scan_site: 'Explorer',
   },
-  // {
-  //   id: ChainIDs.GOERLI,
-  //   name: 'Goerli',
-  //   symbol: 'GETH',
-  //   logo: 'ETH',
-  //   scan_url: 'https://goerli.etherscan.io/',
-  //   scan_site: 'Explorer',
-  // },
   {
     id: ChainIDs.SEPOLIA,
     name: 'Sepolia',
