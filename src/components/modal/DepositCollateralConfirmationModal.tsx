@@ -129,6 +129,9 @@ export const DepositCollateralConfirmationModal = () => {
             src={`images/${collateralToken.ticker}.svg`}
             alt={collateralToken.ticker}
             marginRight={3}
+            onError={(ev: any) => {
+              ev.target.src = 'images/default.png';
+            }}
           ></Box>
           <Box>
             <Typography variant='body3' color='text.primary'>
