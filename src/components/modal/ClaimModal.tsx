@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { useContract } from 'wagmi';
+import { ContractReceipt } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
@@ -17,11 +18,24 @@ export const ClaimModal = () => {
   const vaultAddress = useAppSelector((state) => state.VC.userVault.vaultAddress);
   const { vaultAbi } = useAmphContracts();
   const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
+  const [loading, setLoading] = useState(false);
+  const { updateTransactionState } = useModalContext();
 
   const handleClaimRequest = async () => {
+    setLoading(true);
     if (vaultAddress && vaultContract) {
-      vaultContract.claimRewards([collateralToken.address]);
+      try {
+        const attempt = await vaultContract.claimRewards([collateralToken.address]);
+        updateTransactionState(attempt!);
+
+        const receipt = await attempt.wait();
+        updateTransactionState(receipt);
+      } catch (err) {
+        const error = err as ContractReceipt;
+        updateTransactionState(error);
+      }
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -76,8 +90,10 @@ export const ClaimModal = () => {
           variant='contained'
           sx={{ color: formatColor(neutral.white), marginY: 2, width: '100%' }}
           onClick={handleClaimRequest}
+          disabled={loading}
         >
-          Claim (${formatNumber(rewardsInUsd)})
+          {loading && <CircularProgress size={20} />}
+          {!loading && <>Claim (${formatNumber(rewardsInUsd)})</>}
         </Button>
       </Box>
     </BaseModal>

@@ -1,17 +1,43 @@
-import { Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { ClaimIcon } from '../icons/misc/ClaimIcon';
-import { useAccount } from 'wagmi';
+import { Typography, Box, Button, CircularProgress } from '@mui/material';
+import { useAccount, useContract } from 'wagmi';
+import { ContractReceipt } from 'ethers';
 
+import { ClaimIcon } from '../icons/misc/ClaimIcon';
 import { CardContainer } from './CardContainer';
-import { ClaimsButton } from '../button';
-import { useAppSelector } from '~/hooks';
+import { useAmphContracts, useAppSelector } from '~/hooks';
 import { formatNumber, getTotalRewardValue } from '~/utils';
+import { blue, formatColor } from '~/theme';
+import { useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 
 export const ClaimsCard = () => {
   const [formattedAmount, setFormattedAmount] = useState('0');
+  const [loading, setLoading] = useState(false);
   const { isConnected } = useAccount();
+  const vaultAddress = useAppSelector((state) => state.VC.userVault.vaultAddress);
   const assets = useAppSelector((state) => state.collaterals.elements);
+  const { vaultAbi } = useAmphContracts();
+  const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
+  const { updateTransactionState } = useModalContext();
+
+  const handleClaimRequest = async () => {
+    setLoading(true);
+    if (vaultAddress && vaultContract && assets) {
+      const claimableTokens = Object.entries(assets).filter((token) => !!token[1].claimable_rewards);
+
+      try {
+        const attempt = await vaultContract.claimRewards(claimableTokens.map((token) => token[1].address));
+        updateTransactionState(attempt!);
+
+        const receipt = await attempt.wait();
+        updateTransactionState(receipt);
+      } catch (err) {
+        const error = err as ContractReceipt;
+        updateTransactionState(error);
+      }
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     let totalValue = 0;
@@ -45,7 +71,24 @@ export const ClaimsCard = () => {
             </Typography>
           </Box>
         </Box>
-        {isConnected && !!Number.parseFloat(formattedAmount) && <ClaimsButton text='Claim All' />}
+        {isConnected && !!Number.parseFloat(formattedAmount) && (
+          <Button
+            onClick={handleClaimRequest}
+            sx={{
+              width: { xs: '100%', lg: 150 },
+              backgroundColor: 'button.claim',
+              color: '#FFFFFF',
+              padding: 1.5,
+              '&:hover': {
+                backgroundColor: formatColor(blue.blue14),
+              },
+            }}
+            disabled={loading}
+          >
+            {loading && <CircularProgress size={20} />}
+            {!loading && 'Claim All'}
+          </Button>
+        )}
       </Box>
     </CardContainer>
   );
