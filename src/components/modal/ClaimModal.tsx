@@ -74,7 +74,8 @@ export const ClaimModal = () => {
             >
               <TokenIcon height={35} width={35} address={rewards.token} />
               <Typography variant='h5' color='text.primary' mt={0.8}>
-                {formatNumber(Number.parseFloat(rewards.amount))}
+                {formatNumber(Number.parseFloat(rewards.amount))}{' '}
+                {rewards.symbol.length > 5 ? `${rewards.symbol.substring(0, 5)}...` : rewards.symbol}
               </Typography>{' '}
               <Typography variant='body2' color='text.secondary' mt={0.8} ml={1}>
                 ($
