@@ -68,11 +68,12 @@ interface UserTokenMobileDropdownProps {
   onClickWithdraw: () => void;
   onClickClaim: () => void;
   isCurveLP?: boolean;
+  rewards?: string;
 }
 
 export const UserTokenMobileDropdown = (props: UserTokenMobileDropdownProps) => {
   const isLight = useLight();
-  const { onClickDeposit, onClickWithdraw, onClickClaim, isCurveLP } = props;
+  const { onClickDeposit, onClickWithdraw, onClickClaim, isCurveLP, rewards } = props;
   const userVault = useAppSelector((state) => state.VC.userVault);
 
   const [expanded, setExpanded] = useState(false);
@@ -131,7 +132,7 @@ export const UserTokenMobileDropdown = (props: UserTokenMobileDropdownProps) => 
             zIndex: 10,
           }}
         >
-          {isCurveLP && userVault.vaultAddress && (
+          {isCurveLP && userVault.vaultAddress && Number(rewards) > 0 && (
             <StyledDropdownButton img='plus_circle' text={`Claim Rewards`} onClick={onClickClaim} />
           )}
           <StyledDropdownButton img='plus_circle' text={`Deposit`} onClick={onClickDeposit} />
