@@ -185,11 +185,12 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
         {/* Vault Balance */}
         <Box display='flex' flexDirection='column' textAlign='end'>
           <Typography variant='body1' color='text.primary'>
-            {vaultBalance}
+            {isConnected && vaultBalance}
+            {!isConnected && '-'}
           </Typography>
 
           <Typography variant='label_semi' color='text.secondary'>
-            {tokenAmount} {tokenTicker}
+            {isConnected ? tokenAmount : '- '} {tokenTicker}
           </Typography>
         </Box>
 

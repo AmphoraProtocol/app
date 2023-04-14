@@ -71,7 +71,8 @@ export const ClaimsCard = () => {
               Total Rewards
             </Typography>
             <Typography variant='h7_semi' lineHeight={{ xs: 1 }} color='text.primary'>
-              $ {formattedAmount}
+              {isConnected && `$ ${formattedAmount}`}
+              {!isConnected && '-'}
             </Typography>
           </Box>
         </Box>
