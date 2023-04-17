@@ -15,7 +15,7 @@ export interface StablecoinState {
 export interface VCState {
   usdaSupply: number;
   totalSUSDDeposited: number;
-  reserveRatio: number;
+  reserveRatio: string;
   borrowAPR: number | undefined;
   depositAPR: number | undefined;
   status: Status;

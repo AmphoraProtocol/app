@@ -32,33 +32,18 @@ const getStablesData = createAsyncThunk<
     decimals: 18,
   });
 
-  const susdContract = {
-    address: SUSD.address,
-    abi: erc20ABI,
-  };
-
-  const usdaContract = {
-    address: USDA.address,
-    abi: erc20ABI,
-  };
-
-  const result = await multicall({
+  const [balanceOfSUSD, balanceOfUSDA] = await multicall({
     contracts: [
       {
-        ...susdContract,
-        functionName: 'decimals',
-      },
-      {
-        ...susdContract,
+        address: SUSD.address,
+        abi: erc20ABI,
         functionName: 'balanceOf',
         args: [userAddress],
       },
+
       {
-        ...usdaContract,
-        functionName: 'decimals',
-      },
-      {
-        ...usdaContract,
+        address: USDA.address,
+        abi: erc20ABI,
         functionName: 'balanceOf',
         args: [userAddress],
       },
@@ -66,14 +51,14 @@ const getStablesData = createAsyncThunk<
   });
   SUSD = {
     ...SUSD,
-    wallet_balance: formatBigInt(result[1], result[0]).str,
-    wallet_amount: result[1].toString(),
+    wallet_balance: formatBigInt(balanceOfSUSD, SUSD.decimals).str,
+    wallet_amount: balanceOfSUSD.toString(),
   };
 
   USDA = {
     ...USDA,
-    wallet_balance: formatBigInt(result[3], result[2]).str,
-    wallet_amount: result[3].toString(),
+    wallet_balance: formatBigInt(balanceOfUSDA, USDA.decimals).str,
+    wallet_amount: balanceOfUSDA.toString(),
   };
 
   return { USDA, SUSD };

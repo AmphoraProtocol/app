@@ -34,3 +34,7 @@ export const formatNumber = (value: number | undefined) => {
     return '0';
   }
 };
+
+export const formatPercent = (value: BigNumber) => {
+  return value.div(1e14).toNumber() / 100;
+};

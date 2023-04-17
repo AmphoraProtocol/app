@@ -6,7 +6,7 @@ import { VCActions } from './vc.actions';
 export const VCInitialState: VCState = {
   usdaSupply: 0,
   totalSUSDDeposited: 0,
-  reserveRatio: 0,
+  reserveRatio: '0',
   borrowAPR: undefined,
   depositAPR: undefined,
   userVault: {
