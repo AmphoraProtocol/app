@@ -24,7 +24,6 @@ export const DepositCollateralConfirmationModal = () => {
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
   const { vaultAddress } = useAppSelector((state) => state.VC.userVault);
-  const [hasAllowance, setHasAllowance] = useState(false);
   const [hasCollateralAllowance, setHasCollateralAllowance] = useState(false);
   const [allowance, setAllowance] = useState<string>('0');
   const isLight = useLight();
@@ -143,15 +142,7 @@ export const DepositCollateralConfirmationModal = () => {
       </Box>
 
       <DisableableModalButton
-        text={
-          !collateralToken.capped_token ||
-          (collateralToken.capped_token && collateralToken.capped_address) ||
-          hasAllowance
-            ? hasCollateralAllowance
-              ? 'Confirm Deposit'
-              : 'Approve'
-            : 'Set Allowance'
-        }
+        text={hasCollateralAllowance ? 'Confirm Deposit' : 'Approve'}
         disabled={false}
         onClick={() => {
           hasCollateralAllowance ? handleDepositConfirmationRequest() : handleAllowance();

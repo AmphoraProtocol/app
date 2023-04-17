@@ -30,7 +30,6 @@ export interface Token {
   }[];
 
   capped_token?: boolean;
-  capped_address?: string;
   capped_percent?: number;
 
   oracle_address?: string;
@@ -44,7 +43,6 @@ export interface InitializeTokenProps {
   ticker: string;
   address: Address;
   capped_token?: boolean;
-  capped_address?: string;
   price?: number;
   decimals?: number;
 }
