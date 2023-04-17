@@ -9,7 +9,7 @@ import { CircleExclamationIcon } from '../icons/misc/CircleExclamationIcon';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { Spinner } from '../loading';
 import { BaseModal } from './BaseModal';
-import { Chains } from '~/utils';
+import { Chains } from '~/config';
 import SVGBox from '../icons/misc/SVGBox';
 import { VCActions, CollateralActions, StablecoinActions } from '~/store';
 import { getConfig } from '~/config';

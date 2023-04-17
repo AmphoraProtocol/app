@@ -1,19 +1,20 @@
-import { ChainInfo } from '../types';
+import { ChainInfo } from '~/types';
 
 export enum ChainIDs {
   LOCAL = 1337,
   SEPOLIA = 11155111,
+  MAINNET = 1,
 }
 
 const configs: Array<ChainInfo> = [
-  // {
-  //   id: ChainIDs.MAINNET,
-  //   name: 'Ethereum',
-  //   symbol: 'ETH',
-  //   logo: 'ETH',
-  //   scan_url: 'https://etherscan.io/tx/',
-  //   scan_site: 'Explorer',
-  // },
+  {
+    id: ChainIDs.MAINNET,
+    name: 'Ethereum',
+    symbol: 'ETH',
+    logo: 'ETH',
+    scan_url: 'https://etherscan.io/tx/',
+    scan_site: 'Explorer',
+  },
   {
     id: ChainIDs.LOCAL,
     name: 'Ethereum Local',

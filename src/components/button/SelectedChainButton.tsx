@@ -1,7 +1,7 @@
 import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useNetwork } from 'wagmi';
 
-import { Chains } from '~/utils';
+import { Chains } from '~/config';
 import { useLight } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
 import { getConfig } from '~/config';

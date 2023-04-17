@@ -4,10 +4,10 @@ import { TransactionReceipt } from '@ethersproject/providers';
 import { useContract, useAccount, useNetwork } from 'wagmi';
 import { ContractTransaction, utils } from 'ethers';
 
-import { BN, locale, Chains, formatNumber } from '~/utils';
+import { BN, locale, formatNumber } from '~/utils';
 import { useAppSelector, useAmphContracts } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
-import { getConfig } from '~/config';
+import { getConfig, Chains } from '~/config';
 import { BaseModal } from './BaseModal';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { DisableableModalButton } from '../button/DisableableModalButton';
