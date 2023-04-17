@@ -1,4 +1,3 @@
-// temporary
 export default [
   {
     title: 'Protocol',
@@ -6,7 +5,6 @@ export default [
       // { label: 'Whitepaper', href: '#/whitepaper' },
       { label: 'Docs', href: '#' },
       // { label: 'Analytics', href: '#' },
-      // { label: 'Sale', href: '#/sale' },
       // { label: 'Terms of Use', href: '#/terms' },
     ],
   },

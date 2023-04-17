@@ -100,29 +100,14 @@ export const MobileToolBar = () => {
         >
           <ForwardIcon stroke={isLight ? formatColor(neutral.black) : formatColor(neutral.white)} />
         </Button>
-        {/* <ClaimsButton /> */}
-        {/* temporary */}
-        {/* {window.location.hash !== '#/sale' && <MobileIconButton text='Token Sale' img='star' href='/#/sale' />} */}
         <MobileIconButton text='App' img='rocket' href='/' />
         <MobileIconButton text='Governance' img='people' href='https://www.tally.xyz/' />
         <br />
         <MobileIconButton text='Docs' img='cog' href='/#/docs' />
-        {/* <MobileIconButton text='Whitepaper' img='document' href='/#/whitepaper' /> */}
         <MobileIconButton text='Feedback' img='feedback' href='#' />
         <br />
         <MobileIconButton text='Discord' img='discord_icon_grey' href='#' />
         <MobileIconButton text={isLight ? `Light Mode` : 'Dark Mode'} img='sun' onClick={toggleMode} />
-
-        {/* <Box my={1} maxWidth={200} width="100%">
-          <MuiLink
-            href="https://app.uniswap.org/#/add/v2/ETH/0x2A54bA2964C8Cd459Dc568853F79813a60761B58?chain=mainnet"
-            target="_blank"
-          >
-            <Button variant="outlined">
-              <Typography variant="label">ETH-USDA Rewards</Typography>
-            </Button>
-          </MuiLink>
-        </Box> */}
       </SwipeableDrawer>
     </Toolbar>
   );

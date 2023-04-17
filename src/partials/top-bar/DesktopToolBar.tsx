@@ -2,7 +2,6 @@ import { Box, Toolbar, Link, Typography } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { SelectedChainButton } from '~/components/button';
-import { useLight } from '~/hooks';
 import { DesktopMenu } from './DesktopMenu';
 import { formatColor, neutral } from '~/theme';
 
@@ -22,13 +21,10 @@ const AppLinkTo = ({ url, label, newTarget }: { url: string; label: string; newT
   </Typography>
 );
 
+//desktop menu config
 export const DesktopToolBar = () => {
-  //desktop menu config
-  const isLight = useLight();
-
   return (
     <Toolbar sx={{ padding: 0 }} disableGutters>
-      {/* temporary icon*/}
       <Link href='#' /* '#/landing' */ role='heading' aria-level={1}>
         <span style={{ fontSize: 35 }}>🏺</span>
         {/* <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={50} height={50} /> */}
