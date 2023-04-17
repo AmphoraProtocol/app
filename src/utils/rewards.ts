@@ -30,16 +30,20 @@ export const getTotalRewardValue = (assets: {
   [key: string]: Token;
 }): {
   value: number;
+  amount: number;
 } => {
   let totalValue = 0;
+  let totalAmount = 0;
   const assetesArray = Object.entries(assets);
 
   assetesArray.forEach((element) => {
     if (element[1].claimable_rewards) {
       totalValue += getRewardAmount(element[1].claimable_rewards).value;
+      totalAmount += getRewardAmount(element[1].claimable_rewards).amount;
     }
   });
   return {
     value: totalValue,
+    amount: totalAmount,
   };
 };

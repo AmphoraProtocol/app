@@ -13,6 +13,7 @@ import { useModalContext } from '../libs/modal-content-provider/ModalContentProv
 export const ClaimsCard = () => {
   const [formattedAmount, setFormattedAmount] = useState('0');
   const [loading, setLoading] = useState(false);
+  const [hasRewards, setHasRewards] = useState(false);
   const { isConnected } = useAccount();
   const vaultAddress = useAppSelector((state) => state.VC.userVault.vaultAddress);
   const assets = useAppSelector((state) => state.collaterals.elements);
@@ -41,8 +42,11 @@ export const ClaimsCard = () => {
 
   useEffect(() => {
     let totalValue = 0;
-    if (assets) totalValue = getTotalRewardValue(assets).value;
-
+    if (assets) {
+      const total = getTotalRewardValue(assets);
+      totalValue = total.value;
+      setHasRewards(!!total.amount);
+    }
     setFormattedAmount(formatNumber(totalValue));
   }, [assets]);
 
@@ -67,11 +71,12 @@ export const ClaimsCard = () => {
               Total Rewards
             </Typography>
             <Typography variant='h7_semi' lineHeight={{ xs: 1 }} color='text.primary'>
-              $ {formattedAmount}
+              {isConnected && `$ ${formattedAmount}`}
+              {!isConnected && '-'}
             </Typography>
           </Box>
         </Box>
-        {isConnected && !!Number.parseFloat(formattedAmount) && (
+        {isConnected && hasRewards && (
           <Button
             onClick={handleClaimRequest}
             sx={{

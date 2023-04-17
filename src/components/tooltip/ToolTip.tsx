@@ -14,6 +14,8 @@ const BaseToolTipContainer = styled(({ className, ...props }: TooltipProps) => {
       backgroundColor: isLight ? formatColor(neutral.white) : formatColor(neutral.black5),
       color: isLight ? formatColor(neutral.black5) : formatColor(neutral.white),
       borderRadius: '20px',
+      border: '1px solid',
+      borderColor: isLight ? formatColor(neutral.gray3) : '#1a1a1e',
       padding: '24px',
     },
     [`& .${tooltipClasses.arrow}`]: {
@@ -24,20 +26,26 @@ const BaseToolTipContainer = styled(({ className, ...props }: TooltipProps) => {
 
 export const ToolTip = (props: {
   content: TooltipProps['title'];
-  text: string;
+  text?: string;
   text_variant?: 'body1' | 'body2' | 'body2_semi' | 'label_semi';
   icon?: boolean;
+  children?: any;
 }) => {
-  const { content, text, text_variant = 'body1', icon = false } = props;
+  const { content, text, text_variant = 'body1', icon = false, children } = props;
 
   return (
-    <BaseToolTipContainer title={content}>
-      <Box display='flex' alignItems='center'>
-        <Typography variant={text_variant} color='text.secondary' whiteSpace='nowrap'>
-          {text}
-        </Typography>
-        {icon && <ToolTipInfoIcon sx={{ width: 14, ml: 0.5 }} strokecolor={formatColor(neutral.gray3)} />}
-      </Box>
-    </BaseToolTipContainer>
+    <>
+      <BaseToolTipContainer title={content}>
+        <Box display='flex' alignItems='center'>
+          {!children && (
+            <Typography variant={text_variant} color='text.secondary' whiteSpace='nowrap'>
+              {text}
+            </Typography>
+          )}
+          {children}
+          {icon && <ToolTipInfoIcon sx={{ width: 14, ml: 0.5 }} strokecolor={formatColor(neutral.gray3)} />}
+        </Box>
+      </BaseToolTipContainer>
+    </>
   );
 };

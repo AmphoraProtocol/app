@@ -1,6 +1,6 @@
 import { LocaleStrings } from '.';
 
 export const locale_en: LocaleStrings = {
-  CheckWallet: 'Please Check Wallet',
+  CheckWallet: 'Transaction Pending',
   TransactionPending: 'Transaction Pending',
 };

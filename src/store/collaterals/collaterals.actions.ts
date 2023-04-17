@@ -142,9 +142,10 @@ const getCollateralData = createAsyncThunk<
           functionName: 'oracleType',
         },
         {
-          ...erc20Contract,
-          functionName: 'balanceOf',
-          args: [vaultAddress || ZERO_ADDRESS],
+          address: vaultAddress || ZERO_ADDRESS,
+          abi: IVault__factory.abi,
+          functionName: 'tokenBalance',
+          args: [token.address || ZERO_ADDRESS],
         },
         {
           ...erc20Contract,
@@ -156,24 +157,32 @@ const getCollateralData = createAsyncThunk<
 
     // Fetch reward decimals and set reward price and amount:
     if (rewards) {
-      const contracts: any[] = [];
+      const decimals: any[] = [];
       rewards.forEach((element) => {
-        contracts.push({
+        decimals.push({
           address: element.token,
           abi: IERC20Metadata__factory.abi,
           functionName: 'decimals',
         });
       });
+      const symbols: any[] = [];
+      rewards.forEach((element) => {
+        symbols.push({
+          address: element.token,
+          abi: IERC20Metadata__factory.abi,
+          functionName: 'symbol',
+        });
+      });
 
       const rewardDecimals = (await multicall({
-        contracts: contracts,
-      })) as number[];
-
+        contracts: [...decimals, ...symbols],
+      })) as (number | string)[];
       token.claimable_rewards = rewards.map((rewards, index) => {
         return {
           amount: utils.formatUnits(rewards.amount, rewardDecimals[index]),
           token: rewards.token,
           price: price_list[index] || 0,
+          symbol: rewardDecimals[index + symbols.length].toString(),
         };
       });
     }

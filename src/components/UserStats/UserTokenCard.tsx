@@ -185,11 +185,12 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
         {/* Vault Balance */}
         <Box display='flex' flexDirection='column' textAlign='end'>
           <Typography variant='body1' color='text.primary'>
-            {vaultBalance}
+            {isConnected && vaultBalance}
+            {!isConnected && '-'}
           </Typography>
 
           <Typography variant='label_semi' color='text.secondary'>
-            {tokenAmount} {tokenTicker}
+            {isConnected ? tokenAmount : '- '} {tokenTicker}
           </Typography>
         </Box>
 
@@ -223,32 +224,57 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             justifySelf: 'center',
           }}
         >
-          <Button
-            onClick={() => handleDWClick(ModalType.DepositCollateral)}
-            disabled={!userVault.vaultAddress}
-            sx={{
-              borderRadius: 2,
-              border: '1.5px solid #A3A9BA',
-              width: { xs: 32, lg: 40 },
-              height: { xs: 32, lg: 40 },
-              minWidth: { xs: 20, lg: 40 },
-            }}
-          >
-            <SVGBox width={16} height={16} svg_name={userVault.vaultAddress ? 'plus' : 'lock'} />
-          </Button>
-          <Button
-            onClick={() => handleDWClick(ModalType.WithdrawCollateral)}
-            disabled={!userVault.vaultAddress}
-            sx={{
-              borderRadius: 2,
-              border: '1.5px solid #A3A9BA',
-              width: { xs: 32, lg: 40 },
-              height: { xs: 32, lg: 40 },
-              minWidth: { xs: 20, lg: 40 },
-            }}
-          >
-            <SVGBox width={16} height={16} svg_name={userVault.vaultAddress ? 'minus' : 'lock'} />
-          </Button>
+          {!userVault.vaultAddress && (
+            <ToolTip
+              content={<Typography variant='body3'>You must create a Vault in order to make a deposit</Typography>}
+              text_variant='body2'
+            >
+              <Button
+                onClick={() => handleDWClick(ModalType.DepositCollateral)}
+                disabled={!userVault.vaultAddress}
+                sx={{
+                  borderRadius: 2,
+                  border: '1.5px solid #A3A9BA',
+                  width: { xs: 32, lg: 40 },
+                  height: { xs: 32, lg: 40 },
+                  minWidth: { xs: 20, lg: 40 },
+                }}
+              >
+                <SVGBox width={16} height={16} svg_name={'lock'} />
+              </Button>
+            </ToolTip>
+          )}
+
+          {userVault.vaultAddress && (
+            <>
+              <Button
+                onClick={() => handleDWClick(ModalType.DepositCollateral)}
+                disabled={!userVault.vaultAddress}
+                sx={{
+                  borderRadius: 2,
+                  border: '1.5px solid #A3A9BA',
+                  width: { xs: 32, lg: 40 },
+                  height: { xs: 32, lg: 40 },
+                  minWidth: { xs: 20, lg: 40 },
+                }}
+              >
+                <SVGBox width={16} height={16} svg_name={'plus'} />
+              </Button>
+              <Button
+                onClick={() => handleDWClick(ModalType.WithdrawCollateral)}
+                disabled={!userVault.vaultAddress}
+                sx={{
+                  borderRadius: 2,
+                  border: '1.5px solid #A3A9BA',
+                  width: { xs: 32, lg: 40 },
+                  height: { xs: 32, lg: 40 },
+                  minWidth: { xs: 20, lg: 40 },
+                }}
+              >
+                <SVGBox width={16} height={16} svg_name={'minus'} />
+              </Button>
+            </>
+          )}
         </Box>
 
         <Box display={{ xs: 'flex', lg: 'none' }} justifySelf='flex-end' width='fit-content'>
@@ -257,6 +283,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
             onClickWithdraw={() => handleDWClick(ModalType.WithdrawCollateral)}
             onClickClaim={() => handleDWClick(ModalType.Claim)}
             isCurveLP={curve_lp}
+            rewards={rewards}
           />
         </Box>
       </Box>

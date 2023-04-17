@@ -1,4 +1,6 @@
 import { Box, Typography, Button } from '@mui/material';
+import { useAccount } from 'wagmi';
+
 import { useLight } from '~/hooks';
 import { formatColor, neutral } from '~/theme';
 import { DecimalInput } from '../textFields';
@@ -18,6 +20,7 @@ interface TokenSelectProps {
 export const TokenSelect = (props: TokenSelectProps) => {
   const { token, tokenAmount, setTokenAmount, onMaxBalanceClick, disableSetMax = false } = props;
   const isLight = useLight();
+  const { isConnected } = useAccount();
 
   const setMax = () => {
     if (token.wallet_balance != undefined) {
@@ -90,9 +93,14 @@ export const TokenSelect = (props: TokenSelectProps) => {
                 },
               }}
               onClick={setMax}
-              disabled={token.wallet_balance === undefined || disableSetMax}
+              disabled={token.wallet_balance === undefined || disableSetMax || !isConnected}
             >
-              <WithDots val={token.wallet_balance != undefined}>{formatNumber(Number(token.wallet_balance))}</WithDots>
+              {isConnected && (
+                <WithDots val={token.wallet_balance != undefined}>
+                  {formatNumber(Number(token.wallet_balance))}
+                </WithDots>
+              )}
+              {!isConnected && '-'}
             </Button>
           </Typography>
         </Box>

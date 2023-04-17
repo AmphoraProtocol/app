@@ -31,7 +31,7 @@ const Dashboard = () => {
   const theme = useTheme();
   const vaultControllerData = useAppSelector((state) => state.VC);
   const dispatch = useAppDispatch();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const { DEFAULT_CHAIN_ID } = getConfig();
 
@@ -168,12 +168,12 @@ const Dashboard = () => {
                   title={`Borrowing Power`}
                   tooltipcontent='Maximum amount that your vault can borrow, calculated by the sum of collateral values discounted by the LTV'
                   text={
-                    vaultControllerData.userVault.borrowingPower
+                    vaultControllerData.userVault.borrowingPower || isConnected
                       ? vaultControllerData.userVault.borrowingPower.toLocaleString('en-US', {
                           style: 'currency',
                           currency: 'USD',
                         })
-                      : '0'
+                      : '-'
                   }
                 />
               </SingleStatCard>
@@ -220,9 +220,9 @@ const Dashboard = () => {
                   title={`USDA Borrowed`}
                   tooltipcontent='The amount of USDA your vault is currently borrowing. This increases as interest accrue.'
                   text={
-                    vaultControllerData.userVault.accountLiability
+                    vaultControllerData.userVault.accountLiability || isConnected
                       ? '$' + Math.round(vaultControllerData.userVault.accountLiability).toLocaleString()
-                      : '0'
+                      : '-'
                   }
                 />
 
@@ -259,11 +259,6 @@ const Dashboard = () => {
           {/* Assets Section */}
           <UserStats />
         </Box>
-      </Box>
-
-      <Box maxWidth='xl' margin='auto'>
-        {/* Gas Section: temporary disabled */}
-        {/* <GweiBlockText /> */}
       </Box>
     </Box>
   );

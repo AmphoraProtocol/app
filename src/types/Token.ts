@@ -26,6 +26,7 @@ export interface Token {
     token: `0x${string}`;
     amount: string;
     price: number;
+    symbol: string;
   }[];
 
   capped_token?: boolean;

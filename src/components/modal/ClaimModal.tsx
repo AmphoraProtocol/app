@@ -65,21 +65,23 @@ export const ClaimModal = () => {
             Unclaimed Rewards
           </Typography>
           {collateralToken.claimable_rewards?.map((rewards) => (
-            <Box
-              key={rewards.token}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <TokenIcon height={35} width={35} address={rewards.token} />
-              <Typography variant='h5' color='text.primary' mt={0.8}>
-                {formatNumber(Number.parseFloat(rewards.amount))}
-              </Typography>{' '}
-              <Typography variant='body2' color='text.secondary' mt={0.8} ml={1}>
-                ($
-                {formatNumber(Number.parseFloat(rewards.amount) * rewards.price)})
-              </Typography>
+            <Box display='flex' alignItems='center' key={rewards.token} columnGap={1}>
+              <TokenIcon height={34} width={34} address={rewards.token} />
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'start',
+                  justifyItems: 'start',
+                }}
+              >
+                <Typography variant='body1' color='text.primary' mt={0.8}>
+                  {formatNumber(Number.parseFloat(rewards.amount))} {rewards.symbol}
+                </Typography>{' '}
+                <Typography variant='body2' color='text.secondary' mt={0.8} ml={1}>
+                  ($
+                  {formatNumber(Number.parseFloat(rewards.amount) * rewards.price)})
+                </Typography>
+              </Box>
             </Box>
           ))}
         </Box>
