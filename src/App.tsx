@@ -22,7 +22,6 @@ import {
   ClaimModal,
 } from './components/modal';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
-import { RedirectTo } from './components/redirect';
 
 const DashboardContext = (props: { children: any }) => {
   return (
@@ -48,8 +47,6 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path={`/landing`} element={<LandingPage />} />
-      <Route path={`/docs`} element={<RedirectTo url='book/docs/intro/index.html' />} />
-      <Route path={`/book`} element={<RedirectTo url='book/docs/intro/index.html' />} />
       <Route path={`*`} element={<NotFound404Page />} />
 
       <Route
