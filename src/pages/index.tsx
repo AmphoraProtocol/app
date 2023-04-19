@@ -18,7 +18,6 @@ import SVGBox from '~/components/icons/misc/SVGBox';
 import { CollateralActions, StablecoinActions, VCActions } from '~/store';
 import { getConfig } from '~/config';
 import { GweiBlockText, TitleText } from '~/components/text';
-import { RedirectTo } from '~/components/redirect';
 import { Substat } from '~/components/text/Substat';
 
 const Dashboard = () => {

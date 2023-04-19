@@ -5,13 +5,18 @@ import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { localhost, sepolia, mainnet } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
+import { getConfig } from './config';
 import store from '~/store';
 import App from './App';
 
-const { chains, provider } = configureChains([sepolia, localhost, mainnet], [publicProvider()]);
+const { chains, provider } = configureChains(
+  [sepolia, localhost, mainnet],
+  [alchemyProvider({ apiKey: getConfig().ALCHEMY_KEY }), publicProvider()],
+);
 
 const { connectors } = getDefaultWallets({
   appName: 'Amphora Protocol',
