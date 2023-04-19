@@ -10,7 +10,7 @@ import SVGBox from '../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { ToolTip } from '../tooltip/ToolTip';
 import { OracleType } from '~/types';
-import { Chains } from '~/utils';
+import { Chains } from '~/config';
 import { getConfig } from '~/config';
 
 interface UserTokenCardProps extends BoxProps {

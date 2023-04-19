@@ -1,7 +1,6 @@
 export * from './locale';
 export * from './bn';
 export * from './BNtoHex';
-export * from './chains';
 export * from './format';
 export * from './getOracleType';
 export * from './getPrices';

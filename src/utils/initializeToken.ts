@@ -4,7 +4,6 @@ export const initializeToken = ({
   name,
   ticker,
   address,
-  capped_address,
   capped_token = false,
   decimals = 18,
   price = 1,
@@ -23,5 +22,4 @@ export const initializeToken = ({
   token_LTV: 0,
   token_penalty: 0,
   capped_token,
-  capped_address,
 });

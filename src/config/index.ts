@@ -7,3 +7,5 @@ export const getConfig = (): Config => ({
   ...getConstants(),
   ...getEnv(),
 });
+
+export * from './chains';

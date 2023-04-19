@@ -177,6 +177,7 @@ const getCollateralData = createAsyncThunk<
       const rewardDecimals = (await multicall({
         contracts: [...decimals, ...symbols],
       })) as (number | string)[];
+
       token.claimable_rewards = rewards.map((rewards, index) => {
         return {
           amount: utils.formatUnits(rewards.amount, rewardDecimals[index]),

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber } from 'ethers';
 import { Address } from 'wagmi';
 import { multicall } from '@wagmi/core';
 
@@ -9,7 +9,7 @@ import {
   IUSDA__factory,
   IVaultController__factory,
 } from '~/chain/contracts';
-import { BNtoHexNumber, BN, BNtoDec, round, formatNumber } from '~/utils';
+import { BNtoHexNumber, BNtoDec, formatNumber, formatPercent } from '~/utils';
 import { ThunkAPI } from '~/store';
 import { UserVault } from '~/types';
 import { getConfig } from '~/config';
@@ -20,7 +20,7 @@ const getVCData = createAsyncThunk<
     borrowAPR: number | undefined;
     usdaSupply: number;
     totalSUSDDeposited: number;
-    reserveRatio: number;
+    reserveRatio: string;
     userVault: UserVault;
     collaterals?: Address[];
   },
@@ -38,19 +38,9 @@ const getVCData = createAsyncThunk<
     USDA: USDA_ADDRESS,
   } = getConfig().ADDRESSES[chainId];
 
-  const susdContract = {
-    address: SUSD_ADDRESS,
-    abi: IERC20Metadata__factory.abi,
-  };
-
   const usdaContract = {
     address: USDA_ADDRESS,
     abi: IUSDA__factory.abi,
-  };
-
-  const curveContract = {
-    address: CURVE_MASTER_ADDRESS,
-    abi: ICurveMaster__factory.abi,
   };
 
   const vcContract = {
@@ -58,12 +48,13 @@ const getVCData = createAsyncThunk<
     abi: IVaultController__factory.abi,
   };
 
-  const firstCall = await multicall({
+  const [balanceOfSUSD, susdTotalSupply, reserveRatioInWeis, vaultIds, enabledTokens, protocolFee] = await multicall({
     contracts: [
       {
-        ...susdContract,
+        address: SUSD_ADDRESS,
+        abi: IERC20Metadata__factory.abi,
         functionName: 'balanceOf',
-        args: [usdaContract.address] as [Address],
+        args: [USDA_ADDRESS] as [Address],
       },
       {
         ...usdaContract,
@@ -82,78 +73,82 @@ const getVCData = createAsyncThunk<
         ...vcContract,
         functionName: 'getEnabledTokens',
       },
+      {
+        ...vcContract,
+        functionName: 'protocolFee',
+      },
     ],
   });
 
-  const ratioResult = await multicall({
+  const [borrowValueAt, vaultAddress, vaultSummaries] = await multicall({
     contracts: [
       {
-        ...curveContract,
+        address: CURVE_MASTER_ADDRESS,
+        abi: ICurveMaster__factory.abi,
         functionName: 'getValueAt',
-        args: [ZERO_ADDRESS, firstCall[2]] as [Address, BigNumber],
+        args: [ZERO_ADDRESS, reserveRatioInWeis] as [Address, BigNumber],
       },
       {
         ...vcContract,
         functionName: 'vaultAddress',
-        args: [firstCall[3][0]] as [BigNumber],
+        args: [vaultIds[0]] as [BigNumber],
       },
       {
         ...vcContract,
         functionName: 'vaultSummaries',
-        args: [firstCall[3][0], firstCall[3][0]] as [BigNumber, BigNumber],
+        args: [vaultIds[0], vaultIds[0]] as [BigNumber, BigNumber],
       },
     ],
   });
 
-  const susdDeposited = firstCall[0].div(constants.WeiPerEther).toLocaleString();
-  const ratioDecimal = firstCall[2].div(1e14).toNumber() / 1e4;
-  const usdaSupply = firstCall[1].div(1e9).div(1e9).toString();
-  const toPercentage = BNtoHexNumber(firstCall[2]) / 1e16;
-  const reserveRatio = formatNumber(toPercentage);
-
-  let vaultID: number | undefined;
-  if (firstCall[3] && firstCall[3][0]) {
-    vaultID = Number.parseInt(firstCall[3][0].toString());
-  }
-
   let borrowAPR: number | undefined;
   let depositAPR: number | undefined;
-  if (ratioResult[0]) {
-    borrowAPR = ratioResult[0].div(BN('1e14')).toNumber() / 100;
-    depositAPR = round(borrowAPR * (1 - ratioDecimal) * 0.85, 3);
-  }
+  if (borrowValueAt) {
+    const ratioDecimal = formatPercent(reserveRatioInWeis) / 100;
+    const protocolFeeDecimal = formatPercent(protocolFee) / 100;
+    borrowAPR = formatPercent(borrowValueAt);
+    /* 
+      Deposit rate (D): 
+      D(s) = B(s) * (1 − s) * (1 − f)
+      
+      where:
+      - f = protocol fee rate
+      - s = reserve ratio
+      - D(s) = deposit rate at reserve ratio s
+      - B(s) = borrow rate at reserve ratio s
+      */
 
-  let vaultAddress: Address | undefined;
-  if (ratioResult[1]) {
-    vaultAddress = ratioResult[1];
+    depositAPR = borrowAPR * (1 - ratioDecimal) * (1 - protocolFeeDecimal);
   }
 
   let tokenAddresses: Address[] | undefined;
   let borrowingPower = 0;
   let accountLiability = 0;
   // let tokenBalances: bigint[] | undefined;
-  if (ratioResult[2]) {
-    const result = ratioResult[2][0];
+  if (vaultSummaries) {
+    const result = vaultSummaries[0];
     tokenAddresses = [...result.tokenAddresses];
     borrowingPower = BNtoDec(result.borrowingPower);
     accountLiability = BNtoDec(result.vaultLiability);
     // tokenBalances = [...result.tokenBalances];
   }
 
+  const reserveRatio = formatPercent(reserveRatioInWeis);
+
   return {
     depositAPR,
     borrowAPR,
-    totalSUSDDeposited: Number.parseInt(susdDeposited),
-    usdaSupply: Number.parseInt(usdaSupply),
-    reserveRatio: Number.parseFloat(reserveRatio),
+    totalSUSDDeposited: BNtoDec(balanceOfSUSD),
+    usdaSupply: BNtoDec(susdTotalSupply),
+    reserveRatio: formatNumber(reserveRatio),
     userVault: {
-      vaultAddress,
-      vaultID,
+      vaultAddress: vaultAddress,
+      vaultID: vaultIds[0]?.toNumber(),
       tokenAddresses,
       borrowingPower,
       accountLiability,
     },
-    collaterals: [...firstCall[4]],
+    collaterals: [...enabledTokens],
   };
 });
 

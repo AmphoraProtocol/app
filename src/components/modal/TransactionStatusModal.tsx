@@ -9,7 +9,7 @@ import { CircleExclamationIcon } from '../icons/misc/CircleExclamationIcon';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 import { Spinner } from '../loading';
 import { BaseModal } from './BaseModal';
-import { Chains } from '~/utils';
+import { Chains } from '~/config';
 import SVGBox from '../icons/misc/SVGBox';
 import { VCActions, CollateralActions, StablecoinActions } from '~/store';
 import { getConfig } from '~/config';
@@ -23,7 +23,6 @@ export const TransactionStatusModal = () => {
   const { chain: currentChain } = useNetwork();
   const { DEFAULT_CHAIN_ID } = getConfig();
 
-  // temporary
   useEffect(() => {
     if (transactionState === 'SUCCESS') {
       dispatch(VCActions.getVCData({ userAddress: address, chainId: currentChain?.id || DEFAULT_CHAIN_ID }));
@@ -77,8 +76,8 @@ export const TransactionStatusModal = () => {
               Successful Transaction
             </Typography>
 
-            {/* temporary success icon */}
-            <SVGBox svg_name='USDA' width={30} height={30} alt='ip_green' sx={{ my: 3, mx: 'auto' }} />
+            {/* Success icon */}
+            <SVGBox svg_name='USDA' width={30} height={30} alt='' sx={{ my: 3, mx: 'auto' }} />
 
             <MuiLink target='_blank' href={`${chain.scan_url}tx/${(transaction as ContractReceipt).transactionHash}`}>
               <Button
