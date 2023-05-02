@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { TransactionReceipt } from '@ethersproject/providers';
 import { useContract } from 'wagmi';
-import { utils } from 'ethers';
+import { utils, ContractReceipt } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
@@ -55,8 +54,7 @@ export const WithdrawCollateralConfirmationModal = () => {
         updateTransactionState(receipt);
       }
     } catch (err) {
-      const error = err as TransactionReceipt;
-      updateTransactionState(error);
+      updateTransactionState(err as ContractReceipt);
     }
 
     setLoadmsg('');

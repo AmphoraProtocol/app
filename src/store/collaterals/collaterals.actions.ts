@@ -1,14 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { constants, utils } from 'ethers';
-import { Address } from 'wagmi';
+import { Address, erc20ABI } from 'wagmi';
 import { multicall } from '@wagmi/core';
 
-import {
-  IERC20Metadata__factory,
-  IOracleRelay__factory,
-  IVaultController__factory,
-  IVault__factory,
-} from '~/chain/contracts';
 import {
   getOracleType,
   formatBigInt,
@@ -22,6 +16,11 @@ import {
 import { CollateralTokens } from '~/types';
 import { ThunkAPI } from '~/store';
 import { getConfig } from '~/config';
+import {
+  IVaultController__factory,
+  IVault__factory,
+  IOracleRelay__factory,
+} from '@amphora-protocol/interfaces/ethers-v5/factories';
 
 const getCollateralData = createAsyncThunk<
   { tokens: CollateralTokens },
@@ -41,7 +40,7 @@ const getCollateralData = createAsyncThunk<
   const tokensName = tokenList.map((address) => {
     return {
       address: address,
-      abi: IERC20Metadata__factory.abi,
+      abi: erc20ABI,
       functionName: 'name',
     };
   });
@@ -49,7 +48,7 @@ const getCollateralData = createAsyncThunk<
   const tokensSymbol = tokenList.map((address) => {
     return {
       address: address,
-      abi: IERC20Metadata__factory.abi,
+      abi: erc20ABI,
       functionName: 'symbol',
     };
   });
@@ -119,7 +118,7 @@ const getCollateralData = createAsyncThunk<
 
     const erc20Contract = {
       address: token.address,
-      abi: IERC20Metadata__factory.abi,
+      abi: erc20ABI,
     };
 
     const oracleContract = {
@@ -161,7 +160,7 @@ const getCollateralData = createAsyncThunk<
       rewards.forEach((element) => {
         decimals.push({
           address: element.token,
-          abi: IERC20Metadata__factory.abi,
+          abi: erc20ABI,
           functionName: 'decimals',
         });
       });
@@ -169,7 +168,7 @@ const getCollateralData = createAsyncThunk<
       rewards.forEach((element) => {
         symbols.push({
           address: element.token,
-          abi: IERC20Metadata__factory.abi,
+          abi: erc20ABI,
           functionName: 'symbol',
         });
       });

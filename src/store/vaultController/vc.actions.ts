@@ -1,18 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber } from 'ethers';
-import { Address } from 'wagmi';
+import { Address, erc20ABI } from 'wagmi';
 import { multicall } from '@wagmi/core';
 
-import {
-  ICurveMaster__factory,
-  IERC20Metadata__factory,
-  IUSDA__factory,
-  IVaultController__factory,
-} from '~/chain/contracts';
-import { BNtoHexNumber, BNtoDec, formatNumber, formatPercent } from '~/utils';
+import { BNtoDec, formatNumber, formatPercent } from '~/utils';
 import { ThunkAPI } from '~/store';
 import { UserVault } from '~/types';
 import { getConfig } from '~/config';
+import {
+  IVaultController__factory,
+  IUSDA__factory,
+  ICurveMaster__factory,
+} from '@amphora-protocol/interfaces/ethers-v5/factories';
 
 const getVCData = createAsyncThunk<
   {
@@ -52,7 +51,7 @@ const getVCData = createAsyncThunk<
     contracts: [
       {
         address: SUSD_ADDRESS,
-        abi: IERC20Metadata__factory.abi,
+        abi: erc20ABI,
         functionName: 'balanceOf',
         args: [USDA_ADDRESS] as [Address],
       },

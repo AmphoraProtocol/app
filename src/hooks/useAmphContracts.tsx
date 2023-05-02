@@ -1,21 +1,19 @@
-import { useNetwork, useSigner } from 'wagmi';
+import { useSigner, useNetwork, erc20ABI } from 'wagmi';
+
+import { getConfig } from '~/config';
 import {
-  ICurveMaster__factory,
-  IERC20Metadata__factory,
-  IUSDA__factory,
   IVaultController__factory,
   IVault__factory,
-} from '~/chain/contracts';
-import { getConfig } from '~/config';
-
-import { getConstants } from '~/config/constants';
+  IUSDA__factory,
+  ICurveMaster__factory,
+} from '@amphora-protocol/interfaces/ethers-v5/factories';
 
 export const useAmphContracts = () => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const { DEFAULT_CHAIN_ID } = getConfig();
 
-  const { VAULT_CONTROLLER, CURVE_MASTER, USDA, SUSD } = getConstants().ADDRESSES[chain?.id || DEFAULT_CHAIN_ID];
+  const { VAULT_CONTROLLER, CURVE_MASTER, USDA, SUSD } = getConfig().ADDRESSES[chain?.id || DEFAULT_CHAIN_ID];
 
   const VaultControllerContract = {
     address: VAULT_CONTROLLER,
@@ -31,7 +29,7 @@ export const useAmphContracts = () => {
 
   const susdContract = {
     address: SUSD,
-    abi: IERC20Metadata__factory.abi,
+    abi: erc20ABI,
     signerOrProvider: signer,
   };
 
@@ -42,7 +40,7 @@ export const useAmphContracts = () => {
   };
 
   const tokenAbi = {
-    abi: IERC20Metadata__factory.abi,
+    abi: erc20ABI,
     signerOrProvider: signer,
   };
 

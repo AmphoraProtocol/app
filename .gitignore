@@ -33,7 +33,7 @@ tsconfig.tsbuildinfo
 
 .eslintcache
 
-#yarn
+# yarn
 .yarn
 
 .env

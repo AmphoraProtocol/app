@@ -1,8 +1,8 @@
-import { BigNumber, ethers, constants, utils } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import { Address } from 'wagmi';
 import { multicall } from '@wagmi/core';
 
-import { IUniswapV3Pool__factory } from '~/chain/contracts';
+import IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json';
 import { getConfig } from '~/config';
 
 export const getPriceForToken = (sqrtPriceX96: BigNumber, isWethToken0: boolean) => {
@@ -37,18 +37,18 @@ export const getRewardPrices = async (pools: Address[], chainId: number): Promis
 
     pools.push(USDC_ETH_UNISWAP_POOL);
 
-    const uniContracts: { address: Address; abi: typeof IUniswapV3Pool__factory.abi; functionName: string }[] = [];
+    const uniContracts: { address: Address; abi: typeof IUniswapV3Pool.abi; functionName: string }[] = [];
 
     pools.forEach((address) => {
       uniContracts.push(
         {
           address: address,
-          abi: IUniswapV3Pool__factory.abi,
+          abi: IUniswapV3Pool.abi,
           functionName: 'slot0',
         },
         {
           address: address,
-          abi: IUniswapV3Pool__factory.abi,
+          abi: IUniswapV3Pool.abi,
           functionName: 'token0',
         },
       );

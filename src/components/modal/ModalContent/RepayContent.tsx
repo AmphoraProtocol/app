@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import { TransactionReceipt } from '@ethersproject/providers';
 import { useContract } from 'wagmi';
-import { utils } from 'ethers';
+import { utils, ContractReceipt } from 'ethers';
 
 import { formatColor, neutral } from '~/theme';
 import { DecimalInput } from '../../textFields';
@@ -82,7 +81,7 @@ export const RepayContent = (props: RepayContent) => {
       setLoading(false);
       setShaking(true);
       setTimeout(() => setShaking(false), 400);
-      updateTransactionState(err as TransactionReceipt);
+      updateTransactionState(err as ContractReceipt);
     }
   };
 
@@ -107,7 +106,7 @@ export const RepayContent = (props: RepayContent) => {
       setLoading(false);
       setShaking(true);
       setTimeout(() => setShaking(false), 400);
-      updateTransactionState(err as TransactionReceipt);
+      updateTransactionState(err as ContractReceipt);
     }
   };
 

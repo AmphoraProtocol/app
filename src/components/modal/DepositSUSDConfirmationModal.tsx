@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography, Link as MuiLink } from '@mui/material';
-import { TransactionReceipt } from '@ethersproject/providers';
 import { useContract, useAccount, useNetwork } from 'wagmi';
-import { ContractTransaction, utils } from 'ethers';
+import { ContractReceipt, ContractTransaction, utils } from 'ethers';
 
 import { BN, locale, formatNumber } from '~/utils';
 import { useAppSelector, useAmphContracts } from '~/hooks';
@@ -58,10 +57,8 @@ export const DepositSUSDConfirmationModal = () => {
 
         const depositReceipt = await depositTransaction.wait();
         updateTransactionState(depositReceipt);
-      } catch (e) {
-        const error = e as TransactionReceipt;
-
-        updateTransactionState(error);
+      } catch (err) {
+        updateTransactionState(err as ContractReceipt);
       }
       setApprovalTxn(undefined);
       setLoading(false);
