@@ -1,9 +1,9 @@
 import { ChainInfo } from '~/types';
 
 export enum ChainIDs {
-  LOCAL = 1337,
-  GOERLI = 5,
   MAINNET = 1,
+  GOERLI = 5,
+  LOCAL = 1337,
 }
 
 const configs: Array<ChainInfo> = [
