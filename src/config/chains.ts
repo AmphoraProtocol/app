@@ -16,19 +16,19 @@ const configs: Array<ChainInfo> = [
     scan_site: 'Explorer',
   },
   {
-    id: ChainIDs.LOCAL,
-    name: 'Ethereum Local',
-    symbol: 'ETH Local',
-    logo: 'ETH',
-    scan_url: 'https://etherscan.io/',
-    scan_site: 'Explorer',
-  },
-  {
     id: ChainIDs.GOERLI,
     name: 'Goerli',
     symbol: 'GETH',
     logo: 'ETH',
     scan_url: 'https://goerli.etherscan.io/',
+    scan_site: 'Explorer',
+  },
+  {
+    id: ChainIDs.LOCAL,
+    name: 'Ethereum Local',
+    symbol: 'ETH Local',
+    logo: 'ETH',
+    scan_url: 'https://etherscan.io/',
     scan_site: 'Explorer',
   },
 ];
