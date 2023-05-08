@@ -3,7 +3,6 @@ import { Address } from 'wagmi';
 export interface Env {
   VITE_ALLOW_DEV_MODE: boolean;
   ALCHEMY_KEY: string;
-  VITE_CUSTOM_LOCAL_RPC: string;
 }
 
 export interface Constants {
