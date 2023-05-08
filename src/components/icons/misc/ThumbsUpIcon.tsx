@@ -18,3 +18,5 @@ export const ThumbsUpIcon = forwardRef<SVGSVGElement, SvgIconProps & ThumbsUpIco
     </SvgIcon>
   );
 });
+
+ThumbsUpIcon.displayName = 'ThumbsUpIcon';

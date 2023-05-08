@@ -19,3 +19,5 @@ export const MenuIcon = forwardRef<SVGSVGElement, SvgIconProps>((props, ref) => 
     </SvgIcon>
   );
 });
+
+MenuIcon.displayName = 'MenuIcon';

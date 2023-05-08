@@ -18,3 +18,5 @@ export const ForwardIcon = forwardRef<SVGSVGElement, SvgIconProps & ForwardIconT
     </SvgIcon>
   );
 });
+
+ForwardIcon.displayName = 'ForwardIcon';

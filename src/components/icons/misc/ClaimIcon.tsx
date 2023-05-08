@@ -30,3 +30,5 @@ export const ClaimIcon = forwardRef<SVGSVGElement, SvgIconProps & ClaimIconType>
     </SvgIcon>
   );
 });
+
+ClaimIcon.displayName = 'ClaimIcon';

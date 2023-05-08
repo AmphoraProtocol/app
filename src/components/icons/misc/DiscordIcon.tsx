@@ -22,3 +22,5 @@ export const DiscordIcon = forwardRef<SVGSVGElement, SvgIconProps & DiscordIconT
     </SvgIcon>
   );
 });
+
+DiscordIcon.displayName = 'DiscordIcon';

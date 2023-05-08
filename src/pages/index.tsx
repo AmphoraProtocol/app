@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useAccount, useNetwork } from 'wagmi';
 import { Box, Typography, useTheme } from '@mui/material';
-import Cookies from 'universal-cookie';
 
 import { formatColor, neutral } from '../theme';
 import { ProtocolStatsCard } from '~/components/cards';
@@ -17,14 +16,9 @@ import { UserIPTVault } from '~/components/UserStats/UserIPTVault';
 import SVGBox from '~/components/icons/misc/SVGBox';
 import { CollateralActions, StablecoinActions, VCActions } from '~/store';
 import { getConfig } from '~/config';
-import { GweiBlockText, TitleText } from '~/components/text';
-import { Substat } from '~/components/text/Substat';
+import { TitleText } from '~/components/text';
 
 const Dashboard = () => {
-  // temporary
-  // const cookies = new Cookies();
-  // const firstVisitExists = cookies.get('first-visit');
-  // if (!firstVisitExists) return <RedirectTo url='#/landing' />;
   const isLight = useLight();
   const { setType } = useModalContext();
   const theme = useTheme();

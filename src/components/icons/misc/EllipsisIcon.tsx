@@ -19,3 +19,5 @@ export const EllipsisIcon = forwardRef<SVGSVGElement, SvgIconProps>((props, ref)
     </SvgIcon>
   );
 });
+
+EllipsisIcon.displayName = 'EllipsisIcon';

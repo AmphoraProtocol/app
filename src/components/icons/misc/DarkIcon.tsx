@@ -14,3 +14,5 @@ export const DarkIcon = forwardRef<SVGSVGElement, SvgIconProps>((props, ref) => 
     </SvgIcon>
   );
 });
+
+DarkIcon.displayName = 'DarkIcon';

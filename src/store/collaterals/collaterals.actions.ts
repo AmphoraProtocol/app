@@ -76,7 +76,7 @@ const getCollateralData = createAsyncThunk<
   ];
   const price_list = await getRewardPrices(pools, chainId);
 
-  for (const [key, token] of Object.entries(collaterals)) {
+  for (const [, token] of Object.entries(collaterals)) {
     const [data, rewards] = await multicall({
       contracts: [
         {

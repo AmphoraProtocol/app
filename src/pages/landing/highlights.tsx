@@ -32,7 +32,7 @@ export const Highlights: React.FC = () => {
           }}
         >
           <Typography display={{ xs: 'inline', md: 'inline' }} variant='h4' color={formatColor(neutral.gray2)}>
-            Amphora Protocol's stablecoin USDA{' '}
+            Amphora Protocol&apos;s stablecoin USDA{' '}
             <Typography display={{ xs: 'inline', md: 'inline-block' }} variant='h4' color={formatColor(neutral.black)}>
               is scalable, over-collateralized, and accrues yield without staking.
             </Typography>

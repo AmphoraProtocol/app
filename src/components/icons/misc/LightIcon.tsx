@@ -14,3 +14,5 @@ export const LightIcon = forwardRef<SVGSVGElement, SvgIconProps>((props, ref) =>
     </SvgIcon>
   );
 });
+
+LightIcon.displayName = 'LightIcon';

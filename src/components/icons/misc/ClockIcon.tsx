@@ -18,3 +18,5 @@ export const ClockIcon = forwardRef<SVGSVGElement, SvgIconProps & ClockIconType>
     </SvgIcon>
   );
 });
+
+ClockIcon.displayName = 'ClockIcon';

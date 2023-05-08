@@ -1,4 +1,4 @@
-import { Button, Toolbar, Typography, useTheme, SwipeableDrawer, Link } from '@mui/material';
+import { Button, Toolbar, Typography, SwipeableDrawer, Link } from '@mui/material';
 import { useState, useRef } from 'react';
 import { Box } from '@mui/system';
 import { ForwardIcon } from '../../components/icons/misc/ForwardIcon';
@@ -11,8 +11,6 @@ import SVGBox from '../../components/icons/misc/SVGBox';
 const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 export const LandingMobileToolbar = () => {
-  const theme = useTheme();
-
   const [navMenuOpen, setNavMenuOpen] = useState(false);
   const navMenuButtonRef = useRef<HTMLButtonElement>(null);
 

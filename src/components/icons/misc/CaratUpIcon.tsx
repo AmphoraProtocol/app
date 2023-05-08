@@ -19,3 +19,5 @@ export const CaratUpIcon = forwardRef<SVGSVGElement, SvgIconProps & CaratUpIconT
     </SvgIcon>
   );
 });
+
+CaratUpIcon.displayName = 'CaratUpIcon';

@@ -20,3 +20,5 @@ export const CircleExclamationIcon = forwardRef<SVGSVGElement, SvgIconProps & Ci
     );
   },
 );
+
+CircleExclamationIcon.displayName = 'CircleExclamationIcon';

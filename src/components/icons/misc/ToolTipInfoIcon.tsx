@@ -18,3 +18,5 @@ export const ToolTipInfoIcon = forwardRef<SVGSVGElement, SvgIconProps & ToolTipI
     </SvgIcon>
   );
 });
+
+ToolTipInfoIcon.displayName = 'ToolTipInfoIcon';

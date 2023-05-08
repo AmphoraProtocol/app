@@ -18,3 +18,5 @@ export const ArrowUpIcon = forwardRef<SVGSVGElement, SvgIconProps & ArrowUpIconT
     </SvgIcon>
   );
 });
+
+ArrowUpIcon.displayName = 'ArrowUpIcon';

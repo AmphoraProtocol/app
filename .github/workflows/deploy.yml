@@ -42,9 +42,8 @@ jobs:
       - name: Run Prettier
         run: yarn prettier
 
-    # Uncomment when we fix the linting issues
-     # - name: Run Linter
-     #   run: yarn lint
+     - name: Run Linter
+       run: yarn lint
 
       - name: Build project dependencies
         run: yarn run build

@@ -15,3 +15,5 @@ export const BackwardGreyIcon = forwardRef<SVGSVGElement, SvgIconProps>((props, 
     </SvgIcon>
   );
 });
+
+BackwardGreyIcon.displayName = 'BackwardGreyIcon';

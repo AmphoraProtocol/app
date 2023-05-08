@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SwitchProps, Box, Typography, Link } from '@mui/material';
+import { SwitchProps, Box, Typography } from '@mui/material';
 interface BaseSwitchProps extends SwitchProps {
   option1: string | React.ReactElement;
   option2: string | React.ReactElement;

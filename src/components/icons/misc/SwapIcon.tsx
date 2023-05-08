@@ -21,3 +21,5 @@ export const SwapIcon = forwardRef<SVGSVGElement, SvgIconProps>((props, ref) => 
     </SvgIcon>
   );
 });
+
+SwapIcon.displayName = 'SwapIcon';

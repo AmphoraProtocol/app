@@ -18,3 +18,5 @@ export const CopyIcon = forwardRef<SVGSVGElement, SvgIconProps & CopyIconType>((
     </SvgIcon>
   );
 });
+
+CopyIcon.displayName = 'CopyIcon';

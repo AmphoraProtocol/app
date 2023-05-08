@@ -18,3 +18,5 @@ export const ForwardArrowCircleIcon = forwardRef<SVGSVGElement, SvgIconProps & F
     </SvgIcon>
   );
 });
+
+ForwardArrowCircleIcon.displayName = 'ForwardArrowCircleIcon';
