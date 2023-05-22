@@ -73,7 +73,7 @@ export const WithdrawSUSDConfirmationModal = () => {
             </Typography>
           </Box>
 
-          <SVGBox width={36} height={36} svg_name='USDA' alt='USDA' sx={{ ml: 3 }} />
+          <SVGBox width={36} height={36} img_name='USDA.png' alt='USDA' sx={{ ml: 3 }} />
         </Box>
 
         <ForwardIcon sx={{ width: 15, height: 15 }} strokecolor={formatColor(neutral.gray3)} />

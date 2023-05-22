@@ -4,6 +4,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SelectedChainButton } from '~/components/button';
 import { DesktopMenu } from './DesktopMenu';
 import { formatColor, neutral } from '~/theme';
+import SVGBox from '~/components/icons/misc/SVGBox';
 
 const AppLinkTo = ({ url, label, newTarget }: { url: string; label: string; newTarget?: boolean }) => (
   <Typography
@@ -26,8 +27,7 @@ export const DesktopToolBar = () => {
   return (
     <Toolbar sx={{ padding: 0 }} disableGutters>
       <Link href='#' /* '#/landing' */ role='heading' aria-level={1}>
-        <span style={{ fontSize: 35 }}>🏺</span>
-        {/* <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={50} height={50} /> */}
+        <SVGBox img_name='AMPHORA.png' width={50} height={50} />
       </Link>
 
       <Box sx={{ gap: 5 }} display='flex' ml={5}>

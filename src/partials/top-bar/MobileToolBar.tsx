@@ -10,6 +10,7 @@ import { formatColor, neutral } from '~/theme';
 import { PaletteModeContext } from '~/components/libs/palette-mode-provider/palette-mode-provider';
 import { MobileIconButton } from './MobileIconButton';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import SVGBox from '~/components/icons/misc/SVGBox';
 
 const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
@@ -33,9 +34,8 @@ export const MobileToolBar = () => {
         },
       }}
     >
-      <MuiLink component={Link} to='/landing' aria-level={1}>
-        <span style={{ fontSize: 25 }}>🏺</span>
-        {/* <SVGBox svg_name={isLight ? 'ip_black' : 'ip_white'} width={32} height={32} /> */}
+      <MuiLink component={Link} to='#' aria-level={1}>
+        <SVGBox img_name='AMPHORA.png' width={50} height={50} />
       </MuiLink>
 
       <Box display='flex'>

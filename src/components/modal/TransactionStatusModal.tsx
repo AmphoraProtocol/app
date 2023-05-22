@@ -77,7 +77,7 @@ export const TransactionStatusModal = () => {
             </Typography>
 
             {/* Success icon */}
-            <SVGBox svg_name='USDA' width={30} height={30} alt='' sx={{ my: 3, mx: 'auto' }} />
+            <SVGBox img_name='AMPHORA.png' width={30} height={30} alt='' sx={{ my: 3, mx: 'auto' }} />
 
             <MuiLink target='_blank' href={`${chain.scan_url}tx/${(transaction as ContractReceipt).transactionHash}`}>
               <Button

@@ -47,7 +47,7 @@ export const ClaimAllModal = () => {
           columnGap: 1.5,
         }}
       >
-        <SVGBox svg_name={isLight ? 'USDA' : 'USDA'} width={100} height={100} alt='USDA' />
+        <SVGBox img_name='USDA.png' width={100} height={100} alt='USDA' />
 
         <Box>
           <Typography variant='body2' color={formatColor(neutral.gray3)}>

@@ -58,7 +58,7 @@ export const ClaimModal = () => {
           columnGap: 1.5,
         }}
       >
-        <SVGBox svg_name={isLight ? 'USDA' : 'USDA'} width={100} height={100} alt='USDA' />
+        <SVGBox img_name='AMPHORA.png' width={100} height={100} alt='USDA' />
 
         <Box>
           <Typography variant='body2' color={formatColor(neutral.gray3)}>
@@ -66,7 +66,7 @@ export const ClaimModal = () => {
           </Typography>
           {collateralToken.claimable_rewards?.map((rewards) => (
             <Box display='flex' alignItems='center' key={rewards.token} columnGap={1}>
-              <TokenIcon height={34} width={34} address={rewards.token} />
+              <TokenIcon height={34} width={34} address={rewards.token} symbol={rewards.symbol} />
               <Box
                 sx={{
                   display: 'flex',
