@@ -143,7 +143,7 @@ const getCollateralData = createAsyncThunk<
         {
           address: vaultAddress || ZERO_ADDRESS,
           abi: IVault__factory.abi,
-          functionName: 'tokenBalance',
+          functionName: 'balances',
           args: [token.address || ZERO_ADDRESS],
         },
         {
