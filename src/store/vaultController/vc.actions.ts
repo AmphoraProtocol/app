@@ -89,7 +89,7 @@ const getVCData = createAsyncThunk<
       },
       {
         ...vcContract,
-        functionName: 'vaultAddress',
+        functionName: 'vaultIdVaultAddress',
         args: [vaultIds[0]] as [BigNumber],
       },
       {
