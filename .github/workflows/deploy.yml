@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    if: github.repository == 'defi-wonderland/amphora-ui-private'
+    if: github.repository == 'AmphoraProtocol/app'
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name == 'main' && 'Prod' || 'Dev' }}
