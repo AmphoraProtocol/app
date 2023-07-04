@@ -134,7 +134,7 @@ const getCollateralData = createAsyncThunk<
         },
         {
           ...oracleContract,
-          functionName: 'currentValue',
+          functionName: 'peekValue',
         },
         {
           ...oracleContract,
