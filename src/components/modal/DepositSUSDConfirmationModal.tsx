@@ -128,7 +128,7 @@ export const DepositSUSDConfirmationModal = () => {
             </Typography>
           </Box>
 
-          <SVGBox width={36} height={36} svg_name='USDA' alt='USDA' sx={{ ml: 3 }} />
+          <SVGBox width={36} height={36} img_name='USDA.png' alt='USDA' sx={{ ml: 3 }} />
         </Box>
       </Box>
 

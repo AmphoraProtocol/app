@@ -53,7 +53,7 @@ export const TokenSelect = (props: TokenSelectProps) => {
             justifyContent: 'flex-end',
           }}
         >
-          <SVGBox svg_name={token.ticker} height={24} width={24} />
+          <SVGBox svg_name={token.ticker} img_name={token.ticker === 'USDA' ? 'USDA.png' : ''} height={24} width={24} />
 
           <Typography
             sx={{
