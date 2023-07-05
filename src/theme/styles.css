@@ -1,0 +1,54 @@
+/* Inter-Medium */
+@font-face {
+  font-family: 'Inter';
+  font-style: medium;
+  font-weight: 500;
+  src: url('./fonts/inter-v11-latin-regular.woff2') format('woff2'),
+    /* Super Modern Browsers */ url('./fonts/inter-v11-latin-regular.woff') format('woff'); /* Modern Browsers */
+}
+/* Inter-SemiBold */
+@font-face {
+  font-family: 'Inter';
+  font-style: SemiBold;
+  font-weight: 600;
+  src: url('./fonts/inter-v11-latin-500.woff2') format('woff2'),
+    /* Super Modern Browsers */ url('./fonts/inter-v11-latin-500.woff') format('woff'); /* Modern Browsers */
+}
+/* Inter-Bold */
+@font-face {
+  font-family: 'Inter';
+  font-style: Bold;
+  font-weight: 700;
+  src: url('./fonts/inter-v11-latin-600.woff2') format('woff2'),
+    /* Super Modern Browsers */ url('./fonts/inter-v11-latin-600.woff') format('woff');
+}
+/* Inter-ExtraBold */
+@font-face {
+  font-family: 'Inter';
+  font-style: ExtraBold;
+  font-weight: 800;
+  src: url('./fonts/inter-v11-latin-700.woff2') format('woff2'),
+    /* Super Modern Browsers */ url('./fonts/inter-v11-latin-700.woff') format('woff');
+}
+
+[data-rk] {
+  --rk-colors-accentColor: #5e64f4 !important;
+  --rk-fonts-body: Inter, sans-serif !important;
+  --rk-radii-connectButton: 8px !important;
+}
+
+.iekbcc0.iekbcc9.ju367v4.ju367v9x.ju367vn {
+  width: 140px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid #f4f4f4;
+  border-radius: 8px;
+}
+
+.iekbcc0.iekbcc9.ju367v73.ju367v7o.ju367v9c.ju367vn.ju367vec.ju367vex.ju367v11 {
+  width: 150px;
+  height: 100%;
+}
+
+.iekbcc0 {
+  transition: none !important;
+}
