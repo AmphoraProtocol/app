@@ -3,6 +3,7 @@ import { Address } from 'wagmi';
 export interface Env {
   VITE_ALLOW_DEV_MODE: boolean;
   ALCHEMY_KEY: string;
+  WALLET_CONNECT_ID: string;
 }
 
 export interface Constants {

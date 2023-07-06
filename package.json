@@ -24,7 +24,7 @@
     "@esbuild-plugins/node-modules-polyfill": "0.2.2",
     "@mui/material": "5.8.2",
     "@mui/system": "5.8.2",
-    "@rainbow-me/rainbowkit": "0.12.4",
+    "@rainbow-me/rainbowkit": "0.12.16",
     "@reduxjs/toolkit": "1.9.3",
     "@uniswap/v3-core": "1.0.0",
     "chroma.ts": "1.0.10",
