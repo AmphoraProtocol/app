@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ContractReceipt, utils } from 'ethers';
+import { BigNumber, ContractReceipt, utils } from 'ethers';
 import { Box, Typography } from '@mui/material';
-import { useContract, useAccount } from 'wagmi';
+import { useContract, useAccount, useContractRead } from 'wagmi';
 
 import { formatColor, neutral } from '~/theme';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
@@ -32,6 +32,13 @@ export const DepositCollateralConfirmationModal = () => {
   const collateralContract = useContract({ ...tokenAbi, address: collateralToken.address });
   const vaultContract = useContract({ ...vaultAbi, address: vaultAddress });
 
+  const collateralAllowance = useContractRead({
+    ...tokenAbi,
+    address: collateralToken.address,
+    functionName: 'allowance',
+    args: address && vaultAddress && [address, vaultAddress],
+  });
+
   const handleDepositConfirmationRequest = async () => {
     const amount = collateralDepositAmountMax
       ? collateralToken.wallet_amount!
@@ -49,6 +56,7 @@ export const DepositCollateralConfirmationModal = () => {
         setCollateralDepositAmountMax(false);
 
         updateTransactionState(receipt);
+        collateralAllowance.refetch();
       }
     } catch (err) {
       const error = err as ContractReceipt;
@@ -73,6 +81,7 @@ export const DepositCollateralConfirmationModal = () => {
         await attempt.wait();
         setHasCollateralAllowance(true);
         setAllowance(amount.toString());
+        collateralAllowance.refetch();
       }
     } catch (err) {
       const error = err as ContractReceipt;
@@ -84,18 +93,28 @@ export const DepositCollateralConfirmationModal = () => {
   };
 
   useEffect(() => {
-    if (type === 'DEPOSIT_COLLATERAL_CONFIRMATION' && collateralContract && address && vaultAddress) {
-      collateralContract.allowance(address, vaultAddress).then((allowance) => {
-        const formattedBalance = formatBNtoPreciseStringAndNumber(allowance, collateralToken.decimals);
-        if (formattedBalance.num >= Number.parseFloat(collateralDepositAmount)) {
-          setHasCollateralAllowance(true);
-        } else {
-          setHasCollateralAllowance(false);
-        }
-        setAllowance(formattedBalance.str);
-      });
+    if (type === 'DEPOSIT_COLLATERAL_CONFIRMATION' && collateralAllowance.data) {
+      setAllowance(collateralAllowance.data.toString());
     }
-  }, [type, allowance, hasCollateralAllowance]);
+  }, [collateralAllowance.data]);
+
+  useEffect(() => {
+    if (
+      type === 'DEPOSIT_COLLATERAL_CONFIRMATION' &&
+      collateralContract &&
+      address &&
+      vaultAddress &&
+      collateralAllowance.data
+    ) {
+      const formattedBalance = formatBNtoPreciseStringAndNumber(collateralAllowance.data, collateralToken.decimals);
+      if (formattedBalance.num >= Number.parseFloat(collateralDepositAmount)) {
+        setHasCollateralAllowance(true);
+      } else {
+        setHasCollateralAllowance(false);
+      }
+      setAllowance(formattedBalance.str);
+    }
+  }, [type, allowance, hasCollateralAllowance, collateralAllowance.data]);
 
   return (
     <BaseModal

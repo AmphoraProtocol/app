@@ -52,6 +52,7 @@ jobs:
           VITE_CUSTOM_LOCAL_RPC: ${{ secrets.VITE_CUSTOM_LOCAL_RPC }}
           VITE_ALLOW_DEV_MODE: ${{ secrets.VITE_ALLOW_DEV_MODE }}
           VITE_ALCHEMY_KEY: ${{ secrets.VITE_ALCHEMY_KEY }}
+          VITE_WALLET_CONNECT_ID: ${{ secrets.VITE_WALLET_CONNECT_ID }}
 
       - name: Deploy to S3
         uses: reggionick/s3-deploy@v3

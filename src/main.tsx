@@ -18,9 +18,11 @@ const { chains, provider } = configureChains(
   [alchemyProvider({ apiKey: getConfig().ALCHEMY_KEY }), publicProvider()],
 );
 
+const projectId = getConfig().WALLET_CONNECT_ID;
 const { connectors } = getDefaultWallets({
   appName: 'Amphora Protocol',
   chains,
+  projectId,
 });
 
 const wagmiClient = createClient({

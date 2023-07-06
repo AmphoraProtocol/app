@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography, Link as MuiLink } from '@mui/material';
-import { useContract, useAccount, useNetwork } from 'wagmi';
+import { useContract, useAccount, useNetwork, useContractRead } from 'wagmi';
 import { ContractReceipt, ContractTransaction, utils } from 'ethers';
 
 import { BN, locale, formatNumber } from '~/utils';
@@ -30,16 +30,20 @@ export const DepositSUSDConfirmationModal = () => {
   const USDAContract = useContract(usdaContract);
   const { USDA } = getConfig().ADDRESSES[currentChain?.id || DEFAULT_CHAIN_ID];
 
+  const sUSDAllowance = useContractRead({
+    ...susdContract,
+    functionName: 'allowance',
+    args: address && [address, USDA],
+  });
+
   useEffect(() => {
-    if (SUSD.amountToDeposit && address && SUSDContract) {
-      SUSDContract.allowance(address, USDA).then((allowance) => {
-        const amount = SUSD.maxDeposit
-          ? SUSD_TOKEN.wallet_amount!
-          : utils.parseUnits(SUSD.amountToDeposit, SUSD_TOKEN.decimals);
-        setHasAllowance(allowance.gte(amount));
-      });
+    if (SUSD.amountToDeposit && address && SUSDContract && sUSDAllowance.data) {
+      const amount = SUSD.maxDeposit
+        ? SUSD_TOKEN.wallet_amount!
+        : utils.parseUnits(SUSD.amountToDeposit, SUSD_TOKEN.decimals);
+      setHasAllowance(sUSDAllowance.data.gte(amount));
     }
-  }, [address, SUSD.amountToDeposit, loadmsg]);
+  }, [address, SUSD.amountToDeposit, loadmsg, sUSDAllowance.data]);
 
   const handleDepositConfirmationRequest = async () => {
     if (SUSD.amountToDeposit && USDAContract) {
@@ -57,6 +61,7 @@ export const DepositSUSDConfirmationModal = () => {
 
         const depositReceipt = await depositTransaction.wait();
         updateTransactionState(depositReceipt);
+        await sUSDAllowance.refetch();
       } catch (err) {
         updateTransactionState(err as ContractReceipt);
       }
@@ -80,6 +85,7 @@ export const DepositSUSDConfirmationModal = () => {
         await txn?.wait();
 
         setLoadmsg('');
+        await sUSDAllowance.refetch();
       } catch (e) {
         console.log(e);
       }
