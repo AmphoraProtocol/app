@@ -72,7 +72,7 @@ const getCollateralData = createAsyncThunk<
   const pools: Address[] = [
     '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
     '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
-    '0x0000000000000000000000000000000000000000', // AMPH Pool
+    '0x7A9bC5CFaB074ACf1e90e3A5062Dc76CF7E977eE', // AMPH Pool
   ];
   const price_list = await getRewardPrices(pools, chainId);
 

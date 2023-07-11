@@ -8,6 +8,7 @@ export const AppLayout = (props: { children: ReactNode }) => {
   const { children } = props;
   return (
     <Box>
+      Warning: This version is not yet audited. Do not use assets you are unwilling to lose.
       <TopBar />
       <Box
         sx={(theme) => ({

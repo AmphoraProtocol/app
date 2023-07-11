@@ -3,7 +3,7 @@ export default [
     title: 'Protocol',
     links: [
       // { label: 'Whitepaper', href: '#/whitepaper' },
-      { label: 'Docs', href: '#' },
+      { label: 'Docs', href: 'https://app.gitbook.com/s/f8xPtDNnJGPzpmL2yjns/' },
       // { label: 'Analytics', href: '#' },
       // { label: 'Terms of Use', href: '#/terms' },
     ],
@@ -29,7 +29,7 @@ export default [
       //   label: 'Audit',
       //   href: '#',
       // },
-      { label: 'Github', href: '#' },
+      { label: 'Github', href: 'https://github.com/AmphoraProtocol/core' },
     ],
   },
 ];

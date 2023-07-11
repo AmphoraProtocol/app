@@ -98,7 +98,9 @@ const FooterContent = () => {
         }}
       >
         <Typography color='footer.color' variant='label_semi'>
-          Amphora Protocol {new Date().getFullYear()}
+          Amphora Protocol {new Date().getFullYear()}: By using this product you agree you are not based in the US or a
+          US Person, acknowledge this is a decentralized product with no ownership or liability, that such products are
+          legal in your jurisdiction, and that no promises of future value are being made.
         </Typography>
         <Box>
           <MuiLink component={Link} to='#' target='_blank' paddingBottom={2}>
