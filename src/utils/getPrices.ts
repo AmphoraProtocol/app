@@ -58,7 +58,7 @@ export const getRewardPrices = async (pools: Address[], chainId: number): Promis
       contracts: uniContracts,
     });
 
-    const ethPrice = getPriceForToken(result[6].sqrtPriceX96, result[7].toLowerCase() === WETH_ADDRESS);
+    const ethPrice = getPriceForToken(result[4].sqrtPriceX96, result[5].toLowerCase() === WETH_ADDRESS);
 
     let crvPrice = 0;
     if ((result[0], result[1])) crvPrice = getFormattedPrice(ethPrice, result[0].sqrtPriceX96, result[1], WETH_ADDRESS);
@@ -66,9 +66,9 @@ export const getRewardPrices = async (pools: Address[], chainId: number): Promis
     let cvxPrice = 0;
     if ((result[2], result[3])) cvxPrice = getFormattedPrice(ethPrice, result[2].sqrtPriceX96, result[3], WETH_ADDRESS);
 
-    let amphPrice = 0;
-    if ((result[4], result[5]))
-      amphPrice = getFormattedPrice(ethPrice, result[4].sqrtPriceX96, result[5], WETH_ADDRESS);
+    const amphPrice = 0;
+    // if ((result[4], result[5]))
+    //   amphPrice = getFormattedPrice(ethPrice, result[4].sqrtPriceX96, result[5], WETH_ADDRESS);
 
     return [crvPrice, cvxPrice, amphPrice];
   } catch (error) {
