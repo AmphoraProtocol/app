@@ -89,7 +89,7 @@ const getCollateralData = createAsyncThunk<
           address: vaultAddress || ZERO_ADDRESS,
           abi: IVault__factory.abi,
           functionName: 'claimableRewards',
-          args: [token.address],
+          args: [token.address, true],
         },
       ],
     });
