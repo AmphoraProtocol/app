@@ -27,7 +27,10 @@ export const ClaimsCard = () => {
       const claimableTokens = Object.entries(assets).filter((token) => !!token[1].claimable_rewards);
 
       try {
-        const attempt = await vaultContract.claimRewards(claimableTokens.map((token) => token[1].address));
+        const attempt = await vaultContract.claimRewards(
+          claimableTokens.map((token) => token[1].address),
+          true,
+        );
         updateTransactionState(attempt!);
 
         const receipt = await attempt.wait();

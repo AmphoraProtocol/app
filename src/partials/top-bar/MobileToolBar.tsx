@@ -103,10 +103,10 @@ export const MobileToolBar = () => {
         <MobileIconButton text='App' img='rocket' href='/' />
         <MobileIconButton text='Governance' img='people' href='https://www.tally.xyz/' />
         <br />
-        <MobileIconButton text='Docs' img='cog' href='/#/docs' />
+        <MobileIconButton text='Docs' img='cog' href='https://app.gitbook.com/s/f8xPtDNnJGPzpmL2yjns/' />
         <MobileIconButton text='Feedback' img='feedback' href='#' />
         <br />
-        <MobileIconButton text='Discord' img='discord_icon_grey' href='#' />
+        <MobileIconButton text='Discord' img='discord_icon_grey' href='https://discord.gg/szwew92en2' />
         <MobileIconButton text={isLight ? `Light Mode` : 'Dark Mode'} img='sun' onClick={toggleMode} />
       </SwipeableDrawer>
     </Toolbar>

@@ -128,9 +128,14 @@ export const DesktopMenu = () => {
             backgroundColor: 'button.header',
           }}
         >
-          <StyledDropdownButton img='cog' text='Docs' href='#/docs' />
-          <StyledDropdownButton img='feedback' text='Feedback' href='https://discord.gg/' target='_blank' />
-          <StyledDropdownButton img='discord_icon_grey' href='https://discord.gg/' text='Discord' target='_blank' />
+          <StyledDropdownButton img='cog' text='Docs' href='https://app.gitbook.com/s/f8xPtDNnJGPzpmL2yjns/' />
+          <StyledDropdownButton img='feedback' text='Feedback' href='https://discord.gg/szwew92en2' target='_blank' />
+          <StyledDropdownButton
+            img='discord_icon_grey'
+            href='hhttps://discord.gg/szwew92en2'
+            text='Discord'
+            target='_blank'
+          />
 
           <StyledDropdownButton
             img={isLight ? 'star' : 'sun'}

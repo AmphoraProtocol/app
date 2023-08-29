@@ -72,7 +72,7 @@ const getCollateralData = createAsyncThunk<
   const pools: Address[] = [
     '0x919fa96e88d67499339577fa202345436bcdaf79', // CRV  Pool
     '0x2e4784446a0a06df3d1a040b03e1680ee266c35a', // CVX  Pool
-    '0x0000000000000000000000000000000000000000', // AMPH Pool
+    // '0x7A9bC5CFaB074ACf1e90e3A5062Dc76CF7E977eE', // AMPH Pool
   ];
   const price_list = await getRewardPrices(pools, chainId);
 
@@ -89,7 +89,7 @@ const getCollateralData = createAsyncThunk<
           address: vaultAddress || ZERO_ADDRESS,
           abi: IVault__factory.abi,
           functionName: 'claimableRewards',
-          args: [token.address],
+          args: [token.address, true],
         },
       ],
     });
@@ -106,7 +106,7 @@ const getCollateralData = createAsyncThunk<
     let cappedPercent = 0;
 
     if (!constants.MaxUint256.eq(data.cap)) {
-      cappedPercent = data.totalDeposited.div(data.cap).toNumber() * 100;
+      cappedPercent = data.totalDeposited.mul(100).div(data.cap).toNumber();
       // show minimum 5%
       if (cappedPercent <= 5) {
         cappedPercent = 5;
@@ -154,6 +154,8 @@ const getCollateralData = createAsyncThunk<
       ],
     });
 
+    token.decimals = decimals;
+
     // Fetch reward decimals and set reward price and amount:
     if (rewards) {
       const decimals: any[] = [];
@@ -190,7 +192,7 @@ const getCollateralData = createAsyncThunk<
     let unformattedBalance = '0';
     let balanceBN = BN(0);
     token.oracle_type = getOracleType(oracleType);
-    const livePrice = formatBNWithDecimals(currentValue || BN(0), 18 + (18 - decimals!));
+    const livePrice = formatBNWithDecimals(currentValue || BN(0), 18);
     token.price = Math.round(100 * livePrice) / 100;
 
     if (vaultAddress && balanceOf1 && decimals) {

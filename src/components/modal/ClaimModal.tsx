@@ -25,7 +25,7 @@ export const ClaimModal = () => {
     setLoading(true);
     if (vaultAddress && vaultContract) {
       try {
-        const attempt = await vaultContract.claimRewards([collateralToken.address]);
+        const attempt = await vaultContract.claimRewards([collateralToken.address], true);
         updateTransactionState(attempt!);
 
         const receipt = await attempt.wait();
