@@ -140,7 +140,7 @@ export const DepositSUSDConfirmationModal = () => {
 
       <Box textAlign='center' mb={5}>
         <Typography variant='body3_medium' color={formatColor(neutral.gray3)} fontStyle='italic'>
-          1 sUSD = 1 USDA ($1)
+          1 snxUSD = 1 USDA ($1)
         </Typography>
       </Box>
 

@@ -35,7 +35,7 @@ export const DepositWithdrawSUSDModal = () => {
         <SVGBox width={80} height={80} svg_name='sUSD' alt='sUSD' />
         <Box>
           <Typography variant='body1' color={formatColor(neutral.gray3)}>
-            1 SUSD
+            1 snxUSD
           </Typography>
           <Typography variant='h3' color='text.primary' mb={1}>
             $1

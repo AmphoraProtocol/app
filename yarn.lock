@@ -327,9 +327,9 @@
   resolved "https://registry.npmjs.org/@defi-wonderland/crypto-husky-checks/-/crypto-husky-checks-1.3.0.tgz#71b746e607e768ad73c4eff19b9c6169905cb425"
   integrity sha512-6h4cppr5HAjGXA5jIRQdmL0UBxOUAbsOuvYV54C42deOP/jc/EHw8CWuWzoOHLxveA6Pt7op1A8GjoQIhR6l/Q==
 
-"@defi-wonderland/isolmate@git+https://github.com/defi-wonderland/isolmate.git#59e18043c2450fef550f1744b3705ce9ebcaf1c8":
+"@defi-wonderland/isolmate@https://github.com/defi-wonderland/isolmate.git#59e18043c2450fef550f1744b3705ce9ebcaf1c8":
   version "6.2.0-beta2"
-  resolved "git+https://github.com/defi-wonderland/isolmate.git#59e18043c2450fef550f1744b3705ce9ebcaf1c8"
+  resolved "https://github.com/defi-wonderland/isolmate.git#59e18043c2450fef550f1744b3705ce9ebcaf1c8"
 
 "@defi-wonderland/solidity-utils@0.0.0-6c86c0fc":
   version "0.0.0-6c86c0fc"
@@ -2273,9 +2273,9 @@
   resolved "https://registry.npmjs.org/@uniswap/v2-core/-/v2-core-1.0.1.tgz#af8f508bf183204779938969e2e54043e147d425"
   integrity sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q==
 
-"@uniswap/v2-periphery@git+https://github.com/Uniswap/v2-periphery.git#0335e8f7e1bd1e8d8329fd300aea2ef2f36dd19f":
+"@uniswap/v2-periphery@https://github.com/Uniswap/v2-periphery.git#0335e8f7e1bd1e8d8329fd300aea2ef2f36dd19f":
   version "1.1.0-beta.0"
-  resolved "git+https://github.com/Uniswap/v2-periphery.git#0335e8f7e1bd1e8d8329fd300aea2ef2f36dd19f"
+  resolved "https://github.com/Uniswap/v2-periphery.git#0335e8f7e1bd1e8d8329fd300aea2ef2f36dd19f"
   dependencies:
     "@uniswap/lib" "4.0.1-alpha"
     "@uniswap/v2-core" "1.0.0"
@@ -2285,18 +2285,18 @@
   resolved "https://registry.npmjs.org/@uniswap/v3-core/-/v3-core-1.0.0.tgz#6c24adacc4c25dceee0ba3ca142b35adbd7e359d"
   integrity sha512-kSC4djMGKMHj7sLMYVnn61k9nu+lHjMIxgg9CDQT+s2QYLoA56GbSK9Oxr+qJXzzygbkrmuY6cwgP6cW2JXPFA==
 
-"@uniswap/v3-core@git+https://github.com/defi-wonderland/uniswap-v3-core.git#00c65edac6862bb0ddfbfd6554d20f259bc9f735":
-  version "1.0.1"
-  resolved "git+https://github.com/defi-wonderland/uniswap-v3-core.git#00c65edac6862bb0ddfbfd6554d20f259bc9f735"
-
 "@uniswap/v3-core@https://github.com/defi-wonderland/uniswap-v3-core":
   version "1.0.1"
   uid "00c65edac6862bb0ddfbfd6554d20f259bc9f735"
   resolved "https://github.com/defi-wonderland/uniswap-v3-core#00c65edac6862bb0ddfbfd6554d20f259bc9f735"
 
-"@uniswap/v3-periphery@git+https://github.com/defi-wonderland/uniswap-v3-periphery.git#33df3d7265aee0d0eb537df06ce1c884b1ccd7a0":
+"@uniswap/v3-core@https://github.com/defi-wonderland/uniswap-v3-core.git#00c65edac6862bb0ddfbfd6554d20f259bc9f735":
+  version "1.0.1"
+  resolved "https://github.com/defi-wonderland/uniswap-v3-core.git#00c65edac6862bb0ddfbfd6554d20f259bc9f735"
+
+"@uniswap/v3-periphery@https://github.com/defi-wonderland/uniswap-v3-periphery.git#33df3d7265aee0d0eb537df06ce1c884b1ccd7a0":
   version "1.4.1"
-  resolved "git+https://github.com/defi-wonderland/uniswap-v3-periphery.git#33df3d7265aee0d0eb537df06ce1c884b1ccd7a0"
+  resolved "https://github.com/defi-wonderland/uniswap-v3-periphery.git#33df3d7265aee0d0eb537df06ce1c884b1ccd7a0"
   dependencies:
     "@openzeppelin/contracts" "3.4.2-solc-0.7"
     "@uniswap/lib" "^4.0.1-alpha"
@@ -3638,13 +3638,13 @@ dom-helpers@^5.0.1:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
 
-"ds-test@git+https://github.com/dapphub/ds-test.git":
+"ds-test@https://github.com/dapphub/ds-test":
   version "1.0.0"
-  resolved "git+https://github.com/dapphub/ds-test.git#e282159d5170298eb2455a6c05280ab5a73a4ef0"
+  resolved "https://github.com/dapphub/ds-test#e282159d5170298eb2455a6c05280ab5a73a4ef0"
 
-"ds-test@git+https://github.com/dapphub/ds-test.git#9310e879db8ba3ea6d5c6489a579118fd264a3f5":
+"ds-test@https://github.com/dapphub/ds-test.git#9310e879db8ba3ea6d5c6489a579118fd264a3f5":
   version "0.0.0"
-  resolved "git+https://github.com/dapphub/ds-test.git#9310e879db8ba3ea6d5c6489a579118fd264a3f5"
+  resolved "https://github.com/dapphub/ds-test.git#9310e879db8ba3ea6d5c6489a579118fd264a3f5"
 
 duplexify@^4.1.2:
   version "4.1.2"
@@ -4431,13 +4431,13 @@ for-each@^0.3.3:
   dependencies:
     is-callable "^1.1.3"
 
-"forge-std@git+https://github.com/foundry-rs/forge-std.git":
+"forge-std@https://github.com/foundry-rs/forge-std":
   version "1.6.0"
-  resolved "git+https://github.com/foundry-rs/forge-std.git#da26c0455d3ddf147564f7367b5bf8c8823355b9"
+  resolved "https://github.com/foundry-rs/forge-std#1d9650e951204a0ddce9ff89c32f1997984cef4d"
 
-"forge-std@git+https://github.com/foundry-rs/forge-std.git#74cfb77e308dd188d2f58864aaf44963ae6b88b1":
+"forge-std@https://github.com/foundry-rs/forge-std.git#74cfb77e308dd188d2f58864aaf44963ae6b88b1":
   version "1.6.0"
-  resolved "git+https://github.com/foundry-rs/forge-std.git#74cfb77e308dd188d2f58864aaf44963ae6b88b1"
+  resolved "https://github.com/foundry-rs/forge-std.git#74cfb77e308dd188d2f58864aaf44963ae6b88b1"
 
 fs.realpath@^1.0.0:
   version "1.0.0"
