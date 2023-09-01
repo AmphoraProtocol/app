@@ -102,7 +102,7 @@ const Dashboard = () => {
               <SVGBox svg_name={`cube_${isLight ? 'light' : 'dark'}`} width={36} height={36} sx={{ mr: 3 }} />
 
               <TitleText
-                title='sUSD in Reserve'
+                title='snxUSD in Reserve'
                 text={Math.round(Number(vaultControllerData.totalSUSDDeposited)).toLocaleString()}
               />
             </>

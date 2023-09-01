@@ -28,7 +28,7 @@ export const DepositSUSDContent = () => {
       <Box textAlign='right' mb={2}>
         <Typography variant='label_semi' color={formatColor(neutral.gray3)}>
           {' '}
-          Wallet Balance: {round(SUSDToken.wallet_balance || 0, 2)} sUSD
+          Wallet Balance: {round(SUSDToken.wallet_balance || 0, 2)} snxUSD
         </Typography>
       </Box>
 
