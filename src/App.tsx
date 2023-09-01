@@ -19,6 +19,7 @@ import {
   DepositCollateralConfirmationModal,
   TransactionStatusModal,
   ClaimModal,
+  AcknowledgeTerms,
 } from './components/modal';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
 
@@ -32,6 +33,7 @@ const DashboardContext = (props: { children: any }) => {
         <WithdrawCollateralConfirmationModal />
         <DepositWithdrawSUSDModal />
         <BorrowRepayModal />
+        <AcknowledgeTerms />
         <DepositSUSDConfirmationModal />
         <WithdrawSUSDConfirmationModal />
         <ClaimModal />

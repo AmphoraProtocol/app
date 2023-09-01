@@ -4,7 +4,7 @@ import { ContractReceipt } from 'ethers';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccount, useContract } from 'wagmi';
 
-import { useLight, useAmphContracts } from '~/hooks';
+import { useLight, useAmphContracts, useAcknowledgeTerms } from '~/hooks';
 import SVGBox from '../icons/misc/SVGBox';
 import { useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
 
@@ -16,10 +16,11 @@ export const OpenVaultButton = () => {
   const { openConnectModal } = useConnectModal();
   const { VaultControllerContract } = useAmphContracts();
   const VC = useContract(VaultControllerContract);
+  const handleConnect = useAcknowledgeTerms();
 
   const openVault = async () => {
     if ((!isConnected || !address) && openConnectModal) {
-      openConnectModal();
+      handleConnect();
       return;
     }
 

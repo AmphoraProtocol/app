@@ -12,7 +12,7 @@ const configs: Array<ChainInfo> = [
     name: 'Ethereum',
     symbol: 'ETH',
     logo: 'ETH',
-    scan_url: 'https://etherscan.io/tx/',
+    scan_url: 'https://etherscan.io/',
     scan_site: 'Explorer',
   },
   {

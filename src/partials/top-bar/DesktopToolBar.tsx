@@ -1,10 +1,12 @@
-import { Box, Toolbar, Link, Typography } from '@mui/material';
+import { Box, Toolbar, Link, Typography, Button } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
 import { SelectedChainButton } from '~/components/button';
 import { DesktopMenu } from './DesktopMenu';
 import { formatColor, neutral } from '~/theme';
 import SVGBox from '~/components/icons/misc/SVGBox';
+import { useAcknowledgeTerms } from '~/hooks';
 
 const AppLinkTo = ({ url, label, newTarget }: { url: string; label: string; newTarget?: boolean }) => (
   <Typography
@@ -24,6 +26,9 @@ const AppLinkTo = ({ url, label, newTarget }: { url: string; label: string; newT
 
 //desktop menu config
 export const DesktopToolBar = () => {
+  const { isConnected } = useAccount();
+  const handleConnect = useAcknowledgeTerms();
+
   return (
     <Toolbar sx={{ padding: 0 }} disableGutters>
       <Link href='#' /* '#/landing' */ role='heading' aria-level={1}>
@@ -50,7 +55,20 @@ export const DesktopToolBar = () => {
       <Box sx={{ gap: 2 }} display='flex' mr={-1} ml='auto'>
         <SelectedChainButton />
         <Box display='flex'>
-          <ConnectButton chainStatus='none' showBalance={false} accountStatus='address' />
+          {!isConnected && (
+            <Button
+              variant='contained'
+              onClick={handleConnect}
+              sx={{
+                backgroundColor: 'button.mintRedeem',
+                color: formatColor(neutral.white),
+                width: 'max-content',
+              }}
+            >
+              Connect Wallet
+            </Button>
+          )}
+          {isConnected && <ConnectButton chainStatus='none' showBalance={false} accountStatus='address' />}
         </Box>
 
         <DesktopMenu />

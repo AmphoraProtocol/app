@@ -24,6 +24,7 @@ export enum ModalType {
   Delegate = 'DELEGATE',
   DelegateIPT = 'DELEGATE_IPT',
   TransactionStatus = 'TRANSACTION_STATUS',
+  AcknowledgeTerms = 'ACKNOWLEDGE_TERMS',
 }
 
 type TransactionState = 'PENDING' | 'SUCCESS' | 'FAILURE' | null;
