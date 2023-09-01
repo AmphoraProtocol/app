@@ -37,6 +37,15 @@ export const SwapContainer = () => {
     setToken1Amount('');
   };
 
+  const handleConnect = () => {
+    const hasAcknowledgedTerms = localStorage.getItem('acknowledgeTerms');
+    if (!hasAcknowledgedTerms) {
+      setType(ModalType.AcknowledgeTerms);
+    } else {
+      openConnectModal && openConnectModal();
+    }
+  };
+
   const token1MaxBalance = () => {
     if (token1.ticker === 'sUSD') {
       updateSUSD('maxDeposit', true);
@@ -168,7 +177,7 @@ export const SwapContainer = () => {
       ) : (
         <Button
           variant='contained'
-          onClick={() => openConnectModal && openConnectModal()}
+          onClick={handleConnect}
           sx={{
             backgroundColor: 'button.mintRedeem',
             color: formatColor(neutral.white),

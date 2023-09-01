@@ -4,7 +4,7 @@ import { useAccount, useContract, useNetwork } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { blue, formatColor, neutral } from '~/theme';
-import { useLight, useAppSelector, useAmphContracts } from '~/hooks';
+import { useLight, useAppSelector, useAmphContracts, useAcknowledgeTerms } from '~/hooks';
 import { UserTokenMobileDropdown } from './UserTokenMobileDropdown';
 import SVGBox from '../icons/misc/SVGBox';
 import { ModalType, useModalContext } from '../libs/modal-content-provider/ModalContentProvider';
@@ -47,6 +47,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
   const { chain: currentChain } = useNetwork();
   const { DEFAULT_CHAIN_ID } = getConfig();
   const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
+  const handleConnect = useAcknowledgeTerms();
 
   const {
     tokenName,
@@ -84,7 +85,7 @@ export const UserTokenCard = (props: UserTokenCardProps) => {
 
   const handleDWClick = (modalType: ModalType) => {
     if (!isConnected && openConnectModal) {
-      openConnectModal();
+      handleConnect();
     } else if (!userVault.vaultID && !userVault.vaultAddress) {
       openVault();
     } else {

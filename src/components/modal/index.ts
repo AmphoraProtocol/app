@@ -1,3 +1,4 @@
+export * from './AcknowledgeTerms';
 export * from './BaseModal';
 export * from './DepositWithdrawSUSDModal';
 export * from './DepositSUSDConfirmationModal';

@@ -1,5 +1,4 @@
-import { Box, Typography } from '@mui/material';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { Box, Button, Typography } from '@mui/material';
 import { useAccount } from 'wagmi';
 
 import { CopyButton } from '../button';
@@ -7,11 +6,13 @@ import { addressShortener } from '../text';
 import { ToolTip } from '../tooltip/ToolTip';
 import { CardContainer } from '../cards/CardContainer';
 import { ClaimsCard } from '../cards/ClaimsCard';
-import { useAppSelector } from '~/hooks';
+import { useAcknowledgeTerms, useAppSelector } from '~/hooks';
+import { formatColor, neutral } from '~/theme';
 
 export const UserIPTVault = () => {
   const { isConnected } = useAccount();
   const { vaultAddress } = useAppSelector((state) => state.VC.userVault);
+  const handleConnect = useAcknowledgeTerms();
 
   return (
     <Box
@@ -56,7 +57,17 @@ export const UserIPTVault = () => {
             )
           ) : (
             <Box display='flex' height='48px'>
-              <ConnectButton chainStatus='none' showBalance={false} accountStatus='address' />
+              <Button
+                variant='contained'
+                onClick={handleConnect}
+                sx={{
+                  backgroundColor: 'button.mintRedeem',
+                  color: formatColor(neutral.white),
+                  width: '100%',
+                }}
+              >
+                Connect Wallet
+              </Button>
             </Box>
           )}
         </Box>
