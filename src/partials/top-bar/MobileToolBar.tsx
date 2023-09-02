@@ -101,12 +101,12 @@ export const MobileToolBar = () => {
           <ForwardIcon stroke={isLight ? formatColor(neutral.black) : formatColor(neutral.white)} />
         </Button>
         <MobileIconButton text='App' img='rocket' href='/' />
-        <MobileIconButton text='Governance' img='people' href='https://www.tally.xyz/' />
+        <MobileIconButton text='Governance' img='people' href='#' />
         <br />
-        <MobileIconButton text='Docs' img='cog' href='https://app.gitbook.com/s/f8xPtDNnJGPzpmL2yjns/' />
+        <MobileIconButton text='Docs' img='cog' href='https://amphora-protocol.gitbook.io/amphora-protocol/' />
         <MobileIconButton text='Feedback' img='feedback' href='#' />
         <br />
-        <MobileIconButton text='Discord' img='discord_icon_grey' href='https://discord.gg/szwew92en2' />
+        <MobileIconButton text='Discord' img='discord_icon_grey' href='https://discord.gg/EXSYFTgwp6' />
         <MobileIconButton text={isLight ? `Light Mode` : 'Dark Mode'} img='sun' onClick={toggleMode} />
       </SwipeableDrawer>
     </Toolbar>

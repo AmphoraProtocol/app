@@ -128,11 +128,11 @@ export const DesktopMenu = () => {
             backgroundColor: 'button.header',
           }}
         >
-          <StyledDropdownButton img='cog' text='Docs' href='https://app.gitbook.com/s/f8xPtDNnJGPzpmL2yjns/' />
-          <StyledDropdownButton img='feedback' text='Feedback' href='https://discord.gg/szwew92en2' target='_blank' />
+          <StyledDropdownButton img='cog' text='Docs' href='https://amphora-protocol.gitbook.io/amphora-protocol/' />
+          <StyledDropdownButton img='feedback' text='Feedback' href='https://discord.gg/EXSYFTgwp6' target='_blank' />
           <StyledDropdownButton
             img='discord_icon_grey'
-            href='hhttps://discord.gg/szwew92en2'
+            href='https://discord.gg/EXSYFTgwp6'
             text='Discord'
             target='_blank'
           />
