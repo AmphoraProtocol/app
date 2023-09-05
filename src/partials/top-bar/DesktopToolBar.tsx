@@ -48,8 +48,8 @@ export const DesktopToolBar = () => {
         >
           App
         </Typography>
-        <AppLinkTo url='https://www.tally.xyz/' label='Governance' newTarget />
-        <AppLinkTo url='https://www.tally.xyz/' label='Documentation' newTarget />
+        <AppLinkTo url='https://www.tally.xyz/gov/amphora-dao' label='Governance' newTarget />
+        <AppLinkTo url='https://amphora-protocol.gitbook.io/amphora-protocol/' label='Documentation' newTarget />
       </Box>
 
       <Box sx={{ gap: 2 }} display='flex' mr={-1} ml='auto'>

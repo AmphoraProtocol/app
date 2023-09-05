@@ -10,15 +10,12 @@ export default [
   },
   {
     title: 'Governance',
-    links: [
-      { label: 'Overview', href: '#/proposal' },
-      { label: 'Forums', href: '#' },
-    ],
+    links: [{ label: 'Overview', href: 'https://www.tally.xyz/gov/amphora-dao' }],
   },
   {
     title: 'Community',
     links: [
-      { label: 'Twitter', href: '#' },
+      { label: 'Twitter', href: 'https://twitter.com/AmphoraProtocol' },
       { label: 'Discord', href: 'https://discord.gg/EXSYFTgwp6' },
     ],
   },
