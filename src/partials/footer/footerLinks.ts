@@ -4,7 +4,10 @@ export default [
     links: [
       // { label: 'Whitepaper', href: '#/whitepaper' },
       { label: 'Docs', href: 'https://amphora-protocol.gitbook.io/amphora-protocol/' },
-      { label: 'Bootstrap Purchase Tool', href: 'https://fastdapp.xyz/app/ipfs%3A%2F%2Fbafybeibwtlejzrbyet7fdy45p65v6iaobn6b6ssr4xfvpi6ilnknw7acha%2F40643c9e9803f2374742933a9482ecb0f9c5ad0c.json' },
+      {
+        label: 'Bootstrap Purchase Tool',
+        href: 'https://fastdapp.xyz/app/ipfs%3A%2F%2Fbafybeibwtlejzrbyet7fdy45p65v6iaobn6b6ssr4xfvpi6ilnknw7acha%2F40643c9e9803f2374742933a9482ecb0f9c5ad0c.json',
+      },
       // { label: 'Terms of Use', href: '#/terms' },
     ],
   },
