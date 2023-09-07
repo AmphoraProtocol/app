@@ -36,8 +36,3 @@ export interface RootState {
   stablecoins: StablecoinState;
   VC: VCState;
 }
-
-export interface WrapState {
-  USDA: Token;
-  WUSDA: Token;
-}
