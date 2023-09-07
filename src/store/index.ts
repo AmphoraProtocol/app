@@ -25,7 +25,7 @@ export const rootReducer: Reducer<RootState> = combineReducers({
 });
 
 // Actions
-export { CollateralActions, StablecoinActions, VCActions };
+export { CollateralActions, StablecoinActions, VCActions};
 
 // initialStates
 export { collateralInitialState, stablecoinInitialState, VCInitialState };

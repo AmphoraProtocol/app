@@ -17,6 +17,7 @@ export interface Constants {
       USDA: Address;
       SUSD: Address;
       WETH: Address;
+      WUSDA: Address;
       USDC_ETH_UNISWAP_POOL: Address;
     };
   };
