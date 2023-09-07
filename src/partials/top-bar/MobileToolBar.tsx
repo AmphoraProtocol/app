@@ -104,7 +104,11 @@ export const MobileToolBar = () => {
         <MobileIconButton text='Governance' img='people' href='https://www.tally.xyz/gov/amphora-dao' />
         <br />
         <MobileIconButton text='Docs' img='cog' href='https://amphora-protocol.gitbook.io/amphora-protocol/' />
-        <MobileIconButton text='Bootstrap Tool' img='feedback' href='https://fastdapp.xyz/app/ipfs%3A%2F%2Fbafybeibwtlejzrbyet7fdy45p65v6iaobn6b6ssr4xfvpi6ilnknw7acha%2F40643c9e9803f2374742933a9482ecb0f9c5ad0c.json' />
+        <MobileIconButton
+          text='Bootstrap Tool'
+          img='feedback'
+          href='https://fastdapp.xyz/app/ipfs%3A%2F%2Fbafybeibwtlejzrbyet7fdy45p65v6iaobn6b6ssr4xfvpi6ilnknw7acha%2F40643c9e9803f2374742933a9482ecb0f9c5ad0c.json'
+        />
         <br />
         <MobileIconButton text='Discord' img='discord_icon_grey' href='https://discord.gg/EXSYFTgwp6' />
         <MobileIconButton text={isLight ? `Light Mode` : 'Dark Mode'} img='sun' onClick={toggleMode} />

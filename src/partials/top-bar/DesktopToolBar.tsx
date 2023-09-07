@@ -50,7 +50,11 @@ export const DesktopToolBar = () => {
         </Typography>
         <AppLinkTo url='https://www.tally.xyz/gov/amphora-dao' label='Governance' newTarget />
         <AppLinkTo url='https://amphora-protocol.gitbook.io/amphora-protocol/' label='Documentation' newTarget />
-        <AppLinkTo url='https://fastdapp.xyz/app/ipfs%3A%2F%2Fbafybeibwtlejzrbyet7fdy45p65v6iaobn6b6ssr4xfvpi6ilnknw7acha%2F40643c9e9803f2374742933a9482ecb0f9c5ad0c.json' label='Bootstrap Tool' newTarget />
+        <AppLinkTo
+          url='https://fastdapp.xyz/app/ipfs%3A%2F%2Fbafybeibwtlejzrbyet7fdy45p65v6iaobn6b6ssr4xfvpi6ilnknw7acha%2F40643c9e9803f2374742933a9482ecb0f9c5ad0c.json'
+          label='Bootstrap Tool'
+          newTarget
+        />
       </Box>
 
       <Box sx={{ gap: 2 }} display='flex' mr={-1} ml='auto'>
