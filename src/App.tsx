@@ -22,12 +22,17 @@ import {
   AcknowledgeTerms,
 } from './components/modal';
 import { SwapTokenProvider } from './components/libs/swap-token-provider/SwapTokenProvider';
+import { WrapTokenProvider } from './components/libs/wrap-token-provider/WrapTokenProvider';
+import { WrapUSDAConfirmationModal } from './components/modal/WrapUSDAConfirmationModal';
+import { UnwrapUSDAConfirmationModal } from './components/modal/UnwrapUSDAConfirmationModal';
 
 const DashboardContext = (props: { children: any }) => {
   return (
     <ModalContentProvider>
       <>
-        <SwapTokenProvider>{props.children}</SwapTokenProvider>
+        <WrapTokenProvider>
+          <SwapTokenProvider>{props.children}</SwapTokenProvider>
+        </WrapTokenProvider>
         <DepositWithdrawCollateralModal />
         <DepositCollateralConfirmationModal />
         <WithdrawCollateralConfirmationModal />
@@ -36,6 +41,8 @@ const DashboardContext = (props: { children: any }) => {
         <AcknowledgeTerms />
         <DepositSUSDConfirmationModal />
         <WithdrawSUSDConfirmationModal />
+        <WrapUSDAConfirmationModal />
+        <UnwrapUSDAConfirmationModal />
         <ClaimModal />
         <TransactionStatusModal />
       </>

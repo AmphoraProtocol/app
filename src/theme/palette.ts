@@ -77,6 +77,11 @@ export const getDesignTokens = (mode: PaletteMode) => {
         hover: 'rgba(163, 169, 186, 0.2)',
         hoverGray: '#D6D9E0',
       },
+      tabs: {
+        backgroundSelected: 'rgba(116, 143, 241, 0.1)',
+        color: '#8A8A8A',
+        colorSelected: '#3F3E96',
+      },
       card: {
         background: getColor(formatColor(neutral.white), '#1A1A1E'),
         border: getColor('#EBEBEB', '#242424'),

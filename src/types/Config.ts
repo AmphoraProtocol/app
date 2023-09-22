@@ -8,6 +8,7 @@ export interface Env {
 
 export interface Constants {
   USDA_DECIMALS: number;
+  WUSDA_DECIMALS: number;
   DEFAULT_CHAIN_ID: number;
   ADDRESSES: {
     [key: number]: {
@@ -15,6 +16,7 @@ export interface Constants {
       VAULT_CONTROLLER: Address;
       CURVE_MASTER: Address;
       USDA: Address;
+      WUSDA: Address;
       SUSD: Address;
       WETH: Address;
       USDC_ETH_UNISWAP_POOL: Address;

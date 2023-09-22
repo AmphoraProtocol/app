@@ -8,6 +8,7 @@ export interface CollateralState {
 
 export interface StablecoinState {
   USDA: Token;
+  wUSDA: Token;
   SUSD: Token;
   status: Status;
 }
@@ -15,6 +16,7 @@ export interface StablecoinState {
 export interface VCState {
   usdaSupply: number;
   totalSUSDDeposited: number;
+  totalUSDAWrapped: number;
   reserveRatio: string;
   borrowAPR: number | undefined;
   depositAPR: number | undefined;

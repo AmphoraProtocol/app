@@ -5,6 +5,7 @@ import {
   IVaultController__factory,
   IVault__factory,
   IUSDA__factory,
+  IWUSDA__factory,
   ICurveMaster__factory,
 } from '@amphora-protocol/interfaces/ethers-v5/factories';
 
@@ -13,7 +14,7 @@ export const useAmphContracts = () => {
   const { chain } = useNetwork();
   const { DEFAULT_CHAIN_ID } = getConfig();
 
-  const { VAULT_CONTROLLER, CURVE_MASTER, USDA, SUSD } = getConfig().ADDRESSES[chain?.id || DEFAULT_CHAIN_ID];
+  const { VAULT_CONTROLLER, CURVE_MASTER, USDA, SUSD, WUSDA } = getConfig().ADDRESSES[chain?.id || DEFAULT_CHAIN_ID];
 
   const VaultControllerContract = {
     address: VAULT_CONTROLLER,
@@ -39,6 +40,12 @@ export const useAmphContracts = () => {
     signerOrProvider: signer,
   };
 
+  const wUsdaContract = {
+    address: WUSDA,
+    abi: IWUSDA__factory.abi,
+    signerOrProvider: signer,
+  };
+
   const tokenAbi = {
     abi: erc20ABI,
     signerOrProvider: signer,
@@ -54,6 +61,7 @@ export const useAmphContracts = () => {
     CurveContract,
     susdContract,
     usdaContract,
+    wUsdaContract,
     tokenAbi,
     vaultAbi,
   };

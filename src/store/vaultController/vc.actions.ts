@@ -19,6 +19,7 @@ const getVCData = createAsyncThunk<
     borrowAPR: number | undefined;
     usdaSupply: number;
     totalSUSDDeposited: number;
+    totalUSDAWrapped: number;
     reserveRatio: string;
     userVault: UserVault;
     collaterals?: Address[];
@@ -35,6 +36,7 @@ const getVCData = createAsyncThunk<
     CURVE_MASTER: CURVE_MASTER_ADDRESS,
     SUSD: SUSD_ADDRESS,
     USDA: USDA_ADDRESS,
+    WUSDA: WUSDA_ADDRESS,
   } = getConfig().ADDRESSES[chainId];
 
   const usdaContract = {
@@ -47,37 +49,44 @@ const getVCData = createAsyncThunk<
     abi: IVaultController__factory.abi,
   };
 
-  const [balanceOfSUSD, susdTotalSupply, reserveRatioInWeis, vaultIds, enabledTokens, protocolFee] = await multicall({
-    contracts: [
-      {
-        address: SUSD_ADDRESS,
-        abi: erc20ABI,
-        functionName: 'balanceOf',
-        args: [USDA_ADDRESS] as [Address],
-      },
-      {
-        ...usdaContract,
-        functionName: 'totalSupply',
-      },
-      {
-        ...usdaContract,
-        functionName: 'reserveRatio',
-      },
-      {
-        ...vcContract,
-        functionName: 'vaultIDs',
-        args: [userAddress || ZERO_ADDRESS] as [Address],
-      },
-      {
-        ...vcContract,
-        functionName: 'getEnabledTokens',
-      },
-      {
-        ...vcContract,
-        functionName: 'protocolFee',
-      },
-    ],
-  });
+  const [balanceOfSUSD, balanceOfUSDA, susdTotalSupply, reserveRatioInWeis, vaultIds, enabledTokens, protocolFee] =
+    await multicall({
+      contracts: [
+        {
+          address: SUSD_ADDRESS,
+          abi: erc20ABI,
+          functionName: 'balanceOf',
+          args: [USDA_ADDRESS] as [Address],
+        },
+        {
+          address: USDA_ADDRESS,
+          abi: erc20ABI,
+          functionName: 'balanceOf',
+          args: [WUSDA_ADDRESS] as [Address],
+        },
+        {
+          ...usdaContract,
+          functionName: 'totalSupply',
+        },
+        {
+          ...usdaContract,
+          functionName: 'reserveRatio',
+        },
+        {
+          ...vcContract,
+          functionName: 'vaultIDs',
+          args: [userAddress || ZERO_ADDRESS] as [Address],
+        },
+        {
+          ...vcContract,
+          functionName: 'getEnabledTokens',
+        },
+        {
+          ...vcContract,
+          functionName: 'protocolFee',
+        },
+      ],
+    });
 
   const [borrowValueAt, vaultAddress, vaultSummaries] = await multicall({
     contracts: [
@@ -138,6 +147,7 @@ const getVCData = createAsyncThunk<
     depositAPR,
     borrowAPR,
     totalSUSDDeposited: BNtoDec(balanceOfSUSD),
+    totalUSDAWrapped: BNtoDec(balanceOfUSDA),
     usdaSupply: BNtoDec(susdTotalSupply),
     reserveRatio: formatNumber(reserveRatio),
     userVault: {
