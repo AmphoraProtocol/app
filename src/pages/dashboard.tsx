@@ -12,7 +12,6 @@ import { StablecoinActions, VCActions } from '~/store';
 import { getConfig } from '~/config';
 import { TitleText } from '~/components/text';
 import Position from './position';
-import Swap from './swap';
 
 const Dashboard = () => {
   const isLight = useLight();
