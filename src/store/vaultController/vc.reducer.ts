@@ -6,6 +6,7 @@ import { VCActions } from './vc.actions';
 export const VCInitialState: VCState = {
   usdaSupply: 0,
   totalSUSDDeposited: 0,
+  totalUSDAWrapped: 0,
   reserveRatio: '0',
   borrowAPR: undefined,
   depositAPR: undefined,
@@ -27,11 +28,23 @@ export const VCReducer = createReducer(VCInitialState, (builder) => {
     getVCData.fulfilled,
     (
       state,
-      { payload: { borrowAPR, depositAPR, totalSUSDDeposited, usdaSupply, reserveRatio, userVault, collaterals } },
+      {
+        payload: {
+          borrowAPR,
+          depositAPR,
+          totalSUSDDeposited,
+          totalUSDAWrapped,
+          usdaSupply,
+          reserveRatio,
+          userVault,
+          collaterals,
+        },
+      },
     ) => {
       state.borrowAPR = borrowAPR;
       state.depositAPR = depositAPR;
       state.totalSUSDDeposited = totalSUSDDeposited;
+      state.totalUSDAWrapped = totalUSDAWrapped;
       state.usdaSupply = usdaSupply;
       state.reserveRatio = reserveRatio;
       state.userVault = userVault;

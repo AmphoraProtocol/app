@@ -1,10 +1,10 @@
-import { BigNumber, utils } from 'ethers';
+import { BigNumberish, BigNumber, utils } from 'ethers';
 import { BN } from '~/utils';
 
 export const formatBNWithDecimals = (amount: BigNumber, decimals: number) =>
   Number(utils.formatUnits(amount._hex, decimals));
 
-export const formatBNtoPreciseStringAndNumber = (amount: BigNumber, decimals: number) => {
+export const formatBNtoPreciseStringAndNumber = (amount: BigNumberish, decimals: number) => {
   const formatted = utils.formatUnits(amount, decimals);
 
   return {

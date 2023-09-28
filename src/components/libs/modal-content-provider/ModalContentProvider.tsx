@@ -17,6 +17,10 @@ export enum ModalType {
   DepositSUSD = 'DEPOSIT_SUSD',
   DepositSUSDConfirmation = 'DEPOSIT_SUSD_CONFIRMATION',
   WithdrawSUSDConfirmation = 'WITHDRAW_SUSD_CONFIRMATION',
+  WrapUSDA = 'WRAP_USDA',
+  UnwrapUSDA = 'UNWRAP_USDA',
+  WrapUSDAConfirmation = 'WRAP_USDA_CONFIRMATION',
+  UnwrapUSDAConfirmation = 'UNWRAP_USDA_CONFIRMATION',
   DepositCollateral = 'DEPOSIT_COLLATERAL',
   WithdrawCollateral = 'WITHDRAW_COLLATERAL',
   DepositCollateralConfirmation = 'DEPOSIT_COLLATERAL_CONFIRMATION',
@@ -35,6 +39,14 @@ interface DepositWithdrawSUSD {
   amountToWithdraw: string;
   maxWithdraw: boolean;
   maxDeposit: boolean;
+}
+
+interface WrapUnwrapUSDA {
+  token: Token | undefined;
+  amountToWrap: string;
+  amountToUnwrap: string;
+  maxWrap: boolean;
+  maxUnwrap: boolean;
 }
 
 export type ModalContextType = {
@@ -56,6 +68,10 @@ export type ModalContextType = {
   // Control SUSD
   SUSD: DepositWithdrawSUSD;
   updateSUSD: (prop: string, val: any) => void;
+
+  // Control USDA
+  USDA: WrapUnwrapUSDA;
+  updateUSDA: React.Dispatch<React.SetStateAction<WrapUnwrapUSDA>>;
 
   // Transaction State
   transactionState: TransactionState;
@@ -81,7 +97,7 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
     }),
   );
 
-  const { SUSD: susdContext } = useAppSelector((state) => state.stablecoins);
+  const { SUSD: susdContext, USDA: usdaContext } = useAppSelector((state) => state.stablecoins);
 
   const createDepositWithdrawSUSD = () => {
     return {
@@ -93,7 +109,18 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
     };
   };
 
+  const createWrapUnwrapUSDA = () => {
+    return {
+      token: usdaContext,
+      amountToWrap: '0',
+      amountToUnwrap: '0',
+      maxWrap: false,
+      maxUnwrap: false,
+    };
+  };
+
   const [SUSD, setSUSD] = useState<DepositWithdrawSUSD>(createDepositWithdrawSUSD);
+  const [USDA, setUSDA] = useState<WrapUnwrapUSDA>(createWrapUnwrapUSDA);
 
   const updateSUSD = (prop: string, val: any) => {
     setSUSD({
@@ -144,6 +171,8 @@ export const ModalContentProvider = ({ children }: { children: React.ReactElemen
         setCollateralWithdrawAmountMax,
         SUSD: SUSD,
         updateSUSD: updateSUSD,
+        USDA: USDA,
+        updateUSDA: setUSDA,
 
         transactionState,
         updateTransactionState,

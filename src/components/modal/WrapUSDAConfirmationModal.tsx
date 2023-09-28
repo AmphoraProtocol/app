@@ -13,9 +13,9 @@ import { DisableableModalButton } from '../button/DisableableModalButton';
 import { ForwardIcon } from '../icons/misc/ForwardIcon';
 import SVGBox from '../icons/misc/SVGBox';
 
-export const DepositSUSDConfirmationModal = () => {
-  const { type, setType, SUSD, updateTransactionState } = useModalContext();
-  const { SUSD: SUSD_TOKEN } = useAppSelector((state) => state.stablecoins);
+export const WrapUSDAConfirmationModal = () => {
+  const { type, setType, USDA, updateTransactionState } = useModalContext();
+  const { USDA: USDA_TOKEN } = useAppSelector((state) => state.stablecoins);
   const [loading, setLoading] = useState(false);
   const [loadmsg, setLoadmsg] = useState('');
 
@@ -25,43 +25,41 @@ export const DepositSUSDConfirmationModal = () => {
   const { DEFAULT_CHAIN_ID } = getConfig();
   const chain = Chains.getInfo(currentChain?.id || DEFAULT_CHAIN_ID);
   const { address } = useAccount();
-  const { susdContract, usdaContract } = useAmphContracts();
-  const SUSDContract = useContract(susdContract);
+  const { usdaContract, wUsdaContract } = useAmphContracts();
   const USDAContract = useContract(usdaContract);
-  const { USDA } = getConfig().ADDRESSES[currentChain?.id || DEFAULT_CHAIN_ID];
+  const wUSDAContract = useContract(wUsdaContract);
+  const { WUSDA: WUSDA_ADDR } = getConfig().ADDRESSES[currentChain?.id || DEFAULT_CHAIN_ID];
 
-  const sUSDAllowance = useContractRead({
-    ...susdContract,
+  const UsdaAllowance = useContractRead({
+    ...usdaContract,
     functionName: 'allowance',
-    args: address && [address, USDA],
+    args: address && [address, WUSDA_ADDR],
   });
 
   useEffect(() => {
-    if (SUSD.amountToDeposit && sUSDAllowance.data) {
-      const amount = SUSD.maxDeposit
-        ? SUSD_TOKEN.wallet_amount!
-        : utils.parseUnits(SUSD.amountToDeposit, SUSD_TOKEN.decimals);
-      setHasAllowance(sUSDAllowance.data.gte(amount));
+    if (USDA.amountToWrap && UsdaAllowance.data) {
+      const amount = USDA.maxWrap
+        ? USDA_TOKEN.wallet_amount!
+        : utils.parseUnits(USDA.amountToWrap, USDA_TOKEN.decimals);
+      setHasAllowance(UsdaAllowance.data.gte(amount));
     }
-  }, [SUSD.amountToDeposit, SUSD.maxDeposit, SUSD_TOKEN.decimals, SUSD_TOKEN.wallet_amount, sUSDAllowance.data]);
+  }, [USDA.amountToWrap, UsdaAllowance.data, USDA.maxWrap, USDA_TOKEN.wallet_amount, USDA_TOKEN.decimals]);
 
-  const handleDepositConfirmationRequest = async () => {
-    if (SUSD.amountToDeposit && USDAContract) {
+  const handleWrapConfirmationRequest = async () => {
+    if (USDA.amountToWrap && wUSDAContract) {
       setLoading(true);
       setLoadmsg(locale('CheckWallet'));
       try {
-        const depositTransaction = await USDAContract.deposit(
-          SUSD.maxDeposit
-            ? BN(SUSD_TOKEN.wallet_amount!)
-            : BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`)),
+        const wrapTransaction = await wUSDAContract.wrap(
+          USDA.maxWrap ? BN(USDA_TOKEN.wallet_amount!) : BN(USDA.amountToWrap).mul(BN(`1e${USDA_TOKEN.decimals}`)),
         );
 
-        updateTransactionState(depositTransaction);
+        updateTransactionState(wrapTransaction);
         setLoadmsg(locale('TransactionPending'));
 
-        const depositReceipt = await depositTransaction.wait();
-        updateTransactionState(depositReceipt);
-        await sUSDAllowance.refetch();
+        const wrapReceipt = await wrapTransaction.wait();
+        updateTransactionState(wrapReceipt);
+        await UsdaAllowance.refetch();
       } catch (err) {
         updateTransactionState(err as ContractReceipt);
       }
@@ -71,13 +69,13 @@ export const DepositSUSDConfirmationModal = () => {
   };
 
   const handleApprovalRequest = async () => {
-    if (SUSDContract && SUSD.amountToDeposit) {
-      const depositAmount = BN(SUSD.amountToDeposit).mul(BN(`1e${SUSD_TOKEN.decimals}`));
+    if (USDAContract && USDA.amountToWrap) {
+      const wrapAmount = BN(USDA.amountToWrap).mul(BN(`1e${USDA_TOKEN.decimals}`));
 
       setLoading(true);
       try {
         setLoadmsg(locale('CheckWallet'));
-        const txn = await SUSDContract.approve(USDA, depositAmount);
+        const txn = await USDAContract.approve(WUSDA_ADDR, wrapAmount);
 
         setApprovalTxn(txn);
 
@@ -85,7 +83,7 @@ export const DepositSUSDConfirmationModal = () => {
         await txn?.wait();
 
         setLoadmsg('');
-        await sUSDAllowance.refetch();
+        await UsdaAllowance.refetch();
       } catch (e) {
         console.log(e);
       }
@@ -95,13 +93,13 @@ export const DepositSUSDConfirmationModal = () => {
 
   return (
     <BaseModal
-      open={type === ModalType.DepositSUSDConfirmation}
+      open={type === ModalType.WrapUSDAConfirmation}
       setOpen={() => {
         setType(null);
       }}
     >
       <Typography variant='body3' color='text.primary'>
-        Confirm Deposit
+        Confirm Wrap
       </Typography>
       <Box
         sx={{
@@ -117,10 +115,10 @@ export const DepositSUSDConfirmationModal = () => {
         }}
       >
         <Box display='flex' alignItems='center'>
-          <SVGBox width={36} height={36} svg_name='sUSD' alt='sUSD' sx={{ mr: 3 }} />
+          <SVGBox width={36} height={36} img_name='USDA.png' alt='USDA' sx={{ mr: 3 }} />
           <Box>
             <Typography variant='body3' color='text.primary'>
-              {'$' + formatNumber(Number(SUSD.amountToDeposit))}
+              {'$' + formatNumber(Number(USDA.amountToWrap))}
             </Typography>
           </Box>
         </Box>
@@ -130,24 +128,24 @@ export const DepositSUSDConfirmationModal = () => {
         <Box display='flex' alignItems='center'>
           <Box>
             <Typography variant='body3' color='text.primary'>
-              {'$' + formatNumber(Number(SUSD.amountToDeposit))}
+              {'$' + formatNumber(Number(USDA.amountToWrap))}
             </Typography>
           </Box>
 
-          <SVGBox width={36} height={36} img_name='USDA.png' alt='USDA' sx={{ ml: 3 }} />
+          <SVGBox width={36} height={36} img_name='wUSDA.png' alt='wUSDA' sx={{ ml: 3 }} />
         </Box>
       </Box>
 
       <Box textAlign='center' mb={5}>
         <Typography variant='body3_medium' color={formatColor(neutral.gray3)} fontStyle='italic'>
-          1 snxUSD = 1 USDA ($1)
+          1 USDA = 1 wUSDA ($1)
         </Typography>
       </Box>
 
       <DisableableModalButton
-        text={hasAllowance ? 'Confirm Deposit' : 'Set Allowance'}
+        text={hasAllowance ? 'Confirm Wrap' : 'Set Allowance'}
         disabled={false}
-        onClick={hasAllowance ? handleDepositConfirmationRequest : handleApprovalRequest}
+        onClick={hasAllowance ? handleWrapConfirmationRequest : handleApprovalRequest}
         loading={loading}
         load_text={loadmsg}
       />
