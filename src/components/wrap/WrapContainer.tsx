@@ -24,8 +24,6 @@ export const WrapContainer = () => {
   const { openConnectModal } = useConnectModal();
   const { setType, updateUSDA } = useModalContext();
 
-  console.log(token1.wallet_balance);
-
   const swapTokens = () => {
     if (token1.ticker === 'USDA') {
       updateUSDA((old) => {
@@ -80,7 +78,6 @@ export const WrapContainer = () => {
   };
 
   useEffect(() => {
-    console.log('use effect');
     if (token1.ticker === 'USDA') {
       updateUSDA((old) => {
         return { ...old, amountToWrap: token1Amount };

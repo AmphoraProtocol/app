@@ -1,14 +1,16 @@
 import { ButtonProps, Typography, Link, Button } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 
 import SVGBox from '~/components/icons/misc/SVGBox';
-
 interface MobileIconButtonProps extends ButtonProps {
+  url?: string;
   text: string;
   img: string;
+  onClick: () => any;
 }
 
 export const MobileIconButton = (props: MobileIconButtonProps) => {
-  const { onClick, sx, text, img, href } = props;
+  const { onClick, sx, text, img, href, url } = props;
 
   const styles = {
     minWidth: 'auto',
@@ -44,8 +46,12 @@ export const MobileIconButton = (props: MobileIconButtonProps) => {
     </>
   );
 
-  return href ? (
-    <Link href={href} sx={styles}>
+  return url ? (
+    <Link component={NavLink} to={url} sx={styles} onClick={onClick}>
+      {content}
+    </Link>
+  ) : href ? (
+    <Link href={href} sx={styles} onClick={onClick}>
       {content}
     </Link>
   ) : (

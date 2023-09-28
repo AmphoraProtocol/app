@@ -41,7 +41,6 @@ export const WrapUSDAConfirmationModal = () => {
       const amount = USDA.maxWrap
         ? USDA_TOKEN.wallet_amount!
         : utils.parseUnits(USDA.amountToWrap, USDA_TOKEN.decimals);
-      console.log('amount', amount);
       setHasAllowance(UsdaAllowance.data.gte(amount));
     }
   }, [USDA.amountToWrap, UsdaAllowance.data, USDA.maxWrap, USDA_TOKEN.wallet_amount, USDA_TOKEN.decimals]);

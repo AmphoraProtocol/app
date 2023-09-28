@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAccount, useNetwork } from 'wagmi';
 import { Box, Button, useTheme } from '@mui/material';
 
@@ -22,7 +22,6 @@ const Dashboard = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { DEFAULT_CHAIN_ID } = getConfig();
-  const [selectedTab, setSelectedTab] = useState<number>(0);
 
   useEffect(() => {
     dispatch(VCActions.getVCData({ userAddress: address, chainId: chain?.id || DEFAULT_CHAIN_ID }));
@@ -99,31 +98,8 @@ const Dashboard = () => {
           </SingleStatCard>
         </Box>
 
-        <Box display='flex' justifyContent='center' mt={8} mb={3} gap='1rem'>
-          <Button
-            size='large'
-            sx={{
-              backgroundColor: selectedTab === 0 ? 'tabs.backgroundSelected' : 'transparent',
-              color: selectedTab === 0 ? 'tabs.colorSelected' : 'tabs.color',
-            }}
-            onClick={() => setSelectedTab(0)}
-          >
-            Position
-          </Button>
-          <Button
-            size='large'
-            sx={{
-              backgroundColor: selectedTab === 1 ? 'tabs.backgroundSelected' : 'transparent',
-              color: selectedTab === 1 ? 'tabs.colorSelected' : 'tabs.color',
-            }}
-            onClick={() => setSelectedTab(1)}
-          >
-            Swap
-          </Button>
-        </Box>
-
         {/* Your Position Section */}
-        {selectedTab === 0 ? <Position /> : <Swap />}
+        <Position />
 
         <Box>
           {/* Vault Section */}

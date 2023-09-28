@@ -100,17 +100,35 @@ export const MobileToolBar = () => {
         >
           <ForwardIcon stroke={isLight ? formatColor(neutral.black) : formatColor(neutral.white)} />
         </Button>
-        <MobileIconButton text='App' img='rocket' href='/' />
-        <MobileIconButton text='Governance' img='people' href='https://www.tally.xyz/gov/amphora-dao' />
+        <MobileIconButton text='App' img='rocket' url='/' onClick={() => setNavMenuOpen(false)} />
+        {/*<MobileIconButton text='Buy' img='rocket' url='buy' onClick={() => setNavMenuOpen(false)} />*/}
+        <MobileIconButton text='Wrap' img='rocket' url='wrap' onClick={() => setNavMenuOpen(false)} />
+        <MobileIconButton
+          text='Governance'
+          img='people'
+          href='https://www.tally.xyz/gov/amphora-dao'
+          onClick={() => setNavMenuOpen(false)}
+        />
         <br />
-        <MobileIconButton text='Docs' img='cog' href='https://amphora-protocol.gitbook.io/amphora-protocol/' />
+        <MobileIconButton
+          text='Docs'
+          img='cog'
+          href='https://amphora-protocol.gitbook.io/amphora-protocol/'
+          onClick={() => setNavMenuOpen(false)}
+        />
         <MobileIconButton
           text='Bootstrap Tool'
           img='feedback'
           href='https://fastdapp.xyz/app/ipfs%3A%2F%2Fbafybeibwtlejzrbyet7fdy45p65v6iaobn6b6ssr4xfvpi6ilnknw7acha%2F40643c9e9803f2374742933a9482ecb0f9c5ad0c.json'
+          onClick={() => setNavMenuOpen(false)}
         />
         <br />
-        <MobileIconButton text='Discord' img='discord_icon_grey' href='https://discord.gg/EXSYFTgwp6' />
+        <MobileIconButton
+          text='Discord'
+          img='discord_icon_grey'
+          href='https://discord.gg/EXSYFTgwp6'
+          onClick={() => setNavMenuOpen(false)}
+        />
         <MobileIconButton text={isLight ? `Light Mode` : 'Dark Mode'} img='sun' onClick={toggleMode} />
       </SwipeableDrawer>
     </Toolbar>
